@@ -38,7 +38,7 @@ function StickyNote({ note, updateNote, deleteNote }) {
     updateNote(note.id, { text: e.target.value });
   };
 
-  // Add event listeners to window for mouse move and up
+  // Add event listeners to the window for mouse move and up
   React.useEffect(() => {
     if (isDragging) {
       window.addEventListener("mousemove", handleMouseMove);

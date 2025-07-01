@@ -8,7 +8,7 @@ function IDE() {
       name: "index.html",
       type: "html",
       content:
-        "<!DOCTYPE html>\n<html>\n<head>\n  <title>My Project</title>\n</head>\n<body>\n  <h1>Hello World</h1>\n</body>\n</html>",
+        "<!DOCTYPE html>\n<html lang='en-US'>\n<head>\n  <title>My Project</title>\n</head>\n<body>\n  <h1>Hello World</h1>\n</body>\n</html>",
     },
     {
       id: 2,

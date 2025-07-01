@@ -71,11 +71,11 @@ function Terminal() {
           const command = line.substring(line.lastIndexOf("$ ") + 2);
 
           term.writeln("");
-          processCommand(command, term, tabId);
+          processCommand(command, term);
           term.write("$ ");
         } else if (domEvent.keyCode === 8) {
           // Backspace
-          // Do not delete the prompt
+          // Does not delete the prompt
           if (term.buffer.active.cursorX > 2) {
             term.write("\b \b");
           }
@@ -106,7 +106,7 @@ function Terminal() {
   };
 
   // Process terminal commands
-  const processCommand = (command, term, tabId) => {
+  const processCommand = (command, term) => {
     const cmd = command.trim();
 
     if (!cmd) return;
@@ -147,7 +147,7 @@ function Terminal() {
     setActiveTab(newId);
   };
 
-  // Close a terminal tab
+  // Close the terminal tab
   const closeTab = (tabId, event) => {
     event.stopPropagation();
 
@@ -173,13 +173,13 @@ function Terminal() {
   // Initialize terminal when component mounts
   useEffect(() => {
     // Initialize the first terminal
-    initTerminal(1);
+    initTerminal(1).then(() => {});
   }, []);
 
   // Initialize terminal when tab becomes active
   useEffect(() => {
     if (activeTab) {
-      initTerminal(activeTab);
+      initTerminal(activeTab).then(() => {});
     }
   }, [activeTab]);
 
@@ -196,7 +196,7 @@ function Terminal() {
     }
   }, [activeTab]);
 
-  // Clean up all terminals on unmount
+  // Clean up all terminals on unmounting
   useEffect(() => {
     return () => {
       Object.keys(xtermRefs.current).forEach((tabId) => {

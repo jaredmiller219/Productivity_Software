@@ -42,7 +42,7 @@ function Browser() {
       webview.addEventListener("did-start-loading", handleDidStartLoading);
       webview.addEventListener("did-stop-loading", handleDidStopLoading);
 
-      // Clean up event listeners on unmount
+      // Clean up event listeners when unmounting
       return () => {
         webview.removeEventListener("dom-ready", handleDomReady);
         webview.removeEventListener("did-start-loading", handleDidStartLoading);
@@ -66,7 +66,7 @@ function Browser() {
     if (webviewRef.current) {
       try {
         if (typeof webviewRef.current.loadURL === "function") {
-          webviewRef.current.loadURL(navigateUrl);
+          webviewRef.current.loadURL(navigateUrl).then(() => {});
         } else {
           webviewRef.current.src = navigateUrl;
         }
@@ -86,7 +86,7 @@ function Browser() {
         }
         // Try using loadURL if available
         else if (typeof webviewRef.current.loadURL === "function") {
-          webviewRef.current.loadURL(currentUrl);
+          webviewRef.current.loadURL(currentUrl).then(() => {});
         }
         // Fallback: reset the src to current URL
         else {
