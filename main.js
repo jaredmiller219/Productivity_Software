@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog, session } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
 const fs = require("fs");
@@ -15,6 +15,8 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
       webviewTag: true,
+      webSecurity: false, // Disable web security for development
+      allowRunningInsecureContent: true, // Allow loading mixed content
     },
   });
 
@@ -28,6 +30,18 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   }
 
+  // Configure session permissions
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        "Content-Security-Policy": [
+          "default-src * data: blob: filesystem: about: ws: wss: 'unsafe-inline' 'unsafe-eval'",
+        ],
+      },
+    });
+  });
+
   mainWindow.on("closed", () => {
     mainWindow = null;
     if (terminalProcess) {
@@ -37,7 +51,31 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  createWindow();
+
+  // Enable webview tags
+  app.on("web-contents-created", (event, contents) => {
+    contents.on("will-attach-webview", (event, webPreferences, params) => {
+      // Strip away preload scripts if unused or verify their location is legitimate
+      delete webPreferences.preload;
+
+      // Disable Node.js integration in webviews
+      webPreferences.nodeIntegration = false;
+
+      // Enable contextIsolation
+      webPreferences.contextIsolation = true;
+
+      // Verify URL being loaded
+      if (
+        !params.src.startsWith("https://") &&
+        !params.src.startsWith("http://")
+      ) {
+        event.preventDefault();
+      }
+    });
+  });
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
@@ -46,7 +84,7 @@ app.on("window-all-closed", () => {
 });
 
 app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
+  if (mainWindow === null) {
     createWindow();
   }
 });
