@@ -1,0 +1,20 @@
+dev-suite/
+├── electron/
+│   ├── main.js
+│   └── preload.js
+├── public/
+│   ├── index.html
+│   └── favicon.ico
+├── src/
+│   ├── App.js
+│   ├── index.js
+│   ├── components/
+│   │   ├── Sidebar.js
+│   │   └── Workspace.js
+│   └── modules/
+│       ├── Notes/
+│       ├── Terminal/
+│       ├── Browser/
+│       └── IDE/
+├── package.json
+└── README.md
