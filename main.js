@@ -12,11 +12,11 @@ function createWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      contextIsolation: true,
       webviewTag: true,
-      webSecurity: false, // Disable web security for development
-      allowRunningInsecureContent: true, // Allow loading mixed content
+      webSecurity: true,
+      allowRunningInsecureContent: false,
     },
   });
 
