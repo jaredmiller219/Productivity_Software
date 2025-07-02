@@ -15,7 +15,7 @@
     "cross-env": "^7.0.3",
     "electron": "^37.1.0",
     "electron-builder": "^26.0.12",
-    "react-scripts": "^0.0.0",
+    "react-scripts": "^5.0.1",
     "wait-on": "^7.0.1"
   },
   "scripts": {
