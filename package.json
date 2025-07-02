@@ -23,7 +23,10 @@
     "test": "npx react-scripts test",
     "eject": "npx react-scripts eject",
     "electron:dev": "concurrently \"npx react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron:build": "npm run build && electron-builder"
+    "electron:build": "npm run build && electron-builder",
+    "electron:prod": "npm run build && electron .",
+    "electron:package": "npm run build && electron-builder",
+    "electron:clean": "rimraf build dist"
   },
   "browserslist": {
     "production": [
