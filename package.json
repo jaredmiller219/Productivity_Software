@@ -1,6 +1,7 @@
 {
   "name": "dev-productivity-suite",
   "version": "0.1.0",
+  "description": "Dev Productivity Suite",
   "private": true,
   "main": "main.js",
   "dependencies": {
