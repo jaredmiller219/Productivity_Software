@@ -36,7 +36,7 @@ function createWindow() {
       responseHeaders: {
         ...details.responseHeaders,
         "Content-Security-Policy": [
-          "default-src * data: blob: filesystem: about: ws: wss: 'unsafe-inline' 'unsafe-eval'",
+          "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*; font-src 'self'",
         ],
       },
     });
