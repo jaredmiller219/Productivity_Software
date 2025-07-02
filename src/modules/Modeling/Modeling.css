@@ -1,0 +1,48 @@
+.modeling-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #1e1e1e;
+}
+
+.modeling-toolbar {
+  background-color: #333;
+  color: white;
+  padding: 8px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #444;
+}
+
+.toolbar-section {
+  display: flex;
+  gap: 8px;
+}
+
+.modeling-toolbar button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modeling-toolbar button:hover {
+  background-color: #2980b9;
+}
+
+.modeling-toolbar button.active {
+  background-color: #2ecc71;
+}
+
+.modeling-toolbar button:disabled {
+  background-color: #7f8c8d;
+  cursor: not-allowed;
+}
+
+.modeling-canvas {
+  flex: 1;
+  overflow: hidden;
+}

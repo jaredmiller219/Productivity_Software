@@ -7,6 +7,7 @@ function Sidebar({ activeModule, setActiveModule }) {
     { id: "terminal", name: "Terminal" },
     { id: "browser", name: "Browser" },
     { id: "ide", name: "IDE" },
+    { id: "modeling", name: "3D Modeling" },
   ];
 
   return (

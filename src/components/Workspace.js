@@ -3,6 +3,7 @@ import Notes from '../modules/Notes/Notes';
 import SimpleTerminal from '../modules/Terminal/SimpleTerminal';
 import Browser from '../modules/Browser/Browser';
 import IDE from '../modules/IDE/IDE';
+import Modeling from '../modules/Modeling/Modeling';
 import './Workspace.css';
 
 function Workspace({ activeModule }) {
@@ -16,6 +17,8 @@ function Workspace({ activeModule }) {
         return <Browser />;
       case 'ide':
         return <IDE />;
+      case 'modeling':
+        return <Modeling />;
       default:
         return <Notes />;
     }
