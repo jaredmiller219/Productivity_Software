@@ -8,7 +8,7 @@
     "electron-is-dev": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "three": "^0.150.0",
+    "three": "^0.150.1",
     "xterm": "^5.1.0",
     "xterm-addon-fit": "^0.7.0"
   },
