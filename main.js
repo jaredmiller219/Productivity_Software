@@ -1,8 +1,8 @@
-const { app, BrowserWindow, ipcMain, dialog, session } = require("electron");
-const path = require("path");
-const isDev = require("electron-is-dev");
-const fs = require("fs");
-const { spawn } = require("child_process");
+import { app, BrowserWindow, ipcMain, dialog, session } from "electron";
+import { join } from "path";
+import isDev from "electron-is-dev";
+import { readFile, writeFile } from "fs";
+import { spawn } from "child_process";
 
 let mainWindow;
 let terminalProcess;
@@ -23,7 +23,7 @@ function createWindow() {
   mainWindow.loadURL(
     isDev
       ? "http://localhost:3000"
-      : `file://${path.join(__dirname, "../build/index.html")}`
+      : `file://${join(__dirname, "../build/index.html")}`
   );
 
   if (isDev) {
@@ -135,7 +135,7 @@ ipcMain.on("open-file-dialog", async (event) => {
 
   if (!canceled && filePaths.length > 0) {
     const filePath = filePaths[0];
-    fs.readFile(filePath, "utf8", (err, data) => {
+    readFile(filePath, "utf8", (err, data) => {
       if (err) {
         console.error(err);
         return;
@@ -146,7 +146,7 @@ ipcMain.on("open-file-dialog", async (event) => {
 });
 
 ipcMain.on("save-file", (event, { path, content }) => {
-  fs.writeFile(path, content, (err) => {
+  writeFile(path, content, (err) => {
     if (err) {
       console.error(err);
       return;
@@ -161,7 +161,7 @@ ipcMain.on("save-file-dialog", async (event, { content }) => {
   });
 
   if (!canceled && filePath) {
-    fs.writeFile(filePath, content, (err) => {
+    writeFile(filePath, content, (err) => {
       if (err) {
         console.error(err);
         return;
@@ -173,7 +173,7 @@ ipcMain.on("save-file-dialog", async (event, { content }) => {
 });
 
 ipcMain.on("read-file", (event, { path }) => {
-  fs.readFile(path, "utf8", (err, data) => {
+  readFile(path, "utf8", (err, data) => {
     if (err) {
       console.error(err);
       return;
