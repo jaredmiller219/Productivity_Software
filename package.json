@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "concurrently": "^7.6.0",
+    "cross-env": "^7.0.3",
     "electron": "^37.1.0",
     "electron-builder": "^26.0.12",
     "react-scripts": "^0.0.0",
@@ -26,7 +27,9 @@
     "electron:build": "npm run build && electron-builder",
     "electron:prod": "npm run build && electron .",
     "electron:package": "npm run build && electron-builder",
-    "electron:clean": "rimraf build dist"
+    "electron:clean": "rimraf build dist",
+    "electron:run": "electron .",
+    "electron:start": "concurrently \"cross-env BROWSER=none npx react-scripts start\" \"wait-on http://localhost:3000 && electron . --no-devtools\""
   },
   "browserslist": {
     "production": [

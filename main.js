@@ -4,6 +4,8 @@ import isDev from "electron-is-dev";
 import { readFile, writeFile } from "fs";
 import { spawn } from "child_process";
 
+const openDevTools = !process.argv.includes("--no-devtools");
+
 let mainWindow;
 let terminalProcess;
 
@@ -26,7 +28,7 @@ function createWindow() {
       : `file://${join(__dirname, "../build/index.html")}`
   );
 
-  if (isDev) {
+  if (isDev && openDevTools) {
     mainWindow.webContents.openDevTools();
   }
 
