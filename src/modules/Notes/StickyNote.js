@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import "./StickyNote.css";
 
 function StickyNote({ note, updateNote, deleteNote }) {
@@ -20,7 +20,7 @@ function StickyNote({ note, updateNote, deleteNote }) {
     }
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (isDragging) {
       const newPosition = {
         x: e.clientX - dragOffset.x,
@@ -28,11 +28,11 @@ function StickyNote({ note, updateNote, deleteNote }) {
       };
       updateNote(note.id, { position: newPosition });
     }
-  };
+  }, [isDragging, dragOffset.x, dragOffset.y, note.id, updateNote]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
   const handleTextChange = (e) => {
     updateNote(note.id, { text: e.target.value });
@@ -43,13 +43,13 @@ function StickyNote({ note, updateNote, deleteNote }) {
     if (isDragging) {
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
-    }
 
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [isDragging]);
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+      };
+    }
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
   return (
     <div

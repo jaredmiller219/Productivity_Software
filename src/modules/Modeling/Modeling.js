@@ -77,8 +77,9 @@ function Modeling() {
     setTransformControls(newTransformControls);
 
     // Animation loop
+    let animationId;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
       newControls.update();
       newRenderer.render(newScene, newCamera);
     };
@@ -102,7 +103,12 @@ function Modeling() {
     // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
-      containerRef.current.removeChild(newRenderer.domElement);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+      if (containerRef.current && newRenderer.domElement) {
+        containerRef.current.removeChild(newRenderer.domElement);
+      }
     };
   }, []);
 
