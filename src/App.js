@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Sidebar from "./components/Sidebar";
-import Workspace from "./components/Workspace";
+import Sidebar from "./components/Sidebar.js";
+import Workspace from "./components/Workspace.js";
 import "./App.css";
 
 function App() {

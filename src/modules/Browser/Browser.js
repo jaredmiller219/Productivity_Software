@@ -37,16 +37,23 @@ function Browser() {
         }
       };
 
+      const handleDidFailLoad = (e) => {
+        console.error("WebView failed to load:", e);
+        setIsLoading(false);
+      };
+
       // Add event listeners
       webview.addEventListener("dom-ready", handleDomReady);
       webview.addEventListener("did-start-loading", handleDidStartLoading);
       webview.addEventListener("did-stop-loading", handleDidStopLoading);
+      webview.addEventListener("did-fail-load", handleDidFailLoad);
 
       // Clean up event listeners when unmounting
       return () => {
         webview.removeEventListener("dom-ready", handleDomReady);
         webview.removeEventListener("did-start-loading", handleDidStartLoading);
         webview.removeEventListener("did-stop-loading", handleDidStopLoading);
+        webview.removeEventListener("did-fail-load", handleDidFailLoad);
       };
     }
   }, []);
@@ -66,7 +73,7 @@ function Browser() {
     if (webviewRef.current) {
       try {
         if (typeof webviewRef.current.loadURL === "function") {
-          webviewRef.current.loadURL(navigateUrl).then(() => {});
+          webviewRef.current.loadURL(navigateUrl).then(() => { });
         } else {
           webviewRef.current.src = navigateUrl;
         }
@@ -86,7 +93,7 @@ function Browser() {
         }
         // Try using loadURL if available
         else if (typeof webviewRef.current.loadURL === "function") {
-          webviewRef.current.loadURL(currentUrl).then(() => {});
+          webviewRef.current.loadURL(currentUrl).then(() => { });
         }
         // Fallback: reset the src to current URL
         else {

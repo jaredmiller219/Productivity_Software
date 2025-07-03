@@ -1,8 +1,14 @@
 import { app, BrowserWindow, ipcMain, dialog, session } from "electron";
 import { join } from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import isDev from "electron-is-dev";
 import { readFile, writeFile } from "fs";
 import { spawn } from "child_process";
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const openDevTools = !process.argv.includes("--no-devtools");
 
@@ -19,6 +25,8 @@ function createWindow() {
       webviewTag: true,
       webSecurity: true,
       allowRunningInsecureContent: false,
+      sandbox: false,
+      preload: join(__dirname, 'preload.js')
     },
   });
 
@@ -38,7 +46,7 @@ function createWindow() {
       responseHeaders: {
         ...details.responseHeaders,
         "Content-Security-Policy": [
-          "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*; font-src 'self'",
+          "default-src 'self' https: http:; script-src 'self' 'unsafe-inline' https: http:; style-src 'self' 'unsafe-inline' https: http:; img-src 'self' data: https: http:; connect-src 'self' https: http:; font-src 'self' https: http:;",
         ],
       },
     });
@@ -56,11 +64,12 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
 
-  // Enable webview tags
+  // Configure webview permissions
   app.on("web-contents-created", (event, contents) => {
     contents.on("will-attach-webview", (event, webPreferences, params) => {
       // Strip away preload scripts if unused or verify their location is legitimate
-      delete webPreferences.preload;
+      // Instead of deleting, let's set it to our verified preload script
+      webPreferences.preload = join(__dirname, '../public/webview-preload.js');
 
       // Disable Node.js integration in webviews
       webPreferences.nodeIntegration = false;
@@ -68,12 +77,31 @@ app.whenReady().then(() => {
       // Enable contextIsolation
       webPreferences.contextIsolation = true;
 
-      // Verify URL being loaded
-      if (
-        !params.src.startsWith("https://") &&
-        !params.src.startsWith("http://")
-      ) {
-        event.preventDefault();
+      // Allow insecure content for development
+      webPreferences.webSecurity = false;
+
+      // Verify URL being loaded - but don't prevent loading
+      console.log("Webview loading URL:", params.src);
+    });
+
+    // Handle navigation events
+    contents.on("will-navigate", (event, url) => {
+      console.log("Navigation to", url);
+    });
+
+    // Log any errors
+    contents.on("did-fail-load", (event, errorCode, errorDescription, validatedURL) => {
+      console.error("Failed to load:", validatedURL, errorDescription);
+    });
+  });
+
+  // Add this to allow webview to load external URLs
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    callback({
+      requestHeaders: {
+        ...details.requestHeaders,
+        // Add a standard user agent
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
       }
     });
   });
