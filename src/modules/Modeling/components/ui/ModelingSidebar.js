@@ -1,9 +1,9 @@
 import React from 'react';
-import MaterialEditor from './MaterialEditor.js';
-import ModifierStack from './ModifierStack.js';
-import AnimationTimeline from './AnimationTimeline.js';
-import RiggingSystem from './RiggingSystem.js';
-import AnimationCurves from './AnimationCurves.js';
+import MaterialEditor from '../materials/MaterialEditor.js';
+import ModifierStack from '../modifiers/ModifierStack.js';
+import AnimationTimeline from '../animation/AnimationTimeline.js';
+import RiggingSystem from '../rigging/RiggingSystem.js';
+import AnimationCurves from '../animation/AnimationCurves.js';
 import './ModelingSidebar.css';
 
 const ModelingSidebar = ({

@@ -9,7 +9,7 @@ import {
   configureRenderer,
   subdivideMesh,
   createMaterial
-} from '../utils/threeUtils.js';
+} from '../utils/viewport/threeUtils.js';
 
 export const useModelingScene = (containerRef) => {
   const [scene, setScene] = useState(null);

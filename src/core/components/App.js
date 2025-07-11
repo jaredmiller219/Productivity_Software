@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Sidebar from "./components/Sidebar.js";
-import Workspace from "./components/Workspace.js";
-import Notes from "./modules/Notes/Notes.js";
+import Sidebar from "../../shared/components/Sidebar.js";
+import Workspace from "../../shared/components/Workspace.js";
+import Notes from "../../modules/Notes/Notes.js";
 import "./App.css";
 
 function App() {

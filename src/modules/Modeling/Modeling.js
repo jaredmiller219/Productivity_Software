@@ -1,7 +1,7 @@
 import { useRef } from "react";
-import BlenderMenuBar from "./components/BlenderMenuBar.js";
-import ModelingToolbar from "./components/ModelingToolbar.js";
-import ModelingSidebar from "./components/ModelingSidebar.js";
+import BlenderMenuBar from "./components/ui/BlenderMenuBar.js";
+import ModelingToolbar from "./components/ui/ModelingToolbar.js";
+import ModelingSidebar from "./components/ui/ModelingSidebar.js";
 import { useModelingScene } from "./hooks/useModelingScene.js";
 import "./Modeling.css";
 
