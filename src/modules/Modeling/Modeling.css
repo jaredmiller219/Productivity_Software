@@ -1,24 +1,135 @@
 .modeling-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  background-color: #1e1e1e;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
 }
 
-/* Main modeling container styles */
+/* Blender-like layout structure */
 
 .modeling-workspace {
   display: flex;
   flex: 1;
   overflow: hidden;
+  background: #2a2a2a;
+  border-top: 1px solid #3a3a3a;
 }
 
-/* Workspace layout */
+/* Main 3D viewport */
 
 .modeling-canvas {
   flex: 1;
   overflow: hidden;
   position: relative;
+  background: #2a2a2a;
+  border-left: 1px solid #3a3a3a;
+}
+
+.modeling-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Enhanced styling for Blender-like appearance */
+
+.modeling-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #0078d4 0%, #005a9e 50%, #0078d4 100%);
+  z-index: 1001;
+}
+
+/* Responsive design improvements */
+
+@media (max-width: 1200px) {
+  .modeling-workspace {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .modeling-container {
+    height: 100vh;
+  }
+
+  .modeling-workspace {
+    flex-direction: column;
+  }
+}
+
+/* Dark theme enhancements */
+
+.modeling-container {
+  --primary-bg: #1a1a1a;
+  --secondary-bg: #2a2a2a;
+  --tertiary-bg: #3a3a3a;
+  --accent-color: #0078d4;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --border-color: #3a3a3a;
+  --hover-bg: rgba(255, 255, 255, 0.1);
+}
+
+/* Scrollbar styling for consistency */
+
+.modeling-container ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.modeling-container ::-webkit-scrollbar-track {
+  background: var(--secondary-bg);
+}
+
+.modeling-container ::-webkit-scrollbar-thumb {
+  background: var(--tertiary-bg);
+  border-radius: 4px;
+}
+
+.modeling-container ::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Focus and accessibility improvements */
+
+.modeling-container *:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Animation for smooth transitions */
+
+.modeling-workspace,
+.modeling-canvas {
+  transition: all 0.2s ease-in-out;
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: high) {
+  .modeling-container {
+    --primary-bg: #000000;
+    --secondary-bg: #000000;
+    --tertiary-bg: #333333;
+    --text-primary: #ffffff;
+    --text-secondary: #ffffff;
+    --border-color: #ffffff;
+  }
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .modeling-workspace,
+  .modeling-canvas {
+    transition: none;
+  }
 }

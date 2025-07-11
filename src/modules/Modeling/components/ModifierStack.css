@@ -1,0 +1,347 @@
+.modifier-stack {
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modifier-header {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #3a3a3a;
+  padding-bottom: 12px;
+}
+
+.modifier-header h3 {
+  margin: 0 0 8px 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.no-selection {
+  color: #999999;
+  font-style: italic;
+  margin: 0;
+}
+
+.modifier-add-section {
+  margin-bottom: 20px;
+}
+
+.add-modifier-btn {
+  width: 100%;
+  padding: 12px;
+  background: #0078d4;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-modifier-btn:hover {
+  background: #106ebe;
+}
+
+.add-modifier-menu {
+  margin-top: 12px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  padding: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.modifier-category {
+  margin-bottom: 20px;
+}
+
+.modifier-category:last-child {
+  margin-bottom: 0;
+}
+
+.modifier-category h4 {
+  margin: 0 0 12px 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #3a3a3a;
+  padding-bottom: 6px;
+}
+
+.modifier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.modifier-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.modifier-option:hover {
+  background: #3a3a3a;
+  border-color: #0078d4;
+}
+
+.modifier-option .modifier-icon {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.modifier-option .modifier-name {
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.modifier-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.no-modifiers {
+  color: #999999;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+.modifier-item {
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.modifier-item.disabled {
+  opacity: 0.6;
+}
+
+.modifier-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #2a2a2a;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.modifier-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modifier-info .modifier-icon {
+  font-size: 16px;
+}
+
+.modifier-info .modifier-name {
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.modifier-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.modifier-controls button {
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  color: #cccccc;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.modifier-controls button:hover:not(:disabled) {
+  background: #3a3a3a;
+  border-color: #0078d4;
+}
+
+.modifier-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modifier-toggle {
+  background: #0078d4 !important;
+}
+
+.modifier-remove {
+  background: #d13438 !important;
+}
+
+.modifier-remove:hover {
+  background: #b02a2e !important;
+}
+
+.modifier-properties {
+  padding: 16px;
+  background: #1a1a1a;
+}
+
+.property-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.property-row:last-child {
+  margin-bottom: 0;
+}
+
+.property-row label {
+  color: #cccccc;
+  font-size: 13px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.property-row input,
+.property-row select {
+  width: 80px;
+  padding: 4px 8px;
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.property-row input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+  transform: scale(1.2);
+}
+
+.property-row input:focus,
+.property-row select:focus {
+  outline: none;
+  border-color: #0078d4;
+  box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+}
+
+/* Scrollbar styling */
+.modifier-stack::-webkit-scrollbar,
+.add-modifier-menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modifier-stack::-webkit-scrollbar-track,
+.add-modifier-menu::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.modifier-stack::-webkit-scrollbar-thumb,
+.add-modifier-menu::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 4px;
+}
+
+.modifier-stack::-webkit-scrollbar-thumb:hover,
+.add-modifier-menu::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .modifier-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+  
+  .modifier-option .modifier-name {
+    font-size: 10px;
+  }
+  
+  .modifier-controls {
+    flex-wrap: wrap;
+  }
+  
+  .property-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  
+  .property-row input,
+  .property-row select {
+    width: 100%;
+  }
+}
+
+/* Animation for smooth interactions */
+.modifier-item {
+  transition: all 0.2s ease;
+}
+
+.modifier-item:hover {
+  border-color: #0078d4;
+}
+
+/* Focus states for accessibility */
+.modifier-stack button:focus,
+.modifier-stack input:focus,
+.modifier-stack select:focus {
+  outline: 2px solid #0078d4;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .modifier-stack {
+    background: #000000;
+    border-color: #ffffff;
+  }
+  
+  .modifier-item,
+  .add-modifier-menu {
+    background: #000000;
+    border-color: #ffffff;
+  }
+  
+  .modifier-header-row {
+    background: #000000;
+    border-bottom-color: #ffffff;
+  }
+  
+  .modifier-properties {
+    background: #000000;
+  }
+  
+  .property-row input,
+  .property-row select {
+    background: #000000;
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+}

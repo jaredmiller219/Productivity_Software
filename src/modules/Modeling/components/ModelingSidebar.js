@@ -1,4 +1,6 @@
 import React from 'react';
+import MaterialEditor from './MaterialEditor.js';
+import ModifierStack from './ModifierStack.js';
 import './ModelingSidebar.css';
 
 const ModelingSidebar = ({
@@ -75,63 +77,21 @@ const ModelingSidebar = ({
 
   const renderMaterialsPanel = () => (
     <div className="materials-panel">
-      <h4>Material Editor</h4>
-      {selectedObject && (
-        <div className="material-editor">
-          <div className="material-type">
-            <label>Material Type:</label>
-            <select 
-              value={selectedObject.userData.materialType || "standard"}
-              onChange={(e) => onChangeMaterial(e.target.value)}
-            >
-              <option value="basic">Basic</option>
-              <option value="lambert">Lambert</option>
-              <option value="phong">Phong</option>
-              <option value="standard">Standard</option>
-              <option value="physical">Physical</option>
-            </select>
-          </div>
-          
-          <div className="material-properties">
-            <label>Color:</label>
-            <input 
-              type="color" 
-              value={`#${selectedObject.material.color.getHexString()}`}
-              onChange={(e) => {
-                selectedObject.material.color.setHex(e.target.value.replace('#', '0x'));
-              }}
-            />
-            
-            <label>Metalness:</label>
-            <input 
-              type="range" 
-              min="0" 
-              max="1" 
-              step="0.01"
-              value={selectedObject.material.metalness || 0}
-              onChange={(e) => {
-                if (selectedObject.material.metalness !== undefined) {
-                  selectedObject.material.metalness = parseFloat(e.target.value);
-                }
-              }}
-            />
-            
-            <label>Roughness:</label>
-            <input 
-              type="range" 
-              min="0" 
-              max="1" 
-              step="0.01"
-              value={selectedObject.material.roughness || 0.5}
-              onChange={(e) => {
-                if (selectedObject.material.roughness !== undefined) {
-                  selectedObject.material.roughness = parseFloat(e.target.value);
-                }
-              }}
-            />
-          </div>
-        </div>
-      )}
+      <MaterialEditor
+        selectedObject={selectedObject}
+        onMaterialChange={onChangeMaterial}
+      />
+    </div>
+  );
+
+  const renderModifiersPanel = () => (
+    <div className="modifiers-panel">
+      <ModifierStack
+        selectedObject={selectedObject}
+        onModifierAdd={(modifier) => console.log('Add modifier:', modifier)}
+        onModifierRemove={(id) => console.log('Remove modifier:', id)}
+        onModifierUpdate={(id, property, value) => console.log('Update modifier:', id, property, value)}
+      />
     </div>
   );
 
@@ -191,6 +151,8 @@ const ModelingSidebar = ({
         return renderObjectsPanel();
       case "materials":
         return renderMaterialsPanel();
+      case "modifiers":
+        return renderModifiersPanel();
       case "lighting":
         return renderLightingPanel();
       case "animation":
@@ -209,13 +171,19 @@ const ModelingSidebar = ({
         >
           Objects
         </button>
-        <button 
+        <button
           className={activePanel === "materials" ? "active" : ""}
           onClick={() => setActivePanel("materials")}
         >
           Materials
         </button>
-        <button 
+        <button
+          className={activePanel === "modifiers" ? "active" : ""}
+          onClick={() => setActivePanel("modifiers")}
+        >
+          Modifiers
+        </button>
+        <button
           className={activePanel === "lighting" ? "active" : ""}
           onClick={() => setActivePanel("lighting")}
         >
