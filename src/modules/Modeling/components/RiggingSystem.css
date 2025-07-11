@@ -1,0 +1,467 @@
+.rigging-system {
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.rigging-header {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #3a3a3a;
+  padding-bottom: 12px;
+}
+
+.rigging-header h3 {
+  margin: 0 0 8px 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.no-selection {
+  color: #999999;
+  font-style: italic;
+  margin: 0;
+}
+
+.rigging-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.rigging-tabs button {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #cccccc;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.rigging-tabs button:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.rigging-tabs button.active {
+  color: #0078d4;
+  border-bottom-color: #0078d4;
+}
+
+.rigging-content {
+  min-height: 300px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.section-header h4,
+.section-header h5 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.add-armature-btn,
+.add-bone-btn {
+  padding: 6px 12px;
+  background: #0078d4;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.add-armature-btn:hover,
+.add-bone-btn:hover {
+  background: #106ebe;
+}
+
+.armature-list,
+.bone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.armature-item,
+.bone-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.armature-item:hover,
+.bone-item:hover {
+  background: #3a3a3a;
+  border-color: #0078d4;
+}
+
+.armature-item.selected,
+.bone-item.selected {
+  background: #0078d4;
+  border-color: #0078d4;
+}
+
+.armature-icon,
+.bone-icon {
+  font-size: 16px;
+}
+
+.armature-name,
+.bone-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.bone-count {
+  font-size: 12px;
+  color: #999999;
+}
+
+.parent-indicator {
+  color: #999999;
+  font-size: 12px;
+}
+
+.bone-properties {
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.bone-properties h5 {
+  margin: 0 0 16px 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.property-group {
+  margin-bottom: 12px;
+}
+
+.property-group label {
+  display: block;
+  margin-bottom: 4px;
+  color: #cccccc;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.property-group input[type="text"],
+.property-group input[type="number"] {
+  width: 100%;
+  padding: 6px 8px;
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.property-group input[type="checkbox"] {
+  margin-right: 8px;
+  transform: scale(1.2);
+}
+
+.vector-input {
+  display: flex;
+  gap: 4px;
+}
+
+.vector-input input {
+  flex: 1;
+}
+
+.constraint-add-dropdown select {
+  padding: 6px 8px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 12px;
+  min-width: 150px;
+}
+
+.constraints-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.constraint-item {
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.constraint-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: #2a2a2a;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.constraint-icon {
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.constraint-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.constraint-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.constraint-toggle,
+.constraint-remove {
+  background: none;
+  border: 1px solid #3a3a3a;
+  border-radius: 3px;
+  color: #cccccc;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  transition: all 0.2s;
+}
+
+.constraint-toggle:hover,
+.constraint-remove:hover {
+  background: #3a3a3a;
+  border-color: #0078d4;
+}
+
+.constraint-remove:hover {
+  border-color: #d13438;
+  color: #d13438;
+}
+
+.constraint-properties {
+  padding: 12px;
+}
+
+.constraint-properties .property-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.constraint-properties .property-group label {
+  margin-bottom: 0;
+  min-width: 80px;
+}
+
+.constraint-properties input[type="range"] {
+  flex: 1;
+  height: 4px;
+  background: #3a3a3a;
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.constraint-properties input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #0078d4;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.weight-paint-toggle {
+  padding: 8px 16px;
+  background: #3a3a3a;
+  border: 1px solid #4a4a4a;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.weight-paint-toggle:hover {
+  background: #4a4a4a;
+  border-color: #0078d4;
+}
+
+.weight-paint-toggle.active {
+  background: #0078d4;
+  border-color: #0078d4;
+}
+
+.weight-paint-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.brush-settings,
+.weight-tools {
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.brush-settings h5,
+.weight-tools h5 {
+  margin: 0 0 12px 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.weight-tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  align-items: start;
+}
+
+.weight-tool {
+  padding: 6px 8px;
+  background: #3a3a3a;
+  border: 1px solid #4a4a4a;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 11px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.weight-tool:hover {
+  background: #4a4a4a;
+  border-color: #0078d4;
+}
+
+/* Scrollbar styling */
+.rigging-system::-webkit-scrollbar,
+.armature-list::-webkit-scrollbar,
+.bone-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.rigging-system::-webkit-scrollbar-track,
+.armature-list::-webkit-scrollbar-track,
+.bone-list::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.rigging-system::-webkit-scrollbar-thumb,
+.armature-list::-webkit-scrollbar-thumb,
+.bone-list::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 4px;
+}
+
+.rigging-system::-webkit-scrollbar-thumb:hover,
+.armature-list::-webkit-scrollbar-thumb:hover,
+.bone-list::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .rigging-tabs {
+    flex-direction: column;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .vector-input {
+    flex-direction: column;
+  }
+  
+  .constraint-properties .property-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .constraint-properties .property-group label {
+    min-width: auto;
+  }
+  
+  .weight-tools {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Focus states for accessibility */
+.rigging-system input:focus,
+.rigging-system select:focus,
+.rigging-system button:focus {
+  outline: 2px solid #0078d4;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .rigging-system {
+    background: #000000;
+    border-color: #ffffff;
+  }
+  
+  .armature-item,
+  .bone-item,
+  .bone-properties,
+  .constraint-item,
+  .brush-settings,
+  .weight-tools {
+    background: #000000;
+    border-color: #ffffff;
+  }
+  
+  .constraint-header {
+    background: #000000;
+    border-bottom-color: #ffffff;
+  }
+  
+  .property-group input,
+  .constraint-add-dropdown select {
+    background: #000000;
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+}

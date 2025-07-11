@@ -1,6 +1,9 @@
 import React from 'react';
 import MaterialEditor from './MaterialEditor.js';
 import ModifierStack from './ModifierStack.js';
+import AnimationTimeline from './AnimationTimeline.js';
+import RiggingSystem from './RiggingSystem.js';
+import AnimationCurves from './AnimationCurves.js';
 import './ModelingSidebar.css';
 
 const ModelingSidebar = ({
@@ -95,6 +98,61 @@ const ModelingSidebar = ({
     </div>
   );
 
+  const renderRiggingPanel = () => (
+    <div className="rigging-panel">
+      <RiggingSystem
+        selectedObject={selectedObject}
+        onArmatureCreate={(armature) => console.log('Create armature:', armature)}
+        onBoneAdd={(armatureId, bone) => console.log('Add bone:', armatureId, bone)}
+        onBoneRemove={(armatureId, boneId) => console.log('Remove bone:', armatureId, boneId)}
+        onBoneUpdate={(armatureId, boneId, property, value) => console.log('Update bone:', armatureId, boneId, property, value)}
+        onConstraintAdd={(armatureId, boneId, constraint) => console.log('Add constraint:', armatureId, boneId, constraint)}
+        onConstraintRemove={(armatureId, boneId, constraintId) => console.log('Remove constraint:', armatureId, boneId, constraintId)}
+        onWeightPaint={(enabled) => console.log('Weight paint mode:', enabled)}
+        armatures={[]}
+        selectedArmature={null}
+        onArmatureSelect={(armature) => console.log('Select armature:', armature)}
+      />
+    </div>
+  );
+
+  const renderAnimationPanel = () => (
+    <div className="animation-panel">
+      <div className="animation-tabs">
+        <div className="animation-tab-content">
+          <div className="timeline-section">
+            <AnimationTimeline
+              selectedObject={selectedObject}
+              onKeyframeAdd={(object, keyframe) => console.log('Add keyframe:', object, keyframe)}
+              onKeyframeDelete={(object, keyframeId) => console.log('Delete keyframe:', object, keyframeId)}
+              onKeyframeUpdate={(object, keyframeId, updates) => console.log('Update keyframe:', object, keyframeId, updates)}
+              onTimelineUpdate={(data) => console.log('Timeline update:', data)}
+              animationData={{}}
+              isPlaying={false}
+              currentFrame={1}
+              totalFrames={250}
+              frameRate={24}
+              onPlayPause={() => console.log('Play/Pause')}
+              onFrameChange={(frame) => console.log('Frame change:', frame)}
+              onFrameRateChange={(fps) => console.log('FPS change:', fps)}
+              onTotalFramesChange={(frames) => console.log('Total frames change:', frames)}
+            />
+          </div>
+
+          <div className="curves-section">
+            <AnimationCurves
+              selectedObject={selectedObject}
+              keyframes={{}}
+              onCurveUpdate={(curveId, updates) => console.log('Curve update:', curveId, updates)}
+              currentFrame={1}
+              totalFrames={250}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const renderLightingPanel = () => (
     <div className="lighting-panel">
       <h4>Lighting Setup</h4>
@@ -132,18 +190,7 @@ const ModelingSidebar = ({
     </div>
   );
 
-  const renderAnimationPanel = () => (
-    <div className="animation-panel">
-      <h4>Animation Controls</h4>
-      {selectedObject && (
-        <div className="animation-controls">
-          <button onClick={() => onToggleAnimation(selectedObject)}>
-            {selectedObject.userData.animated ? "Stop Animation" : "Start Animation"}
-          </button>
-        </div>
-      )}
-    </div>
-  );
+
 
   const renderPanelContent = () => {
     switch (activePanel) {
@@ -153,6 +200,8 @@ const ModelingSidebar = ({
         return renderMaterialsPanel();
       case "modifiers":
         return renderModifiersPanel();
+      case "rigging":
+        return renderRiggingPanel();
       case "lighting":
         return renderLightingPanel();
       case "animation":
@@ -182,6 +231,12 @@ const ModelingSidebar = ({
           onClick={() => setActivePanel("modifiers")}
         >
           Modifiers
+        </button>
+        <button
+          className={activePanel === "rigging" ? "active" : ""}
+          onClick={() => setActivePanel("rigging")}
+        >
+          Rigging
         </button>
         <button
           className={activePanel === "lighting" ? "active" : ""}

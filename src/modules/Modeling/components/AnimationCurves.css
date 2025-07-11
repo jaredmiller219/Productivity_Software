@@ -1,0 +1,382 @@
+.animation-curves {
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.curves-header {
+  background: #2a2a2a;
+  border-bottom: 1px solid #3a3a3a;
+  padding: 12px 16px;
+}
+
+.curves-header h3 {
+  margin: 0 0 8px 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.no-selection {
+  color: #999999;
+  font-style: italic;
+  margin: 0;
+}
+
+.curves-controls {
+  background: #2a2a2a;
+  border-bottom: 1px solid #3a3a3a;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.curve-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.curve-channels label {
+  color: #cccccc;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.channel-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.channel-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 12px;
+}
+
+.channel-checkbox:hover {
+  background: #3a3a3a;
+  border-color: #0078d4;
+}
+
+.channel-checkbox input[type="checkbox"] {
+  margin: 0;
+  transform: scale(1.1);
+}
+
+.channel-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid #666666;
+}
+
+.channel-name {
+  flex: 1;
+  color: #cccccc;
+}
+
+.interpolation-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.interpolation-controls label {
+  color: #cccccc;
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.interpolation-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.interpolation-btn {
+  width: 32px;
+  height: 32px;
+  background: #3a3a3a;
+  border: 1px solid #4a4a4a;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.interpolation-btn:hover {
+  background: #4a4a4a;
+  border-color: #0078d4;
+}
+
+.interpolation-btn.active {
+  background: #0078d4;
+  border-color: #0078d4;
+}
+
+.curve-tools {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.curve-tool {
+  padding: 6px 12px;
+  background: #3a3a3a;
+  border: 1px solid #4a4a4a;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.curve-tool:hover {
+  background: #4a4a4a;
+  border-color: #0078d4;
+}
+
+.curves-viewport {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.curves-canvas {
+  display: block;
+  cursor: crosshair;
+  background: #1a1a1a;
+}
+
+.curves-canvas:hover {
+  cursor: pointer;
+}
+
+.curves-info {
+  background: #2a2a2a;
+  border-top: 1px solid #3a3a3a;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #cccccc;
+}
+
+.zoom-info,
+.selection-info,
+.frame-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .curves-controls {
+    padding: 8px 12px;
+  }
+  
+  .channel-checkboxes {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  
+  .interpolation-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .interpolation-controls label {
+    min-width: auto;
+  }
+  
+  .curve-tools {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .animation-curves {
+    height: 500px;
+  }
+  
+  .curves-controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .channel-checkboxes {
+    grid-template-columns: 1fr;
+  }
+  
+  .interpolation-buttons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .curves-info {
+    flex-direction: column;
+    gap: 4px;
+    align-items: stretch;
+  }
+  
+  .zoom-info,
+  .selection-info,
+  .frame-info {
+    justify-content: center;
+  }
+}
+
+/* Animation for smooth interactions */
+.channel-checkbox,
+.interpolation-btn,
+.curve-tool {
+  transition: all 0.2s ease;
+}
+
+/* Focus states for accessibility */
+.animation-curves input:focus,
+.animation-curves button:focus {
+  outline: 2px solid #0078d4;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .animation-curves {
+    background: #000000;
+    border-color: #ffffff;
+  }
+  
+  .curves-header,
+  .curves-controls,
+  .curves-info {
+    background: #000000;
+    border-color: #ffffff;
+  }
+  
+  .curves-viewport,
+  .curves-canvas {
+    background: #000000;
+  }
+  
+  .channel-checkbox {
+    background: #000000;
+    border-color: #ffffff;
+  }
+  
+  .interpolation-btn,
+  .curve-tool {
+    background: #000000;
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+  
+  .interpolation-btn.active {
+    background: #ffffff;
+    color: #000000;
+  }
+}
+
+/* Custom scrollbar for overflow areas */
+.curves-controls::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.curves-controls::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.curves-controls::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 4px;
+}
+
+.curves-controls::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Keyframe selection styles */
+.curves-canvas.selecting {
+  cursor: crosshair;
+}
+
+.curves-canvas.dragging {
+  cursor: move;
+}
+
+/* Grid and curve styling hints for canvas */
+.curves-viewport::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.3;
+}
+
+/* Tooltip styles for interpolation buttons */
+.interpolation-btn[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2a2a2a;
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 1000;
+  border: 1px solid #3a3a3a;
+}
+
+/* Loading state */
+.curves-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: #999999;
+  font-style: italic;
+}
+
+/* Error state */
+.curves-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: #d13438;
+  font-style: italic;
+}

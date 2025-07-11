@@ -1,33 +1,140 @@
 .modeling-toolbar-container {
-  background-color: #2a2a2a;
-  border-bottom: 2px solid #444;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  overflow-x: auto;
-  overflow-y: hidden;
+  background: linear-gradient(180deg, #3c3c3c 0%, #2f2f2f 100%);
+  border-bottom: 1px solid #1a1a1a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 100;
+  padding: 8px 16px;
 }
 
 .modeling-toolbar-scroll {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
   gap: 8px;
-  min-width: max-content;
+  flex-wrap: wrap;
+}
+
+/* Dropdown Section Styles */
+.toolbar-section {
+  position: relative;
+  display: inline-block;
+}
+
+.section-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #4a4a4a;
+  border-radius: 6px;
+  color: #cccccc;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
-.toolbar-section-header {
-  display: flex;
-  align-items: center;
-  padding: 0 8px;
-  margin-right: 4px;
+.section-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #0078d4;
+  color: #ffffff;
 }
 
-.toolbar-section-header span {
+.section-button.open {
+  background: #0078d4;
+  border-color: #0078d4;
+  color: #ffffff;
+}
+
+.section-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.dropdown-arrow {
   font-size: 10px;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
+  margin-left: 4px;
+  transition: transform 0.2s ease;
+}
+
+.section-button.open .dropdown-arrow {
+  transform: rotate(90deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #2a2a2a;
+  border: 1px solid #4a4a4a;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-width: 200px;
+  max-width: 280px;
+  z-index: 1000;
+  padding: 4px;
+  margin-top: 4px;
+  animation: dropdownFadeIn 0.15s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: #cccccc;
+  cursor: pointer;
+  font-size: 13px;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.dropdown-item:hover:not(:disabled) {
+  background: #0078d4;
+  color: #ffffff;
+}
+
+.dropdown-item.active {
+  background: rgba(0, 120, 212, 0.3);
+  color: #ffffff;
+}
+
+.dropdown-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.item-icon {
+  font-size: 14px;
+  line-height: 1;
+  min-width: 16px;
+}
+
+.item-label {
+  flex: 1;
+  font-size: 12px;
 }
 
 .toolbar-separator {
@@ -140,6 +247,75 @@
   text-align: center;
   line-height: 1.2;
   transition: color 0.2s ease;
+}
+
+/* Responsive Design for Dropdown Toolbar */
+@media (max-width: 1200px) {
+  .modeling-toolbar-scroll {
+    gap: 6px;
+  }
+
+  .section-button {
+    padding: 6px 10px;
+  }
+
+  .section-label {
+    display: none;
+  }
+
+  .dropdown-menu {
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modeling-toolbar-container {
+    padding: 6px 12px;
+  }
+
+  .modeling-toolbar-scroll {
+    gap: 4px;
+    justify-content: center;
+  }
+
+  .section-button {
+    padding: 6px 8px;
+  }
+
+  .dropdown-menu {
+    min-width: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Focus states for accessibility */
+.section-button:focus,
+.dropdown-item:focus {
+  outline: 2px solid #0078d4;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .section-button {
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+
+  .dropdown-menu {
+    background: #000000;
+    border-color: #ffffff;
+  }
+
+  .dropdown-item {
+    color: #ffffff;
+  }
+
+  .dropdown-item:hover:not(:disabled) {
+    background: #ffffff;
+    color: #000000;
+  }
 }
 
 /* Scrollbar styling */

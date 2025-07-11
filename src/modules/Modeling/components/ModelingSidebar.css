@@ -233,3 +233,65 @@
 .animation-controls button:hover {
   background-color: #c0392b;
 }
+
+/* Enhanced Animation panel styles */
+.animation-panel {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.animation-tabs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.animation-tab-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.timeline-section {
+  flex: 0 0 auto;
+}
+
+.curves-section {
+  flex: 1;
+  min-height: 400px;
+}
+
+/* Rigging panel specific styles */
+.rigging-panel {
+  padding: 0;
+  height: 100%;
+}
+
+/* Modifiers panel specific styles */
+.modifiers-panel {
+  padding: 0;
+  height: 100%;
+}
+
+/* Materials panel specific styles */
+.materials-panel {
+  padding: 0;
+  height: 100%;
+}
+
+/* Responsive design for new panels */
+@media (max-width: 768px) {
+  .animation-tab-content {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .curves-section {
+    min-height: 300px;
+  }
+}
