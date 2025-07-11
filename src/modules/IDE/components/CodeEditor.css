@@ -183,21 +183,21 @@
 }
 
 /* Basic syntax highlighting classes */
-.language-html {
+/* .language-html { */
   /* HTML specific styling can be added here */
-}
+/* } */
 
-.language-css {
+/* .language-css { */
   /* CSS specific styling can be added here */
-}
+/* } */
 
-.language-javascript {
+/* .language-javascript { */
   /* JavaScript specific styling can be added here */
-}
+/* } */
 
-.language-json {
+/* .language-json { */
   /* JSON specific styling can be added here */
-}
+/* } */
 
 .editor-footer {
   display: flex;
