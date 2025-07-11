@@ -9,6 +9,7 @@ function App() {
   const [notesPosition, setNotesPosition] = useState("main"); // "main", "right", "hidden"
   const [notesPanelWidth, setNotesPanelWidth] = useState(350);
   const [isResizing, setIsResizing] = useState(false);
+  const [notesCount, setNotesCount] = useState(0);
 
   const handleNotesPositionChange = (position) => {
     setNotesPosition(position);
@@ -55,12 +56,14 @@ function App() {
           setActiveModule={setActiveModule}
           notesPosition={notesPosition}
           onNotesPositionChange={handleNotesPositionChange}
+          notesCount={notesCount}
         />
 
         <div className="main-content">
           <Workspace
             activeModule={activeModule}
             showNotes={notesPosition === "main"}
+            onNotesCountChange={setNotesCount}
           />
 
           {notesPosition === "right" && (
@@ -90,7 +93,7 @@ function App() {
                 </div>
               </div>
               <div className="notes-panel-content">
-                <Notes isRightPanel={true} />
+                <Notes isRightPanel={true} onNotesCountChange={setNotesCount} />
               </div>
             </div>
           )}

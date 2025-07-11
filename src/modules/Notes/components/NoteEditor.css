@@ -1,0 +1,308 @@
+.note-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+  position: relative;
+}
+
+.note-editor.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: #fff;
+}
+
+.note-editor.right-panel {
+  border-left: 1px solid #e9ecef;
+}
+
+.note-editor-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: #f8f9fa;
+}
+
+.empty-state {
+  text-align: center;
+  color: #6c757d;
+  max-width: 300px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.editor-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+}
+
+.note-title-input {
+  flex: 1;
+  border: none;
+  background: none;
+  font-size: 20px;
+  font-weight: 600;
+  color: #212529;
+  padding: 8px 0;
+  outline: none;
+}
+
+.note-title-input::placeholder {
+  color: #adb5bd;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.stats-toggle,
+.fullscreen-toggle {
+  background: none;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.stats-toggle:hover,
+.fullscreen-toggle:hover {
+  border-color: #007bff;
+  background-color: #f0f8ff;
+}
+
+.editor-stats {
+  display: flex;
+  gap: 16px;
+  padding: 8px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.editor-toolbar button {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editor-toolbar button:hover {
+  border-color: #dee2e6;
+  background-color: #f8f9fa;
+}
+
+.toolbar-separator {
+  width: 1px;
+  height: 20px;
+  background-color: #dee2e6;
+  margin: 0 8px;
+}
+
+.editor-content {
+  flex: 1;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.note-content-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #212529;
+  resize: none;
+  background: none;
+}
+
+.note-content-input::placeholder {
+  color: #adb5bd;
+  font-style: italic;
+}
+
+.editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.editor-shortcuts {
+  display: flex;
+  gap: 16px;
+}
+
+.editor-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.save-status {
+  color: #28a745;
+  font-weight: 500;
+}
+
+/* Fullscreen mode adjustments */
+.note-editor.fullscreen .editor-header {
+  padding: 20px 40px;
+}
+
+.note-editor.fullscreen .editor-content {
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.note-editor.fullscreen .note-content-input {
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.note-editor.fullscreen .editor-footer {
+  padding: 12px 40px;
+}
+
+/* Right panel mode adjustments */
+.note-editor.right-panel .editor-header {
+  padding: 8px 12px;
+}
+
+.note-editor.right-panel .note-title-input {
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.note-editor.right-panel .editor-actions {
+  gap: 4px;
+}
+
+.note-editor.right-panel .stats-toggle,
+.note-editor.right-panel .fullscreen-toggle {
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+.note-editor.right-panel .editor-stats {
+  padding: 4px 12px;
+  font-size: 10px;
+  gap: 8px;
+}
+
+.note-editor.right-panel .editor-toolbar {
+  padding: 4px 12px;
+  gap: 2px;
+}
+
+.note-editor.right-panel .editor-toolbar button {
+  padding: 4px 6px;
+  font-size: 12px;
+  min-width: 24px;
+  height: 24px;
+}
+
+.note-editor.right-panel .editor-content {
+  padding: 12px;
+}
+
+.note-editor.right-panel .note-content-input {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.note-editor.right-panel .editor-footer {
+  padding: 4px 12px;
+  font-size: 10px;
+}
+
+.note-editor.right-panel .editor-shortcuts {
+  display: none; /* Hide shortcuts in right panel to save space */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .editor-header {
+    padding: 12px 16px;
+  }
+  
+  .note-title-input {
+    font-size: 18px;
+  }
+  
+  .editor-content {
+    padding: 16px;
+  }
+  
+  .note-content-input {
+    font-size: 16px;
+  }
+  
+  .editor-toolbar {
+    padding: 6px 16px;
+    overflow-x: auto;
+  }
+  
+  .editor-shortcuts {
+    display: none;
+  }
+}
+
+/* Focus styles */
+.note-content-input:focus {
+  outline: none;
+}
+
+/* Selection styles */
+.note-content-input::selection {
+  background-color: rgba(0, 123, 255, 0.2);
+}

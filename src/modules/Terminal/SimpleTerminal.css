@@ -1,0 +1,42 @@
+.terminal-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  overflow: hidden;
+}
+
+.terminal-container.light {
+  background-color: #ffffff;
+  color: #333333;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .terminal-container {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .terminal-container {
+    font-size: 13px;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .terminal-container {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .terminal-container * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

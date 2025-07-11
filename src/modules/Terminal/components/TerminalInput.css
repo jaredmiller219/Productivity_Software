@@ -1,0 +1,204 @@
+.terminal-input-container {
+  position: relative;
+  background-color: #1e1e1e;
+  border-top: 1px solid #3c3c3c;
+}
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #1e1e1e;
+}
+
+.prompt {
+  color: #4ec9b0;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.terminal-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #d4d4d4;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.4;
+  caret-color: #4ec9b0;
+}
+
+.terminal-input::placeholder {
+  color: #6a6a6a;
+  font-style: italic;
+}
+
+.terminal-input:focus {
+  outline: none;
+}
+
+.suggestions-container {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background-color: #252526;
+  border: 1px solid #3c3c3c;
+  border-bottom: none;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+.suggestions-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  border-bottom: 1px solid #3c3c3c;
+}
+
+.suggestion-item:hover,
+.suggestion-item.selected {
+  background-color: #094771;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-command {
+  color: #569cd6;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.suggestion-description {
+  color: #9d9d9d;
+  font-size: 12px;
+  font-style: italic;
+  margin-left: 12px;
+}
+
+.suggestions-hint {
+  padding: 6px 16px;
+  background-color: #2d2d30;
+  border-top: 1px solid #3c3c3c;
+  font-size: 11px;
+  color: #9d9d9d;
+  text-align: center;
+}
+
+/* Scrollbar for suggestions */
+.suggestions-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.suggestions-list::-webkit-scrollbar-track {
+  background: #2d2d30;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb {
+  background: #464647;
+  border-radius: 3px;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb:hover {
+  background: #5a5a5c;
+}
+
+/* Animation for suggestions */
+.suggestions-container {
+  animation: slideUp 0.15s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .terminal-input-line {
+    padding: 10px 12px;
+  }
+  
+  .prompt,
+  .terminal-input {
+    font-size: 13px;
+  }
+  
+  .suggestion-item {
+    padding: 6px 12px;
+  }
+  
+  .suggestion-command {
+    font-size: 13px;
+  }
+  
+  .suggestion-description {
+    font-size: 11px;
+  }
+  
+  .suggestions-hint {
+    padding: 4px 12px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .terminal-input-line {
+    padding: 8px 10px;
+  }
+  
+  .prompt,
+  .terminal-input {
+    font-size: 12px;
+  }
+  
+  .suggestion-description {
+    display: none; /* Hide descriptions on very small screens */
+  }
+  
+  .suggestions-hint {
+    display: none; /* Hide hint on very small screens */
+  }
+}
+
+/* Focus ring for accessibility */
+.terminal-input:focus-visible {
+  box-shadow: 0 0 0 2px rgba(78, 201, 176, 0.3);
+  border-radius: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .terminal-input-container {
+    border-top-color: #ffffff;
+  }
+  
+  .suggestions-container {
+    border-color: #ffffff;
+  }
+  
+  .suggestion-item {
+    border-bottom-color: #ffffff;
+  }
+}

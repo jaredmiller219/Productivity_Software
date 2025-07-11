@@ -1,0 +1,141 @@
+import { useState, useEffect, useCallback } from 'react';
+
+/**
+ * Custom hook for managing notes state and operations
+ * @returns {Object} Notes state and operations
+ */
+export const useNotes = () => {
+  const [notes, setNotes] = useState([]);
+  const [currentNote, setCurrentNote] = useState({ id: null, title: '', content: '' });
+
+  // Load notes from localStorage on mount
+  useEffect(() => {
+    const savedNotes = localStorage.getItem('notes');
+    if (savedNotes) {
+      try {
+        const parsedNotes = JSON.parse(savedNotes);
+        setNotes(parsedNotes);
+      } catch (error) {
+        console.error('Failed to parse saved notes:', error);
+        localStorage.removeItem('notes');
+      }
+    }
+  }, []);
+
+  // Save notes to localStorage
+  const saveNotes = useCallback((updatedNotes) => {
+    try {
+      localStorage.setItem('notes', JSON.stringify(updatedNotes));
+      setNotes(updatedNotes);
+    } catch (error) {
+      console.error('Failed to save notes:', error);
+    }
+  }, []);
+
+  // Create a new note
+  const createNewNote = useCallback(() => {
+    const newNote = {
+      id: Date.now(),
+      title: 'New Note',
+      content: '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    const updatedNotes = [...notes, newNote];
+    saveNotes(updatedNotes);
+    setCurrentNote(newNote);
+    return newNote;
+  }, [notes, saveNotes]);
+
+  // Update the current note
+  const updateCurrentNote = useCallback((field, value) => {
+    if (!currentNote.id) return;
+
+    const updatedNote = { 
+      ...currentNote, 
+      [field]: value,
+      updatedAt: new Date().toISOString()
+    };
+    setCurrentNote(updatedNote);
+
+    const updatedNotes = notes.map(note =>
+      note.id === currentNote.id ? updatedNote : note
+    );
+    saveNotes(updatedNotes);
+  }, [currentNote, notes, saveNotes]);
+
+  // Delete a note
+  const deleteNote = useCallback((id) => {
+    const updatedNotes = notes.filter(note => note.id !== id);
+    saveNotes(updatedNotes);
+    
+    if (currentNote.id === id) {
+      setCurrentNote({ id: null, title: '', content: '' });
+    }
+  }, [notes, currentNote.id, saveNotes]);
+
+  // Select a note
+  const selectNote = useCallback((note) => {
+    setCurrentNote(note);
+  }, []);
+
+  // Duplicate a note
+  const duplicateNote = useCallback((id) => {
+    const noteToClone = notes.find(note => note.id === id);
+    if (!noteToClone) return;
+
+    const duplicatedNote = {
+      ...noteToClone,
+      id: Date.now(),
+      title: `${noteToClone.title} (Copy)`,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    const updatedNotes = [...notes, duplicatedNote];
+    saveNotes(updatedNotes);
+    setCurrentNote(duplicatedNote);
+    return duplicatedNote;
+  }, [notes, saveNotes]);
+
+  // Search notes
+  const searchNotes = useCallback((query) => {
+    if (!query.trim()) return notes;
+    
+    const lowercaseQuery = query.toLowerCase();
+    return notes.filter(note =>
+      note.title.toLowerCase().includes(lowercaseQuery) ||
+      note.content.toLowerCase().includes(lowercaseQuery)
+    );
+  }, [notes]);
+
+  // Get notes statistics
+  const getNotesStats = useCallback(() => {
+    return {
+      total: notes.length,
+      totalCharacters: notes.reduce((sum, note) => sum + note.content.length, 0),
+      totalWords: notes.reduce((sum, note) => {
+        const words = note.content.trim().split(/\s+/).filter(word => word.length > 0);
+        return sum + words.length;
+      }, 0),
+      lastUpdated: notes.length > 0 ? Math.max(...notes.map(note => new Date(note.updatedAt).getTime())) : null
+    };
+  }, [notes]);
+
+  return {
+    // State
+    notes,
+    currentNote,
+    
+    // Actions
+    createNewNote,
+    updateCurrentNote,
+    deleteNote,
+    selectNote,
+    duplicateNote,
+    searchNotes,
+    
+    // Utilities
+    getNotesStats
+  };
+};

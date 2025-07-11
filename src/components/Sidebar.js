@@ -1,7 +1,7 @@
 import React from "react";
 import "./Sidebar.css";
 
-function Sidebar({ activeModule, setActiveModule, notesPosition, onNotesPositionChange }) {
+function Sidebar({ activeModule, setActiveModule, notesPosition, onNotesPositionChange, notesCount }) {
   const modules = [
     { id: "notes", name: "Notes" },
     { id: "terminal", name: "Terminal" },
@@ -47,27 +47,18 @@ function Sidebar({ activeModule, setActiveModule, notesPosition, onNotesPosition
                 </button>
                 <button
                   className={`position-btn ${notesPosition === "right" ? "active" : ""}`}
-                  onClick={() => onNotesPositionChange("right")}
-                  title="Right panel"
+                  onClick={() => onNotesPositionChange(notesPosition === "right" ? "hidden" : "right")}
+                  title={notesPosition === "right" ? "Hide right panel" : "Show right panel"}
                 >
                   📌
                 </button>
-                {notesPosition === "hidden" && (
-                  <button
-                    className="position-btn"
-                    onClick={() => onNotesPositionChange("right")}
-                    title="Show notes"
-                  >
-                    👁
-                  </button>
-                )}
               </div>
             )}
           </div>
         ))}
       </div>
 
-      {notesPosition === "hidden" && (
+      {notesPosition === "hidden" && notesCount > 0 && (
         <div className="sidebar-footer">
           <button
             className="show-notes-btn"
