@@ -34,7 +34,8 @@
     "electron:package": "npm run build && electron-builder",
     "electron:clean": "rimraf build dist",
     "electron:run": "electron .",
-    "electron:start": "concurrently \"cross-env BROWSER=none npx react-scripts start\" \"wait-on http://localhost:3000 && electron . --no-devtools\""
+    "electron:start": "concurrently \"cross-env BROWSER=none NODE_OPTIONS='--no-deprecation' GENERATE_SOURCEMAP=false npx react-scripts start\" \"wait-on http://localhost:3000 && electron . --no-devtools\"",
+    "electron:start:clean": "concurrently \"cross-env BROWSER=none NODE_OPTIONS='--no-deprecation --no-warnings' GENERATE_SOURCEMAP=false npx react-scripts start\" \"wait-on http://localhost:3000 && electron . --no-devtools\""
   },
   "browserslist": {
     "production": [

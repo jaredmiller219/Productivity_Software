@@ -1,0 +1,299 @@
+.browser-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  gap: 12px;
+  min-height: 48px;
+}
+
+.browser-navigation {
+  display: flex;
+  gap: 4px;
+}
+
+.nav-button {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-button:hover:not(.disabled) {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.nav-button:active:not(.disabled) {
+  background-color: #dee2e6;
+  transform: scale(0.98);
+}
+
+.nav-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f8f9fa;
+}
+
+.nav-button.loading {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.url-form {
+  display: flex;
+  flex: 1;
+  gap: 8px;
+  align-items: center;
+}
+
+.url-input-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 24px;
+  padding: 0 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.url-input-container:focus-within {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.security-icon {
+  margin-right: 8px;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.url-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px 0;
+  font-size: 14px;
+  background: transparent;
+}
+
+.url-input::placeholder {
+  color: #6c757d;
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e9ecef;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+}
+
+.go-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  height: 36px;
+}
+
+.go-button:hover {
+  background-color: #0056b3;
+}
+
+.go-button:active {
+  background-color: #004085;
+  transform: scale(0.98);
+}
+
+.browser-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.action-button {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.action-button:active {
+  background-color: #dee2e6;
+  transform: scale(0.98);
+}
+
+/* Bookmark Dialog */
+.bookmark-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.bookmark-dialog {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 24px;
+  min-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.bookmark-dialog h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #212529;
+}
+
+.bookmark-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bookmark-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.bookmark-form input {
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.bookmark-form input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.readonly-input {
+  background-color: #f8f9fa !important;
+  color: #6c757d !important;
+}
+
+.bookmark-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.save-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.save-btn:hover {
+  background-color: #0056b3;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .browser-toolbar {
+    padding: 6px 8px;
+    gap: 8px;
+  }
+  
+  .nav-button,
+  .action-button {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    font-size: 14px;
+  }
+  
+  .url-input-container {
+    padding: 0 12px;
+  }
+  
+  .url-input {
+    padding: 8px 0;
+    font-size: 13px;
+  }
+  
+  .go-button {
+    padding: 6px 12px;
+    height: 32px;
+    font-size: 13px;
+  }
+  
+  .bookmark-dialog {
+    margin: 16px;
+    min-width: auto;
+    width: calc(100% - 32px);
+  }
+}
