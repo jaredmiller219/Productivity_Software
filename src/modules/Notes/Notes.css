@@ -3,6 +3,22 @@
   height: 100%;
 }
 
+.notes-container.right-panel-mode {
+  flex-direction: column;
+}
+
+.notes-container.right-panel-mode .notes-sidebar {
+  width: 100%;
+  max-height: 40%;
+  border-right: none;
+  border-bottom: 1px solid #ddd;
+}
+
+.notes-container.right-panel-mode .note-editor {
+  flex: 1;
+  min-height: 0;
+}
+
 .notes-sidebar {
   width: 250px;
   background-color: #f0f0f0;

@@ -6,11 +6,11 @@ import IDE from '../modules/IDE/IDE.js';
 import Modeling from '../modules/Modeling/Modeling.js';
 import './Workspace.css';
 
-function Workspace({ activeModule }) {
+function Workspace({ activeModule, showNotes }) {
   const renderModule = () => {
     switch (activeModule) {
       case 'notes':
-        return <Notes />;
+        return showNotes ? <Notes /> : <Modeling />;
       case 'terminal':
         return <SimpleTerminal />;
       case 'browser':
@@ -20,7 +20,7 @@ function Workspace({ activeModule }) {
       case 'modeling':
         return <Modeling />;
       default:
-        return <Notes />;
+        return showNotes ? <Notes /> : <Modeling />;
     }
   };
 

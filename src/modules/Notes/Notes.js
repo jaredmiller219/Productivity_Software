@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Notes.css';
 
-function Notes() {
+function Notes({ isRightPanel = false }) {
   const [notes, setNotes] = useState([]);
   const [currentNote, setCurrentNote] = useState({ id: null, title: '', content: '' });
 
@@ -48,7 +48,7 @@ function Notes() {
   };
 
   return (
-    <div className="notes-container">
+    <div className={`notes-container ${isRightPanel ? 'right-panel-mode' : ''}`}>
       <div className="notes-sidebar">
         <div className="notes-header">
           <h3>My Notes</h3>
@@ -75,28 +75,30 @@ function Notes() {
           ))}
         </div>
       </div>
-      <div className="note-editor">
-        {currentNote.id ? (
-          <>
-            <input
-              type="text"
-              className="note-title-input"
-              value={currentNote.title}
-              onChange={(e) => updateCurrentNote('title', e.target.value)}
-            />
-            <textarea
-              className="note-content"
-              value={currentNote.content}
-              onChange={(e) => updateCurrentNote('content', e.target.value)}
-              placeholder="Start typing your note..."
-            />
-          </>
-        ) : (
-          <div className="empty-state">
-            <p>Select a note or create a new one</p>
-          </div>
-        )}
-      </div>
+      {(!isRightPanel || currentNote.id) && (
+        <div className="note-editor">
+          {currentNote.id ? (
+            <>
+              <input
+                type="text"
+                className="note-title-input"
+                value={currentNote.title}
+                onChange={(e) => updateCurrentNote('title', e.target.value)}
+              />
+              <textarea
+                className="note-content"
+                value={currentNote.content}
+                onChange={(e) => updateCurrentNote('content', e.target.value)}
+                placeholder="Start typing your note..."
+              />
+            </>
+          ) : (
+            <div className="empty-state">
+              <p>Select a note or create a new one</p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
