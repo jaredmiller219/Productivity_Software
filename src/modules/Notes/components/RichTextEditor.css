@@ -1,0 +1,393 @@
+.rich-text-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  align-items: center;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 2px;
+  padding: 0 8px;
+  border-right: 1px solid #ddd;
+  position: relative;
+}
+
+.toolbar-group:last-child {
+  border-right: none;
+}
+
+.toolbar-btn {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.toolbar-btn:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.toolbar-btn.active {
+  background: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+.toolbar-select {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 4px 6px;
+  font-size: 12px;
+  height: 28px;
+  min-width: 60px;
+}
+
+.toolbar-select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.font-picker-container,
+.color-picker-container {
+  position: relative;
+}
+
+.font-picker,
+.color-picker {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 8px;
+  min-width: 200px;
+  margin-top: 2px;
+}
+
+.font-picker {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.font-option {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 6px 8px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+.font-option:hover {
+  background: #f8f9fa;
+}
+
+.color-section {
+  margin-bottom: 12px;
+}
+
+.color-section:last-child {
+  margin-bottom: 0;
+}
+
+.color-section label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 6px;
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 2px;
+}
+
+.color-swatch {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+  border-color: #007bff;
+}
+
+.color-btn {
+  position: relative;
+  font-weight: bold;
+}
+
+.editor-content {
+  flex: 1;
+  padding: 16px;
+  outline: none;
+  overflow-y: auto;
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+.editor-content:empty::before {
+  content: attr(data-placeholder);
+  color: #999;
+  font-style: italic;
+}
+
+.editor-content h1,
+.editor-content h2,
+.editor-content h3,
+.editor-content h4,
+.editor-content h5,
+.editor-content h6 {
+  margin: 16px 0 8px 0;
+  font-weight: 600;
+}
+
+.editor-content h1 { font-size: 24px; }
+.editor-content h2 { font-size: 20px; }
+.editor-content h3 { font-size: 18px; }
+.editor-content h4 { font-size: 16px; }
+.editor-content h5 { font-size: 14px; }
+.editor-content h6 { font-size: 12px; }
+
+.editor-content p {
+  margin: 8px 0;
+}
+
+.editor-content ul,
+.editor-content ol {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+
+.editor-content li {
+  margin: 4px 0;
+}
+
+.editor-content a {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.editor-content a:hover {
+  color: #0056b3;
+}
+
+.editor-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
+.editor-content blockquote {
+  border-left: 4px solid #007bff;
+  margin: 16px 0;
+  padding: 8px 16px;
+  background: #f8f9fa;
+  font-style: italic;
+}
+
+.editor-content code {
+  background: #f8f9fa;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+}
+
+.editor-content pre {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.editor-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.editor-content hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 16px 0;
+}
+
+.markdown-editor {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  background: #f8f9fa;
+}
+
+.markdown-editor::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Scrollbar styling */
+.editor-content::-webkit-scrollbar,
+.font-picker::-webkit-scrollbar {
+  width: 6px;
+}
+
+.editor-content::-webkit-scrollbar-track,
+.font-picker::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.editor-content::-webkit-scrollbar-thumb,
+.font-picker::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.editor-content::-webkit-scrollbar-thumb:hover,
+.font-picker::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .editor-toolbar {
+    padding: 6px 8px;
+    gap: 4px;
+  }
+  
+  .toolbar-group {
+    padding: 0 4px;
+  }
+  
+  .toolbar-btn {
+    min-width: 24px;
+    height: 24px;
+    padding: 2px 4px;
+    font-size: 11px;
+  }
+  
+  .toolbar-select {
+    height: 24px;
+    font-size: 11px;
+    min-width: 50px;
+  }
+  
+  .editor-content {
+    padding: 12px;
+    font-size: 13px;
+  }
+  
+  .font-picker,
+  .color-picker {
+    min-width: 150px;
+  }
+  
+  .color-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .rich-text-editor {
+    background: #2d2d2d;
+    border-color: #555;
+  }
+  
+  .editor-toolbar {
+    background: #333;
+    border-color: #555;
+  }
+  
+  .toolbar-btn {
+    background: #2d2d2d;
+    border-color: #555;
+    color: #ccc;
+  }
+  
+  .toolbar-btn:hover {
+    background: #3a3a3a;
+    border-color: #666;
+    color: #fff;
+  }
+  
+  .toolbar-select {
+    background: #2d2d2d;
+    border-color: #555;
+    color: #ccc;
+  }
+  
+  .font-picker,
+  .color-picker {
+    background: #2d2d2d;
+    border-color: #555;
+  }
+  
+  .font-option {
+    color: #ccc;
+  }
+  
+  .font-option:hover {
+    background: #3a3a3a;
+  }
+  
+  .color-section label {
+    color: #ccc;
+  }
+  
+  .editor-content {
+    background: #2d2d2d;
+    color: #ccc;
+  }
+  
+  .markdown-editor {
+    background: #333;
+    color: #ccc;
+  }
+}

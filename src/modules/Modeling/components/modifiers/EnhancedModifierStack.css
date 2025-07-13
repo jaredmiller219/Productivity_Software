@@ -1,0 +1,367 @@
+.enhanced-modifier-stack {
+  background: #2d2d2d;
+  border-radius: 6px;
+  padding: 16px;
+  color: #ccc;
+  font-size: 12px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.modifier-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #444;
+}
+
+.modifier-header h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 16px;
+}
+
+.add-modifier-btn {
+  background: #007acc;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background-color 0.2s;
+}
+
+.add-modifier-btn:hover {
+  background: #005a9e;
+}
+
+.add-modifier-menu {
+  background: #333;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #444;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.modifier-search {
+  margin-bottom: 12px;
+}
+
+.search-input {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: #fff;
+  padding: 6px 8px;
+  font-size: 11px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #007acc;
+}
+
+.modifier-category {
+  margin-bottom: 16px;
+}
+
+.modifier-category:last-child {
+  margin-bottom: 0;
+}
+
+.modifier-category h4 {
+  margin: 0 0 8px 0;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid #444;
+  padding-bottom: 4px;
+}
+
+.modifier-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 6px;
+}
+
+.modifier-item {
+  background: #1a1a1a;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: #ccc;
+  padding: 8px 6px;
+  cursor: pointer;
+  font-size: 10px;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.modifier-item:hover {
+  background: #3a3a3a;
+  border-color: #666;
+  color: #fff;
+}
+
+.modifier-icon {
+  font-size: 14px;
+}
+
+.modifier-name {
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+.modifier-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modifier-item-container {
+  background: #333;
+  border-radius: 4px;
+  border: 1px solid #444;
+  transition: all 0.2s;
+  cursor: move;
+}
+
+.modifier-item-container:hover {
+  border-color: #555;
+}
+
+.modifier-item-container.drag-over {
+  border-color: #007acc;
+  background: rgba(0, 122, 204, 0.1);
+}
+
+.modifier-header-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #3a3a3a;
+  border-radius: 4px 4px 0 0;
+}
+
+.modifier-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modifier-info .modifier-icon {
+  font-size: 14px;
+}
+
+.modifier-info .modifier-name {
+  color: #fff;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.modifier-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.modifier-toggle,
+.modifier-expand,
+.modifier-remove {
+  background: none;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #ccc;
+  padding: 2px 4px;
+  cursor: pointer;
+  font-size: 10px;
+  transition: all 0.2s;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modifier-toggle:hover,
+.modifier-expand:hover {
+  background: #555;
+  border-color: #666;
+  color: #fff;
+}
+
+.modifier-toggle.enabled {
+  background: #007acc;
+  border-color: #007acc;
+  color: #fff;
+}
+
+.modifier-remove:hover {
+  background: #d32f2f;
+  border-color: #d32f2f;
+  color: #fff;
+}
+
+.modifier-properties {
+  padding: 12px;
+  background: #2a2a2a;
+  border-radius: 0 0 4px 4px;
+}
+
+.property-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.property-row:last-child {
+  margin-bottom: 0;
+}
+
+.property-row label {
+  color: #ccc;
+  font-size: 11px;
+  min-width: 80px;
+  text-align: left;
+}
+
+.property-row input[type="number"],
+.property-row input[type="text"],
+.property-row select {
+  background: #1a1a1a;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #fff;
+  padding: 2px 6px;
+  font-size: 10px;
+  width: 60px;
+}
+
+.property-row input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: #007acc;
+}
+
+.property-row input[type="range"] {
+  flex: 1;
+  height: 4px;
+  background: #555;
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.property-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #007acc;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.property-row input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: #007acc;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.property-row input:focus,
+.property-row select:focus {
+  outline: none;
+  border-color: #007acc;
+}
+
+.empty-modifier-stack {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.empty-modifier-stack p {
+  margin: 4px 0;
+  font-size: 11px;
+}
+
+/* Scrollbar styling */
+.enhanced-modifier-stack::-webkit-scrollbar,
+.add-modifier-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.enhanced-modifier-stack::-webkit-scrollbar-track,
+.add-modifier-menu::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 3px;
+}
+
+.enhanced-modifier-stack::-webkit-scrollbar-thumb,
+.add-modifier-menu::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+
+.enhanced-modifier-stack::-webkit-scrollbar-thumb:hover,
+.add-modifier-menu::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* Drag and drop styling */
+.modifier-item-container[draggable="true"] {
+  cursor: grab;
+}
+
+.modifier-item-container[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .modifier-items {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+  
+  .modifier-controls {
+    gap: 2px;
+  }
+  
+  .modifier-toggle,
+  .modifier-expand,
+  .modifier-remove {
+    min-width: 18px;
+    height: 18px;
+    font-size: 9px;
+  }
+  
+  .property-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  
+  .property-row label {
+    min-width: auto;
+    font-size: 10px;
+  }
+  
+  .property-row input[type="number"],
+  .property-row input[type="text"],
+  .property-row select {
+    width: 100%;
+  }
+}

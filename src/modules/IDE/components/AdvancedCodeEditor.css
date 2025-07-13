@@ -1,0 +1,360 @@
+.advanced-code-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+  position: relative;
+}
+
+.advanced-code-editor.light {
+  background: #ffffff;
+  color: #333333;
+}
+
+.editor-container {
+  display: flex;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.line-numbers {
+  background: #252526;
+  color: #858585;
+  padding: 8px 4px;
+  text-align: right;
+  user-select: none;
+  min-width: 50px;
+  border-right: 1px solid #3e3e3e;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.advanced-code-editor.light .line-numbers {
+  background: #f8f8f8;
+  color: #999999;
+  border-right-color: #e1e1e1;
+}
+
+.line-number {
+  height: 20px;
+  padding-right: 8px;
+}
+
+.diagnostics-gutter {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 50px;
+  pointer-events: none;
+}
+
+.diagnostic-marker {
+  position: absolute;
+  right: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+
+.diagnostic-marker.error {
+  background: #f14c4c;
+}
+
+.diagnostic-marker.warning {
+  background: #ffcc02;
+}
+
+.diagnostic-marker.info {
+  background: #3794ff;
+}
+
+.code-textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 8px 12px;
+  resize: none;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+  overflow-y: auto;
+  tab-size: 2;
+}
+
+.code-textarea::selection {
+  background: #264f78;
+}
+
+.advanced-code-editor.light .code-textarea::selection {
+  background: #add6ff;
+}
+
+.minimap {
+  width: 120px;
+  background: #2d2d30;
+  border-left: 1px solid #3e3e3e;
+  overflow: hidden;
+  position: relative;
+}
+
+.advanced-code-editor.light .minimap {
+  background: #f0f0f0;
+  border-left-color: #e1e1e1;
+}
+
+.minimap-content {
+  font-size: 2px;
+  line-height: 3px;
+  padding: 4px;
+  color: #858585;
+  overflow: hidden;
+}
+
+.minimap-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.autocomplete-popup {
+  position: fixed;
+  background: #252526;
+  border: 1px solid #3e3e3e;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  max-height: 200px;
+  min-width: 200px;
+  overflow-y: auto;
+  font-size: 12px;
+}
+
+.advanced-code-editor.light .autocomplete-popup {
+  background: #ffffff;
+  border-color: #e1e1e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete-item {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  cursor: pointer;
+  gap: 8px;
+  transition: background-color 0.1s;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.selected {
+  background: #094771;
+}
+
+.advanced-code-editor.light .autocomplete-item:hover,
+.advanced-code-editor.light .autocomplete-item.selected {
+  background: #e8f4fd;
+}
+
+.item-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.item-icon.keyword {
+  background: #569cd6;
+}
+
+.item-icon.snippet {
+  background: #4ec9b0;
+}
+
+.item-icon.function {
+  background: #dcdcaa;
+  color: #1e1e1e;
+}
+
+.item-text {
+  flex: 1;
+  color: #d4d4d4;
+  font-family: inherit;
+}
+
+.advanced-code-editor.light .item-text {
+  color: #333333;
+}
+
+.item-type {
+  font-size: 10px;
+  color: #858585;
+  text-transform: uppercase;
+}
+
+.editor-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #007acc;
+  color: #ffffff;
+  padding: 4px 12px;
+  font-size: 11px;
+  border-top: 1px solid #3e3e3e;
+}
+
+.editor-status span {
+  padding: 0 8px;
+}
+
+.editor-status span:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Syntax highlighting simulation */
+.code-textarea {
+  /* This would typically be handled by a proper syntax highlighter */
+  /* For now, we'll use basic styling */
+}
+
+/* Scrollbar styling */
+.code-textarea::-webkit-scrollbar,
+.autocomplete-popup::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.code-textarea::-webkit-scrollbar-track,
+.autocomplete-popup::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.code-textarea::-webkit-scrollbar-thumb,
+.autocomplete-popup::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 4px;
+}
+
+.code-textarea::-webkit-scrollbar-thumb:hover,
+.autocomplete-popup::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
+}
+
+.advanced-code-editor.light .code-textarea::-webkit-scrollbar-track,
+.advanced-code-editor.light .autocomplete-popup::-webkit-scrollbar-track {
+  background: #f8f8f8;
+}
+
+.advanced-code-editor.light .code-textarea::-webkit-scrollbar-thumb,
+.advanced-code-editor.light .autocomplete-popup::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+}
+
+.advanced-code-editor.light .code-textarea::-webkit-scrollbar-thumb:hover,
+.advanced-code-editor.light .autocomplete-popup::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .minimap {
+    display: none;
+  }
+  
+  .line-numbers {
+    min-width: 40px;
+    font-size: 11px;
+  }
+  
+  .code-textarea {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  
+  .autocomplete-popup {
+    min-width: 150px;
+    font-size: 11px;
+  }
+  
+  .editor-status {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+  
+  .editor-status span {
+    padding: 0 4px;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .advanced-code-editor {
+    border: 2px solid #ffffff;
+  }
+  
+  .line-numbers {
+    border-right: 2px solid #ffffff;
+  }
+  
+  .autocomplete-popup {
+    border: 2px solid #ffffff;
+  }
+  
+  .autocomplete-item.selected {
+    background: #ffffff;
+    color: #000000;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .autocomplete-item {
+    transition: none;
+  }
+}
+
+/* Focus indicators */
+.code-textarea:focus {
+  outline: 2px solid #007acc;
+  outline-offset: -2px;
+}
+
+/* Error highlighting */
+.syntax-error {
+  background: rgba(241, 76, 76, 0.2);
+  border-bottom: 2px wavy #f14c4c;
+}
+
+.warning-highlight {
+  background: rgba(255, 204, 2, 0.2);
+  border-bottom: 2px wavy #ffcc02;
+}
+
+/* Bracket matching */
+.bracket-match {
+  background: rgba(87, 156, 214, 0.3);
+  border: 1px solid #569cd6;
+}
+
+/* Search highlighting */
+.search-highlight {
+  background: rgba(255, 255, 0, 0.3);
+  border: 1px solid #ffff00;
+}
+
+.search-highlight.current {
+  background: rgba(255, 165, 0, 0.5);
+  border-color: #ffa500;
+}

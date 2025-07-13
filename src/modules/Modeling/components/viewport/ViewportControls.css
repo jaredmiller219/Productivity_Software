@@ -1,0 +1,260 @@
+.viewport-controls {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(45, 45, 45, 0.9);
+  border-radius: 6px;
+  padding: 8px 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 100;
+  font-size: 12px;
+}
+
+.viewport-controls-left,
+.viewport-controls-center,
+.viewport-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-group {
+  display: flex;
+  gap: 4px;
+  padding: 0 8px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.control-group:last-child {
+  border-right: none;
+}
+
+.control-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ccc;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.control-btn.active {
+  background: #007acc;
+  border-color: #007acc;
+  color: #fff;
+}
+
+.view-btn {
+  min-width: auto;
+  padding: 6px 12px;
+  gap: 4px;
+}
+
+.control-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #2d2d2d;
+  border: 1px solid #555;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  min-width: 150px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 12px;
+  text-align: left;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background: #3a3a3a;
+  color: #fff;
+}
+
+.dropdown-item.active {
+  background: #007acc;
+  color: #fff;
+}
+
+.view-menu {
+  min-width: 200px;
+}
+
+.view-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  padding: 8px;
+  border-bottom: 1px solid #555;
+}
+
+.view-item {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ccc;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+}
+
+.view-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.view-item.active {
+  background: #007acc;
+  border-color: #007acc;
+  color: #fff;
+}
+
+.view-actions {
+  padding: 4px 0;
+}
+
+.view-actions .dropdown-item {
+  padding: 6px 12px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .viewport-controls {
+    flex-direction: column;
+    gap: 8px;
+    padding: 6px 8px;
+  }
+  
+  .viewport-controls-left,
+  .viewport-controls-center,
+  .viewport-controls-right {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .control-group {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4px 0;
+  }
+  
+  .control-group:last-child {
+    border-bottom: none;
+  }
+  
+  .view-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+  
+  .control-btn {
+    min-width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+}
+
+/* Animation for dropdown menus */
+.dropdown-menu {
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .viewport-controls {
+    background: #000;
+    border-color: #fff;
+  }
+  
+  .control-btn {
+    background: #000;
+    border-color: #fff;
+    color: #fff;
+  }
+  
+  .control-btn:hover,
+  .control-btn.active {
+    background: #fff;
+    color: #000;
+  }
+  
+  .dropdown-menu {
+    background: #000;
+    border-color: #fff;
+  }
+  
+  .dropdown-item {
+    color: #fff;
+  }
+  
+  .dropdown-item:hover {
+    background: #fff;
+    color: #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .control-btn,
+  .dropdown-item,
+  .view-item {
+    transition: none;
+  }
+  
+  .dropdown-menu {
+    animation: none;
+  }
+}

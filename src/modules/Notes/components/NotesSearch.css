@@ -1,0 +1,370 @@
+.notes-search {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #e9ecef;
+}
+
+.search-header {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.search-input-container {
+  position: relative;
+  flex: 1;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 32px 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.search-clear-btn:hover {
+  background: #e9ecef;
+  color: #495057;
+}
+
+.search-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.search-filter-select,
+.sort-select,
+.category-filter-select {
+  padding: 6px 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 12px;
+  background: #fff;
+  min-width: 100px;
+}
+
+.search-filter-select:focus,
+.sort-select:focus,
+.category-filter-select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.advanced-search-btn {
+  background: #6c757d;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.advanced-search-btn:hover {
+  background: #5a6268;
+}
+
+.advanced-search-btn.active {
+  background: #007bff;
+}
+
+.advanced-search-panel {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.advanced-search-section {
+  margin-bottom: 16px;
+}
+
+.advanced-search-section:last-child {
+  margin-bottom: 0;
+}
+
+.advanced-search-section h4 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.tags-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tag-filter-btn {
+  background: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 12px;
+  color: #495057;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.2s;
+}
+
+.tag-filter-btn:hover {
+  background: #dee2e6;
+  border-color: #adb5bd;
+}
+
+.tag-filter-btn.selected {
+  background: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+.date-range-inputs,
+.size-range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.date-input,
+.size-input {
+  padding: 6px 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 12px;
+  background: #fff;
+  flex: 1;
+}
+
+.date-input:focus,
+.size-input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.date-range-inputs span,
+.size-range-inputs span {
+  color: #6c757d;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.advanced-search-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e9ecef;
+}
+
+.clear-filters-btn {
+  background: #dc3545;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.clear-filters-btn:hover {
+  background: #c82333;
+}
+
+.search-results-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.results-count {
+  font-weight: 500;
+}
+
+.clear-search-btn {
+  background: none;
+  border: 1px solid #6c757d;
+  border-radius: 4px;
+  color: #6c757d;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.2s;
+}
+
+.clear-search-btn:hover {
+  background: #6c757d;
+  color: #fff;
+}
+
+/* Highlight search results */
+mark {
+  background: #fff3cd;
+  color: #856404;
+  padding: 1px 2px;
+  border-radius: 2px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .search-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-controls {
+    justify-content: space-between;
+  }
+  
+  .search-filter-select,
+  .sort-select {
+    min-width: 80px;
+    font-size: 11px;
+  }
+  
+  .advanced-search-panel {
+    padding: 12px;
+  }
+  
+  .tags-filter {
+    gap: 3px;
+  }
+  
+  .tag-filter-btn {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+  
+  .date-range-inputs,
+  .size-range-inputs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .date-range-inputs span,
+  .size-range-inputs span {
+    text-align: center;
+    margin: 4px 0;
+  }
+  
+  .search-results-info {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  
+  .clear-search-btn {
+    align-self: center;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .notes-search {
+    background: #333;
+    border-color: #555;
+  }
+  
+  .search-input,
+  .search-filter-select,
+  .sort-select,
+  .category-filter-select,
+  .date-input,
+  .size-input {
+    background: #2d2d2d;
+    border-color: #555;
+    color: #ccc;
+  }
+  
+  .search-input:focus,
+  .search-filter-select:focus,
+  .sort-select:focus,
+  .category-filter-select:focus,
+  .date-input:focus,
+  .size-input:focus {
+    border-color: #007bff;
+  }
+  
+  .advanced-search-panel {
+    background: #2d2d2d;
+    border-color: #555;
+  }
+  
+  .advanced-search-section h4 {
+    color: #ccc;
+  }
+  
+  .tag-filter-btn {
+    background: #555;
+    border-color: #666;
+    color: #ccc;
+  }
+  
+  .tag-filter-btn:hover {
+    background: #666;
+    border-color: #777;
+  }
+  
+  .date-range-inputs span,
+  .size-range-inputs span,
+  .results-count {
+    color: #999;
+  }
+  
+  .clear-search-btn {
+    border-color: #999;
+    color: #999;
+  }
+  
+  .clear-search-btn:hover {
+    background: #999;
+    color: #2d2d2d;
+  }
+  
+  mark {
+    background: #664d03;
+    color: #fff3cd;
+  }
+}

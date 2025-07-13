@@ -1,0 +1,229 @@
+.split-pane {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.split-pane.vertical {
+  flex-direction: row;
+}
+
+.split-pane.horizontal {
+  flex-direction: column;
+}
+
+.split-pane.disabled {
+  pointer-events: none;
+}
+
+.pane {
+  overflow: hidden;
+  position: relative;
+}
+
+.first-pane {
+  flex-shrink: 0;
+}
+
+.second-pane {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.resizer {
+  background: #444;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.resizer:hover,
+.resizer.dragging {
+  background: #007acc;
+}
+
+.resizer.vertical {
+  width: 4px;
+  cursor: col-resize;
+  flex-direction: column;
+}
+
+.resizer.horizontal {
+  height: 4px;
+  cursor: row-resize;
+  flex-direction: row;
+}
+
+.resizer-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.resizer:hover .resizer-handle,
+.resizer.dragging .resizer-handle {
+  opacity: 1;
+}
+
+.resizer-dots {
+  display: flex;
+  gap: 2px;
+}
+
+.resizer-dots.vertical {
+  flex-direction: column;
+}
+
+.resizer-dots.horizontal {
+  flex-direction: row;
+}
+
+.dot {
+  width: 2px;
+  height: 2px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.empty-pane {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-style: italic;
+  background: #1a1a1a;
+  border: 2px dashed #333;
+  margin: 8px;
+  border-radius: 4px;
+}
+
+/* Split Manager */
+.split-manager {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.split-controls {
+  display: flex;
+  gap: 4px;
+  padding: 8px;
+  background: #333;
+  border-bottom: 1px solid #444;
+  flex-shrink: 0;
+}
+
+.split-btn {
+  background: #2d2d2d;
+  border: 1px solid #555;
+  color: #ccc;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  transition: all 0.2s;
+  min-width: 32px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.split-btn:hover {
+  background: #3a3a3a;
+  border-color: #666;
+  color: #fff;
+}
+
+.split-btn.active {
+  background: #007acc;
+  border-color: #007acc;
+  color: #fff;
+}
+
+.split-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .resizer.vertical {
+    width: 6px;
+  }
+  
+  .resizer.horizontal {
+    height: 6px;
+  }
+  
+  .split-controls {
+    padding: 4px;
+  }
+  
+  .split-btn {
+    min-width: 28px;
+    height: 20px;
+    font-size: 9px;
+  }
+}
+
+/* Animation for layout changes */
+.split-content {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Focus indicators */
+.pane:focus-within {
+  outline: 2px solid #007acc;
+  outline-offset: -2px;
+}
+
+/* Accessibility */
+.resizer:focus {
+  outline: 2px solid #007acc;
+  outline-offset: 2px;
+}
+
+.resizer[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .resizer {
+    background: #000;
+    border: 1px solid #fff;
+  }
+  
+  .resizer:hover,
+  .resizer.dragging {
+    background: #fff;
+  }
+  
+  .dot {
+    background: #000;
+  }
+  
+  .resizer:hover .dot,
+  .resizer.dragging .dot {
+    background: #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .split-content,
+  .resizer,
+  .split-btn {
+    transition: none;
+  }
+}
