@@ -9,9 +9,9 @@ import TerminalSplitManager from "./components/TerminalSplitPane.js";
 import "./Terminal.css";
 
 function Terminal() {
-  const [tabs, setTabs] = useState([{ id: 1, name: "Terminal 1" }]);
+  const [tabs, setTabs] = useState([{ id: 1, name: "Terminal 1", cwd: "~" }]);
   const [activeTab, setActiveTab] = useState(1);
-  const [currentTheme, setCurrentTheme] = useState('dark');
+  const [currentTheme, setCurrentTheme] = useState('cyber');
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [showThemes, setShowThemes] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -20,6 +20,7 @@ function Terminal() {
   const [currentInput, setCurrentInput] = useState('');
   const [commandHistory, setCommandHistory] = useState([]);
   const [splitLayout, setSplitLayout] = useState('single');
+  const [tabHistory, setTabHistory] = useState({});
 
   const terminalRefs = useRef({});
   const xtermRefs = useRef({});
@@ -39,7 +40,28 @@ function Terminal() {
       const term = new XTerm({
         cursorBlink: settings.cursorBlink,
         cursorStyle: settings.cursorStyle,
-        theme: theme,
+        theme: {
+          background: theme.background,
+          foreground: theme.foreground,
+          cursor: theme.cursor,
+          selection: theme.selection,
+          black: theme.black,
+          red: theme.red,
+          green: theme.green,
+          yellow: theme.yellow,
+          blue: theme.blue,
+          magenta: theme.magenta,
+          cyan: theme.cyan,
+          white: theme.white,
+          brightBlack: theme.brightBlack,
+          brightRed: theme.brightRed,
+          brightGreen: theme.brightGreen,
+          brightYellow: theme.brightYellow,
+          brightBlue: theme.brightBlue,
+          brightMagenta: theme.brightMagenta,
+          brightCyan: theme.brightCyan,
+          brightWhite: theme.brightWhite
+        },
         scrollback: settings.scrollback,
         rendererType: "canvas",
         disableStdin: false,
@@ -190,11 +212,34 @@ function Terminal() {
 
   const handleThemeChange = (themeName) => {
     setCurrentTheme(themeName);
-    // Reinitialize all terminals with new theme
+    // Apply theme to all terminals
     Object.keys(xtermRefs.current).forEach(tabId => {
       if (xtermRefs.current[tabId]?.term) {
         const theme = TERMINAL_THEMES[themeName];
-        xtermRefs.current[tabId].term.options.theme = theme;
+        xtermRefs.current[tabId].term.options.theme = {
+          background: theme.background,
+          foreground: theme.foreground,
+          cursor: theme.cursor,
+          selection: theme.selection,
+          black: theme.black,
+          red: theme.red,
+          green: theme.green,
+          yellow: theme.yellow,
+          blue: theme.blue,
+          magenta: theme.magenta,
+          cyan: theme.cyan,
+          white: theme.white,
+          brightBlack: theme.brightBlack,
+          brightRed: theme.brightRed,
+          brightGreen: theme.brightGreen,
+          brightYellow: theme.brightYellow,
+          brightBlue: theme.brightBlue,
+          brightMagenta: theme.brightMagenta,
+          brightCyan: theme.brightCyan,
+          brightWhite: theme.brightWhite
+        };
+        // Force refresh
+        xtermRefs.current[tabId].term.refresh(0, xtermRefs.current[tabId].term.rows - 1);
       }
     });
   };
@@ -413,8 +458,39 @@ function Terminal() {
   const addTab = () => {
     const newId =
       tabs.length > 0 ? Math.max(...tabs.map((tab) => tab.id)) + 1 : 1;
-    setTabs([...tabs, { id: newId, name: `Terminal ${newId}` }]);
+    const newTab = {
+      id: newId,
+      name: `Terminal ${newId}`,
+      cwd: "~",
+      status: "ready"
+    };
+    setTabs([...tabs, newTab]);
     setActiveTab(newId);
+    setTabHistory(prev => ({ ...prev, [newId]: [] }));
+  };
+
+  const renameTab = (id, newName) => {
+    setTabs(prev => prev.map(tab =>
+      tab.id === id ? { ...tab, name: newName } : tab
+    ));
+  };
+
+  const duplicateTab = (id) => {
+    const tabToDuplicate = tabs.find(tab => tab.id === id);
+    if (tabToDuplicate) {
+      const newId = Math.max(...tabs.map((tab) => tab.id)) + 1;
+      const newTab = {
+        ...tabToDuplicate,
+        id: newId,
+        name: `${tabToDuplicate.name} (Copy)`
+      };
+      setTabs([...tabs, newTab]);
+      setActiveTab(newId);
+      setTabHistory(prev => ({
+        ...prev,
+        [newId]: [...(prev[id] || [])]
+      }));
+    }
   };
 
   // Close the terminal tab
@@ -477,6 +553,52 @@ function Terminal() {
     };
   }, []);
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        switch (e.key) {
+          case 't':
+            e.preventDefault();
+            addTab();
+            break;
+          case 'w':
+            e.preventDefault();
+            if (tabs.length > 1) {
+              closeTab(activeTab, { stopPropagation: () => {} });
+            }
+            break;
+          case 'Tab':
+            e.preventDefault();
+            const currentIndex = tabs.findIndex(tab => tab.id === activeTab);
+            const nextIndex = e.shiftKey
+              ? (currentIndex - 1 + tabs.length) % tabs.length
+              : (currentIndex + 1) % tabs.length;
+            setActiveTab(tabs[nextIndex].id);
+            break;
+          case '1':
+          case '2':
+          case '3':
+          case '4':
+          case '5':
+          case '6':
+          case '7':
+          case '8':
+          case '9':
+            const tabIndex = parseInt(e.key) - 1;
+            if (tabIndex < tabs.length) {
+              e.preventDefault();
+              setActiveTab(tabs[tabIndex].id);
+            }
+            break;
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [tabs, activeTab]);
+
   return (
     <div className="terminal-container">
       <div className="terminal-header">
@@ -486,18 +608,68 @@ function Terminal() {
               key={tab.id}
               className={`terminal-tab ${activeTab === tab.id ? "active" : ""}`}
               onClick={() => setActiveTab(tab.id)}
+              onDoubleClick={() => {
+                const newName = prompt('Rename tab:', tab.name);
+                if (newName && newName.trim()) {
+                  renameTab(tab.id, newName.trim());
+                }
+              }}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                // Show context menu for tab operations
+                const menu = document.createElement('div');
+                menu.className = 'tab-context-menu';
+                menu.innerHTML = `
+                  <div onclick="window.duplicateTab(${tab.id})">Duplicate Tab</div>
+                  <div onclick="window.renameTab(${tab.id})">Rename Tab</div>
+                  <div onclick="window.closeTab(${tab.id})">Close Tab</div>
+                `;
+                menu.style.position = 'fixed';
+                menu.style.left = e.clientX + 'px';
+                menu.style.top = e.clientY + 'px';
+                document.body.appendChild(menu);
+
+                // Add global functions for context menu
+                window.duplicateTab = (id) => {
+                  duplicateTab(id);
+                  document.body.removeChild(menu);
+                };
+                window.renameTab = (id) => {
+                  const newName = prompt('Rename tab:', tab.name);
+                  if (newName && newName.trim()) {
+                    renameTab(id, newName.trim());
+                  }
+                  document.body.removeChild(menu);
+                };
+                window.closeTab = (id) => {
+                  closeTab(id, { stopPropagation: () => {} });
+                  document.body.removeChild(menu);
+                };
+
+                // Remove menu on click outside
+                setTimeout(() => {
+                  document.addEventListener('click', () => {
+                    if (document.body.contains(menu)) {
+                      document.body.removeChild(menu);
+                    }
+                  }, { once: true });
+                }, 100);
+              }}
             >
-              <span>{tab.name}</span>
+              <span className="tab-icon">⚡</span>
+              <span className="tab-name">{tab.name}</span>
+              <span className="tab-status">{tab.status === 'running' ? '●' : '○'}</span>
               <button
                 className="close-tab-btn"
                 onClick={(e) => closeTab(tab.id, e)}
+                title="Close tab"
               >
                 ×
               </button>
             </div>
           ))}
-          <button className="add-tab-btn" onClick={addTab}>
-            +
+          <button className="add-tab-btn" onClick={addTab} title="New terminal (Ctrl+T)">
+            ⚡+
           </button>
         </div>
 
