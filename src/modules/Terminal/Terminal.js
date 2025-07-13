@@ -6,6 +6,8 @@ import TerminalThemes, { TERMINAL_THEMES } from "./components/TerminalThemes.js"
 import TerminalSettings, { DEFAULT_SETTINGS } from "./components/TerminalSettings.js";
 import TerminalAutocomplete from "./components/TerminalAutocomplete.js";
 import TerminalSplitManager from "./components/TerminalSplitPane.js";
+import ThemeSelector from "./components/ThemeSelector.js";
+import TabSettings from "./components/TabSettings.js";
 import "./Terminal.css";
 
 function Terminal() {
@@ -15,12 +17,16 @@ function Terminal() {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [showThemes, setShowThemes] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showThemeSelector, setShowThemeSelector] = useState(false);
+  const [showTabSettings, setShowTabSettings] = useState(false);
+  const [showShortcutsHelp, setShowShortcutsHelp] = useState(false);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [autocompletePosition, setAutocompletePosition] = useState({ x: 0, y: 0 });
   const [currentInput, setCurrentInput] = useState('');
   const [commandHistory, setCommandHistory] = useState([]);
   const [splitLayout, setSplitLayout] = useState('single');
   const [tabHistory, setTabHistory] = useState({});
+  const [tabSettings, setTabSettings] = useState({});
 
   const terminalRefs = useRef({});
   const xtermRefs = useRef({});
@@ -242,6 +248,69 @@ function Terminal() {
         xtermRefs.current[tabId].term.refresh(0, xtermRefs.current[tabId].term.rows - 1);
       }
     });
+  };
+
+  const handleTabSettingsChange = (tabId, newSettings) => {
+    setTabSettings(prev => ({ ...prev, [tabId]: newSettings }));
+
+    // Apply settings to the specific terminal
+    if (xtermRefs.current[tabId]?.term) {
+      const term = xtermRefs.current[tabId].term;
+
+      // Apply font settings
+      if (newSettings.fontSize) {
+        term.options.fontSize = newSettings.fontSize;
+      }
+      if (newSettings.fontFamily) {
+        term.options.fontFamily = newSettings.fontFamily;
+      }
+      if (newSettings.lineHeight) {
+        term.options.lineHeight = newSettings.lineHeight;
+      }
+      if (newSettings.cursorStyle) {
+        term.options.cursorStyle = newSettings.cursorStyle;
+      }
+      if (typeof newSettings.cursorBlink === 'boolean') {
+        term.options.cursorBlink = newSettings.cursorBlink;
+      }
+
+      // Apply theme if changed
+      if (newSettings.theme && newSettings.theme !== currentTheme) {
+        const theme = TERMINAL_THEMES[newSettings.theme];
+        if (theme) {
+          term.options.theme = {
+            background: theme.background,
+            foreground: theme.foreground,
+            cursor: theme.cursor,
+            selection: theme.selection,
+            black: theme.black,
+            red: theme.red,
+            green: theme.green,
+            yellow: theme.yellow,
+            blue: theme.blue,
+            magenta: theme.magenta,
+            cyan: theme.cyan,
+            white: theme.white,
+            brightBlack: theme.brightBlack,
+            brightRed: theme.brightRed,
+            brightGreen: theme.brightGreen,
+            brightYellow: theme.brightYellow,
+            brightBlue: theme.brightBlue,
+            brightMagenta: theme.brightMagenta,
+            brightCyan: theme.brightCyan,
+            brightWhite: theme.brightWhite
+          };
+        }
+      }
+
+      // Apply opacity to terminal container
+      if (newSettings.opacity && terminalRefs.current[tabId]) {
+        terminalRefs.current[tabId].style.opacity = newSettings.opacity;
+      }
+
+      // Force refresh
+      term.refresh(0, term.rows - 1);
+    }
   };
 
   const handleSettingsChange = (newSettings) => {
@@ -467,6 +536,18 @@ function Terminal() {
     setTabs([...tabs, newTab]);
     setActiveTab(newId);
     setTabHistory(prev => ({ ...prev, [newId]: [] }));
+    setTabSettings(prev => ({
+      ...prev,
+      [newId]: {
+        fontSize: settings.fontSize,
+        fontFamily: settings.fontFamily,
+        theme: currentTheme,
+        opacity: 1,
+        lineHeight: settings.lineHeight,
+        cursorStyle: settings.cursorStyle,
+        cursorBlink: settings.cursorBlink
+      }
+    }));
   };
 
   const renameTab = (id, newName) => {
@@ -556,6 +637,11 @@ function Terminal() {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
+      // Only handle shortcuts when not in an input field
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+
       if (e.ctrlKey || e.metaKey) {
         switch (e.key) {
           case 't':
@@ -565,7 +651,10 @@ function Terminal() {
           case 'w':
             e.preventDefault();
             if (tabs.length > 1) {
-              closeTab(activeTab, { stopPropagation: () => {} });
+              const tabToClose = tabs.find(tab => tab.id === activeTab);
+              if (tabToClose) {
+                closeTab(activeTab, { stopPropagation: () => {} });
+              }
             }
             break;
           case 'Tab':
@@ -591,13 +680,23 @@ function Terminal() {
               setActiveTab(tabs[tabIndex].id);
             }
             break;
+          case ',':
+            e.preventDefault();
+            setShowTabSettings(true);
+            break;
+          case 'k':
+            if (e.shiftKey) {
+              e.preventDefault();
+              setShowThemeSelector(true);
+            }
+            break;
         }
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [tabs, activeTab]);
+  }, [tabs, activeTab, addTab, closeTab]);
 
   return (
     <div className="terminal-container">
@@ -669,24 +768,24 @@ function Terminal() {
             </div>
           ))}
           <button className="add-tab-btn" onClick={addTab} title="New terminal (Ctrl+T)">
-            ⚡+
+            ⚡+ <span className="shortcut-hint">Ctrl+T</span>
           </button>
         </div>
 
         <div className="terminal-controls">
           <button
-            className="control-btn"
-            onClick={() => setShowThemes(true)}
-            title="Themes"
+            className="control-btn theme-btn"
+            onClick={() => setShowThemeSelector(true)}
+            title="Change Terminal Theme"
           >
-            🎨
+            🎨 Themes
           </button>
           <button
-            className="control-btn"
-            onClick={() => setShowSettings(true)}
-            title="Settings"
+            className="control-btn settings-btn"
+            onClick={() => setShowTabSettings(true)}
+            title="Terminal Settings for Current Tab"
           >
-            ⚙️
+            ⚙️ Settings
           </button>
           <button
             className="control-btn"
@@ -698,6 +797,46 @@ function Terminal() {
           >
             {splitLayout === 'single' ? '⬜' : splitLayout === 'vertical' ? '⬛⬜' : '⬜⬜'}
           </button>
+          <button
+            className="control-btn help-btn"
+            onClick={() => setShowShortcutsHelp(!showShortcutsHelp)}
+            title="Keyboard Shortcuts"
+          >
+            ❓ Help
+          </button>
+          {showShortcutsHelp && (
+            <div className="shortcuts-help">
+              <h4>⌨️ Keyboard Shortcuts</h4>
+              <div className="shortcut-item">
+                <span>New Tab</span>
+                <span className="shortcut-key">Ctrl+T</span>
+              </div>
+              <div className="shortcut-item">
+                <span>Close Tab</span>
+                <span className="shortcut-key">Ctrl+W</span>
+              </div>
+              <div className="shortcut-item">
+                <span>Next Tab</span>
+                <span className="shortcut-key">Ctrl+Tab</span>
+              </div>
+              <div className="shortcut-item">
+                <span>Previous Tab</span>
+                <span className="shortcut-key">Ctrl+Shift+Tab</span>
+              </div>
+              <div className="shortcut-item">
+                <span>Go to Tab 1-9</span>
+                <span className="shortcut-key">Ctrl+1-9</span>
+              </div>
+              <div className="shortcut-item">
+                <span>Settings</span>
+                <span className="shortcut-key">Ctrl+,</span>
+              </div>
+              <div className="shortcut-item">
+                <span>Themes</span>
+                <span className="shortcut-key">Ctrl+Shift+K</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -739,6 +878,24 @@ function Terminal() {
         onClose={() => setShowAutocomplete(false)}
         commandHistory={commandHistory}
         isVisible={showAutocomplete}
+      />
+
+      {/* Theme Selector */}
+      <ThemeSelector
+        isVisible={showThemeSelector}
+        onClose={() => setShowThemeSelector(false)}
+        currentTheme={currentTheme}
+        onThemeChange={handleThemeChange}
+      />
+
+      {/* Tab Settings */}
+      <TabSettings
+        isVisible={showTabSettings}
+        onClose={() => setShowTabSettings(false)}
+        tabId={activeTab}
+        currentSettings={tabSettings[activeTab] || {}}
+        onSettingsChange={handleTabSettingsChange}
+        availableThemes={Object.keys(TERMINAL_THEMES)}
       />
     </div>
   );

@@ -303,6 +303,166 @@
     inset 0 2px 0 rgba(255, 255, 255, 0.2);
 }
 
+/* Enhanced control buttons */
+.theme-btn {
+  background: linear-gradient(145deg, #ff00ff, #cc00cc) !important;
+  border-color: #ff00ff !important;
+  color: #ffffff !important;
+}
+
+.theme-btn:hover {
+  background: linear-gradient(145deg, #ff40ff, #dd00dd) !important;
+  color: #ffffff !important;
+  box-shadow:
+    0 4px 15px rgba(255, 0, 255, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+.settings-btn {
+  background: linear-gradient(145deg, #00d4ff, #0099cc) !important;
+  border-color: #00d4ff !important;
+  color: #000000 !important;
+}
+
+.settings-btn:hover {
+  background: linear-gradient(145deg, #40e0ff, #00aadd) !important;
+  color: #000000 !important;
+  box-shadow:
+    0 4px 15px rgba(0, 212, 255, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+.split-btn {
+  background: linear-gradient(145deg, #ffaa00, #cc8800) !important;
+  border-color: #ffaa00 !important;
+  color: #000000 !important;
+}
+
+.split-btn:hover {
+  background: linear-gradient(145deg, #ffbb00, #dd9900) !important;
+  color: #000000 !important;
+  box-shadow:
+    0 4px 15px rgba(255, 170, 0, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+.add-tab-btn-header {
+  background: linear-gradient(145deg, #00ff41, #00cc33) !important;
+  border-color: #00ff41 !important;
+  color: #000000 !important;
+  font-weight: bold !important;
+}
+
+.add-tab-btn-header:hover {
+  background: linear-gradient(145deg, #40ff60, #00dd40) !important;
+  color: #000000 !important;
+  transform: scale(1.1) !important;
+  box-shadow:
+    0 6px 20px rgba(0, 255, 65, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Shortcut hints */
+.shortcut-hint {
+  font-size: 9px;
+  opacity: 0.7;
+  margin-left: 4px;
+  padding: 1px 3px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+  font-family: monospace;
+}
+
+/* Enhanced terminal controls layout */
+.terminal-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.terminal-controls .control-btn {
+  font-size: 11px;
+  padding: 6px 10px;
+  white-space: nowrap;
+  min-width: auto;
+}
+
+/* Keyboard shortcuts help */
+.shortcuts-help {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  border: 1px solid #00ff41;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 10px;
+  color: #ccc;
+  z-index: 100;
+  min-width: 200px;
+  box-shadow: 0 8px 25px rgba(0, 255, 65, 0.3);
+}
+
+.shortcuts-help h4 {
+  margin: 0 0 8px 0;
+  color: #00ff41;
+  font-size: 11px;
+}
+
+.shortcuts-help .shortcut-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.shortcuts-help .shortcut-key {
+  font-family: monospace;
+  background: rgba(0, 255, 65, 0.2);
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 9px;
+}
+
+.help-btn {
+  background: linear-gradient(145deg, #6600ff, #4400cc) !important;
+  border-color: #6600ff !important;
+  color: #ffffff !important;
+  position: relative;
+}
+
+.help-btn:hover {
+  background: linear-gradient(145deg, #7700ff, #5500dd) !important;
+  color: #ffffff !important;
+  box-shadow:
+    0 4px 15px rgba(102, 0, 255, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Position shortcuts help relative to help button */
+.terminal-controls {
+  position: relative;
+}
+
+.shortcuts-help {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1000;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Simple terminal styles */
 .simple-terminal {
   flex: 1;
