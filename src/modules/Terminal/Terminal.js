@@ -696,7 +696,7 @@ function Terminal() {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [tabs, activeTab, addTab, closeTab]);
+  }, [tabs, activeTab]);
 
   return (
     <div className="terminal-container">

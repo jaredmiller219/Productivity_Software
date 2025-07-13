@@ -133,7 +133,7 @@ const SearchPanel = ({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search in files..."
+            placeholder="Search"
             className="search-input"
             autoFocus
           />
