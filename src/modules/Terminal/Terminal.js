@@ -603,6 +603,15 @@ function Terminal() {
     initTerminal(1).then(() => {});
   }, []);
 
+  // Initialize terminal when tab becomes active or new tabs are created
+  useEffect(() => {
+    tabs.forEach(tab => {
+      if (!initializedTabs.current.has(tab.id)) {
+        initTerminal(tab.id).then(() => {});
+      }
+    });
+  }, [tabs]);
+
   // Initialize terminal when tab becomes active
   useEffect(() => {
     if (activeTab) {
