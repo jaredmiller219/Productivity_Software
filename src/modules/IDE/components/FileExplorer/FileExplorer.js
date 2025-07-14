@@ -71,13 +71,16 @@ const FileExplorer = ({
   return (
     <div className="file-explorer">
       <div className="explorer-header">
-        <h3>📁 Explorer</h3>
-        <button 
+        <h3>
+          <span className="explorer-icon">📁</span>
+          EXPLORER
+        </h3>
+        <button
           className="create-file-btn"
           onClick={() => setShowCreateDialog(true)}
-          title="Create new file"
+          title="New File"
         >
-          ➕
+          <span>📄</span>
         </button>
       </div>
 
@@ -99,43 +102,25 @@ const FileExplorer = ({
       )}
 
       <div className="files-list">
-        {fileTypeOrder.map(type => {
-          if (!groupedFiles[type] || groupedFiles[type].length === 0) return null;
-          
-          const isExpanded = expandedFolders.has(type);
-          
-          return (
-            <div key={type} className="file-group">
-              <div 
-                className="file-group-header"
-                onClick={() => toggleFolder(type)}
-              >
-                <span className={`folder-icon ${isExpanded ? 'expanded' : ''}`}>
-                  {isExpanded ? '📂' : '📁'}
-                </span>
-                <span className="group-name">{type.toUpperCase()} Files</span>
-                <span className="file-count">({groupedFiles[type].length})</span>
-              </div>
-              
-              {isExpanded && (
-                <div className="file-group-content">
-                  {groupedFiles[type].map(file => (
-                    <div
-                      key={file.id}
-                      className={`file-item ${activeFile?.id === file.id ? 'active' : ''}`}
-                      onClick={() => onFileSelect(file)}
-                      onContextMenu={(e) => handleContextMenu(e, file)}
-                    >
-                      <span className="file-icon">{getFileIcon(file.type)}</span>
-                      <span className="file-name">{file.name}</span>
-                      {file.isModified && <span className="modified-indicator">●</span>}
-                    </div>
-                  ))}
-                </div>
-              )}
+        {files.length === 0 ? (
+          <div className="empty-explorer">
+            <p>No files open</p>
+            <p>Create a new file to get started</p>
+          </div>
+        ) : (
+          files.map(file => (
+            <div
+              key={file.id}
+              className={`file-item ${activeFile?.id === file.id ? 'active' : ''}`}
+              onClick={() => onFileSelect(file)}
+              onContextMenu={(e) => handleContextMenu(e, file)}
+            >
+              <span className="file-icon">{getFileIcon(file.type)}</span>
+              <span className="file-name">{file.name}</span>
+              {file.isModified && <span className="modified-indicator">●</span>}
             </div>
-          );
-        })}
+          ))
+        )}
       </div>
 
       {contextMenu && (

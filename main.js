@@ -30,10 +30,13 @@ function createWindow() {
     },
   });
 
+  // Force production mode when running from build directory
+  const isProduction = __dirname.includes('/build') || !isDev;
+
   mainWindow.loadURL(
-    isDev
-      ? "http://localhost:3000"
-      : `file://${join(__dirname, "../build/index.html")}`
+    isProduction
+      ? `file://${join(__dirname, "index.html")}`
+      : "http://localhost:3000"
   );
 
   if (isDev && openDevTools) {
