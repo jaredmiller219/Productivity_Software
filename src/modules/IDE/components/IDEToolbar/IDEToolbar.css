@@ -17,16 +17,15 @@
   gap: 12px;
 }
 
-/* Three-section layout */
 .toolbar-left {
   flex: 0 0 auto;
-  width: 20px;
 }
 
 .toolbar-center {
   flex: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 0 8px;
   min-width: 0;
 }
@@ -84,7 +83,7 @@
 /* Search container styles */
 .search-container {
   position: relative;
-  width: 100%;
+  flex: 1;
   max-width: 400px;
   min-width: 200px;
 }
@@ -257,15 +256,17 @@
   border-color: #1e88cc;
 }
 
-.toolbar-btn-small.stats-btn {
+.toolbar-btn-small.file-actions-btn {
   background-color: #28a745;
   border-color: #1e7e34;
 }
 
-.toolbar-btn-small.stats-btn:hover {
+.toolbar-btn-small.file-actions-btn:hover {
   background-color: #1e7e34;
   border-color: #155724;
 }
+
+
 
 /* Right controls container */
 .right-controls {
@@ -310,15 +311,44 @@
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  right: 0;
+  left: -200px;
   background-color: #2d2d30;
   border: 1px solid #5a5a5c;
   border-radius: 6px;
   min-width: 200px;
-  max-width: 300px;
+  max-width: 250px;
   z-index: 1000;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   overflow: hidden;
+}
+
+/* Dynamic positioning for dropdowns */
+.dropdown-menu.dropdown-left {
+  right: auto;
+  left: 0;
+}
+
+/* Prevent dropdown from going off-screen on smaller screens */
+@media (max-width: 1024px) {
+  .dropdown-menu:not(.dropdown-left) {
+    right: auto;
+    left: 0;
+  }
+}
+
+/* For very small screens, make dropdown full width */
+@media (max-width: 480px) {
+  .dropdown-menu {
+    left: -50px;
+    right: -50px;
+    min-width: auto;
+    max-width: none;
+  }
+
+  .dropdown-menu.dropdown-left {
+    left: -50px;
+    right: -50px;
+  }
 }
 
 .dropdown-header {
@@ -369,31 +399,7 @@
   border-radius: 3px;
 }
 
-.stats-menu {
-  min-width: 250px;
-}
 
-.stat-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 12px;
-  font-size: 11px;
-}
-
-.stat-label {
-  color: #888;
-}
-
-.stat-value {
-  color: #cccccc;
-  font-weight: 500;
-}
-
-.stat-value.small {
-  font-size: 10px;
-  color: #888;
-}
 
 /* Responsive design */
 @media (max-width: 768px) {

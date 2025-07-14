@@ -7,19 +7,48 @@ const CodeEditor = ({
   language,
   fileName,
   isModified,
-  onSave
+  onSave,
+  projectStats
 }) => {
   const textareaRef = useRef(null);
   const [lineNumbers, setLineNumbers] = useState([]);
   const [cursorPosition, setCursorPosition] = useState({ line: 1, column: 1 });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [fontSize, setFontSize] = useState(14);
+  const [showStats, setShowStats] = useState(false);
+  const statsRef = useRef(null);
+
+  // Helper functions for formatting
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  const formatLastModified = (timestamp) => {
+    if (!timestamp) return 'Never';
+    return new Date(timestamp).toLocaleString();
+  };
 
   // Update line numbers when content changes
   useEffect(() => {
     const lines = content.split('\n');
     setLineNumbers(lines.map((_, index) => index + 1));
   }, [content]);
+
+  // Handle click outside to close stats popup
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (statsRef.current && !statsRef.current.contains(event.target)) {
+        setShowStats(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Handle keyboard shortcuts
   const handleKeyDown = (e) => {
@@ -247,19 +276,70 @@ const CodeEditor = ({
         <div className="cursor-info">
           Line {cursorPosition.line}, Column {cursorPosition.column}
         </div>
-        
+
         <div className="editor-shortcuts">
           <span>Ctrl+S: Save</span>
           <span>F11: Fullscreen</span>
           <span>Ctrl+/-: Font Size</span>
         </div>
-        
-        <div className="editor-status">
-          {isModified ? (
-            <span className="status-modified">Modified</span>
-          ) : (
-            <span className="status-saved">Saved</span>
+
+        <div className="footer-right">
+          {projectStats && (
+            <div className="stats-container" ref={statsRef}>
+              <button
+                className="stats-btn"
+                onClick={() => setShowStats(!showStats)}
+                title="Project Statistics"
+              >
+                📊 Stats
+              </button>
+              {showStats && (
+                <div className="stats-popup">
+                  <div className="stats-header">Project Statistics</div>
+                  <div className="stat-item">
+                    <span className="stat-label">Files:</span>
+                    <span className="stat-value">{projectStats.totalFiles}</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Lines:</span>
+                    <span className="stat-value">{projectStats.totalLines.toLocaleString()}</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Characters:</span>
+                    <span className="stat-value">{projectStats.totalCharacters.toLocaleString()}</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Size:</span>
+                    <span className="stat-value">{formatFileSize(projectStats.totalCharacters)}</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Modified:</span>
+                    <span className="stat-value">{projectStats.modifiedFiles}</span>
+                  </div>
+                  <div className="stats-separator"></div>
+                  <div className="stat-item">
+                    <span className="stat-label">Last Modified:</span>
+                    <span className="stat-value small">{formatLastModified(projectStats.lastModified)}</span>
+                  </div>
+                  <div className="stats-header">File Types</div>
+                  {Object.entries(projectStats.fileTypes).map(([type, count]) => (
+                    <div key={type} className="stat-item">
+                      <span className="stat-label">{type.toUpperCase()}:</span>
+                      <span className="stat-value">{count}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
+
+          <div className="editor-status">
+            {isModified ? (
+              <span className="status-modified">Modified</span>
+            ) : (
+              <span className="status-saved">Saved</span>
+            )}
+          </div>
         </div>
       </div>
     </div>

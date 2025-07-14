@@ -1,19 +1,99 @@
 import React, { useState } from 'react';
 import './FileExplorer.css';
 
-const FileExplorer = ({ 
-  files, 
-  activeFile, 
-  onFileSelect, 
-  onFileCreate, 
-  onFileDelete, 
+const FileExplorer = ({
+  files,
+  activeFile,
+  onFileSelect,
+  onFileCreate,
+  onFileDelete,
   onFileDuplicate,
-  getFileIcon 
+  getFileIcon,
+  onSave
 }) => {
   const [expandedFolders, setExpandedFolders] = useState(new Set(['root']));
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [newFileName, setNewFileName] = useState('');
   const [contextMenu, setContextMenu] = useState(null);
+  const [showFileActions, setShowFileActions] = useState(false);
+
+  const fileTemplates = [
+    {
+      name: 'HTML5 Template',
+      extension: 'html',
+      content: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+</body>
+</html>`
+    },
+    {
+      name: 'CSS Stylesheet',
+      extension: 'css',
+      content: `/* CSS Stylesheet */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}`
+    },
+    {
+      name: 'JavaScript Module',
+      extension: 'js',
+      content: `// JavaScript Module
+
+export default class MyClass {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        console.log('Module initialized');
+    }
+}`
+    },
+    {
+      name: 'React Component',
+      extension: 'jsx',
+      content: `import React from 'react';
+
+const MyComponent = () => {
+    return (
+        <div>
+            <h1>Hello World</h1>
+        </div>
+    );
+};
+
+export default MyComponent;`
+    },
+    {
+      name: 'JSON Data',
+      extension: 'json',
+      content: `{
+    "name": "my-project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    }
+}`
+    }
+  ];
 
   const toggleFolder = (folderId) => {
     const newExpanded = new Set(expandedFolders);
@@ -58,6 +138,14 @@ const FileExplorer = ({
     handleCloseContextMenu();
   };
 
+  const handleTemplateSelect = (template) => {
+    const fileName = prompt(`Enter file name for ${template.name}:`, `new-file.${template.extension}`);
+    if (fileName) {
+      onFileCreate(fileName, template.content);
+    }
+    setShowFileActions(false);
+  };
+
   // Simple flat file list - no grouping
 
   return (
@@ -72,13 +160,45 @@ const FileExplorer = ({
             <span className="file-count-badge">{files.length}</span>
           )}
         </div>
-        <button
-          className="create-file-btn"
-          onClick={() => setShowCreateDialog(true)}
-          title="New File"
-        >
-          <span>📄</span>
-        </button>
+        <div className="header-actions">
+          <button
+            className="action-btn file-actions-btn"
+            onClick={() => setShowFileActions(!showFileActions)}
+            title="File actions"
+          >
+            ⚙️
+          </button>
+          <button
+            className="create-file-btn"
+            onClick={() => setShowCreateDialog(true)}
+            title="New File"
+          >
+            <span>📄</span>
+          </button>
+        </div>
+
+        {showFileActions && (
+          <div className="file-actions-dropdown">
+            <div className="dropdown-header">File Actions</div>
+            <button
+              className="dropdown-item"
+              onClick={onSave}
+            >
+              💾 Save File
+            </button>
+            <div className="dropdown-separator"></div>
+            <div className="dropdown-header">New File Templates</div>
+            {fileTemplates.map((template, index) => (
+              <button
+                key={index}
+                className="dropdown-item"
+                onClick={() => handleTemplateSelect(template)}
+              >
+                📄 {template.name}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {showCreateDialog && (

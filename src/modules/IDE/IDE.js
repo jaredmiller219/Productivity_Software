@@ -48,7 +48,6 @@ function IDE() {
         onSearch={searchInFiles}
         onToggleSearch={handleToggleSearch}
         isSearchVisible={isSearchVisible}
-        projectStats={getProjectStats()}
         activeFile={activeFile}
       />
       
@@ -61,6 +60,7 @@ function IDE() {
           onFileDelete={deleteFile}
           onFileDuplicate={duplicateFile}
           getFileIcon={getFileIcon}
+          onSave={handleSave}
         />
 
         <div className="ide-editor-container">
@@ -72,6 +72,7 @@ function IDE() {
               fileName={activeFile.name}
               isModified={activeFile.isModified}
               onSave={handleSave}
+              projectStats={getProjectStats()}
             />
           ) : (
             <div className="no-file-selected">

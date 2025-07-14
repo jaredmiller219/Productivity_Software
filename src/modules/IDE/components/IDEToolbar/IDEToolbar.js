@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './IDEToolbar.css';
 
 const IDEToolbar = ({
@@ -7,119 +7,20 @@ const IDEToolbar = ({
   onSearch,
   onToggleSearch,
   isSearchVisible,
-  projectStats,
   activeFile
 }) => {
-  const [showStats, setShowStats] = useState(false);
-  const [showTemplates, setShowTemplates] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const searchTimeoutRef = useRef(null);
 
-  const fileTemplates = [
-    { 
-      name: 'HTML5 Template', 
-      extension: 'html', 
-      content: `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>` 
-    },
-    { 
-      name: 'CSS Stylesheet', 
-      extension: 'css', 
-      content: `/* CSS Stylesheet */
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}` 
-    },
-    { 
-      name: 'JavaScript Module', 
-      extension: 'js', 
-      content: `// JavaScript Module
 
-export default class MyClass {
-    constructor() {
-        this.init();
-    }
-    
-    init() {
-        console.log('Module initialized');
-    }
-}` 
-    },
-    { 
-      name: 'React Component', 
-      extension: 'jsx', 
-      content: `import React from 'react';
 
-const MyComponent = () => {
-    return (
-        <div>
-            <h1>Hello World</h1>
-        </div>
-    );
-};
 
-export default MyComponent;` 
-    },
-    { 
-      name: 'JSON Data', 
-      extension: 'json', 
-      content: `{
-    "name": "my-project",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "node index.js"
-    }
-}` 
-    }
-  ];
 
-  const handleNewFile = () => {
-    setShowTemplates(false);
-    if (onNewFile) {
-      onNewFile('untitled.txt', '');
-    }
-  };
 
-  const handleTemplateSelect = (template) => {
-    const fileName = prompt(`Enter file name for ${template.name}:`, `new-file.${template.extension}`);
-    if (fileName) {
-      onNewFile(fileName, template.content);
-    }
-    setShowTemplates(false);
-  };
-
-  const formatFileSize = (bytes) => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-  };
-
-  const formatLastModified = (timestamp) => {
-    if (!timestamp) return 'Never';
-    return new Date(timestamp).toLocaleString();
-  };
 
   const handleSearch = (query, openPanel = false) => {
     if (!query.trim()) {
@@ -260,103 +161,6 @@ export default MyComponent;`
       {/* Small buttons on the right */}
       <div className="toolbar-section toolbar-right">
         <div className="right-controls">
-          {activeFile && (
-            <div className="active-file-compact">
-              <span className="file-name-compact" title={activeFile.name}>
-                {activeFile.name}
-                {activeFile.isModified && <span className="modified-dot">●</span>}
-              </span>
-            </div>
-          )}
-          
-          <div className="dropdown">
-            <button 
-              className="toolbar-btn-small stats-btn"
-              onClick={() => setShowStats(!showStats)}
-              title="Project statistics"
-            >
-              📊
-            </button>
-            {showStats && (
-              <div className="dropdown-menu stats-menu">
-                <div className="dropdown-header">Project Statistics</div>
-                <div className="stat-item">
-                  <span className="stat-label">Files:</span>
-                  <span className="stat-value">{projectStats.totalFiles}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">Lines:</span>
-                  <span className="stat-value">{projectStats.totalLines.toLocaleString()}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">Characters:</span>
-                  <span className="stat-value">{projectStats.totalCharacters.toLocaleString()}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">Size:</span>
-                  <span className="stat-value">{formatFileSize(projectStats.totalCharacters)}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">Modified:</span>
-                  <span className="stat-value">{projectStats.modifiedFiles}</span>
-                </div>
-                <div className="dropdown-separator"></div>
-                <div className="stat-item">
-                  <span className="stat-label">Last Modified:</span>
-                  <span className="stat-value small">{formatLastModified(projectStats.lastModified)}</span>
-                </div>
-                <div className="dropdown-header">File Types</div>
-                {Object.entries(projectStats.fileTypes).map(([type, count]) => (
-                  <div key={type} className="stat-item">
-                    <span className="stat-label">{type.toUpperCase()}:</span>
-                    <span className="stat-value">{count}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="dropdown">
-            <button
-              className="toolbar-btn-small primary"
-              onClick={() => setShowTemplates(!showTemplates)}
-              title="File actions"
-            >
-              📄
-            </button>
-            {showTemplates && (
-              <div className="dropdown-menu">
-                <div className="dropdown-header">File Actions</div>
-                <button
-                  className="dropdown-item"
-                  onClick={onSave}
-                >
-                  <span className="template-name">💾 Save File</span>
-                  <span className="template-ext">Ctrl+S</span>
-                </button>
-                <div className="dropdown-separator"></div>
-                <div className="dropdown-header">New File Templates</div>
-                {fileTemplates.map((template, index) => (
-                  <button
-                    key={index}
-                    className="dropdown-item"
-                    onClick={() => handleTemplateSelect(template)}
-                  >
-                    <span className="template-name">{template.name}</span>
-                    <span className="template-ext">.{template.extension}</span>
-                  </button>
-                ))}
-                <div className="dropdown-separator"></div>
-                <button
-                  className="dropdown-item"
-                  onClick={handleNewFile}
-                >
-                  <span className="template-name">Empty File</span>
-                  <span className="template-ext">custom</span>
-                </button>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>
