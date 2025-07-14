@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Terminal as XTerm } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
 import "xterm/css/xterm.css";
-import TerminalThemes, { TERMINAL_THEMES } from "./components/TerminalThemes.js";
+import { TERMINAL_THEMES } from "./components/TerminalThemes.js";
 import TerminalSettings, { DEFAULT_SETTINGS } from "./components/TerminalSettings.js";
 import TerminalAutocomplete from "./components/TerminalAutocomplete.js";
 import TerminalSplitManager from "./components/TerminalSplitPane.js";
@@ -15,7 +15,6 @@ function Terminal() {
   const [activeTab, setActiveTab] = useState(1);
   const [currentTheme, setCurrentTheme] = useState('cyber');
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
-  const [showThemes, setShowThemes] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showThemeSelector, setShowThemeSelector] = useState(false);
   const [showTabSettings, setShowTabSettings] = useState(false);
@@ -217,35 +216,53 @@ function Terminal() {
   };
 
   const handleThemeChange = (themeName) => {
+    console.log('Changing theme to:', themeName, TERMINAL_THEMES[themeName]);
     setCurrentTheme(themeName);
+
     // Apply theme to all terminals
     Object.keys(xtermRefs.current).forEach(tabId => {
       if (xtermRefs.current[tabId]?.term) {
         const theme = TERMINAL_THEMES[themeName];
-        xtermRefs.current[tabId].term.options.theme = {
-          background: theme.background,
-          foreground: theme.foreground,
-          cursor: theme.cursor,
-          selection: theme.selection,
-          black: theme.black,
-          red: theme.red,
-          green: theme.green,
-          yellow: theme.yellow,
-          blue: theme.blue,
-          magenta: theme.magenta,
-          cyan: theme.cyan,
-          white: theme.white,
-          brightBlack: theme.brightBlack,
-          brightRed: theme.brightRed,
-          brightGreen: theme.brightGreen,
-          brightYellow: theme.brightYellow,
-          brightBlue: theme.brightBlue,
-          brightMagenta: theme.brightMagenta,
-          brightCyan: theme.brightCyan,
-          brightWhite: theme.brightWhite
-        };
-        // Force refresh
-        xtermRefs.current[tabId].term.refresh(0, xtermRefs.current[tabId].term.rows - 1);
+        if (theme) {
+          console.log('Applying theme to terminal', tabId, theme);
+
+          // Create theme object for xterm
+          const xtermTheme = {
+            background: theme.background,
+            foreground: theme.foreground,
+            cursor: theme.cursor,
+            selection: theme.selection,
+            black: theme.black,
+            red: theme.red,
+            green: theme.green,
+            yellow: theme.yellow,
+            blue: theme.blue,
+            magenta: theme.magenta,
+            cyan: theme.cyan,
+            white: theme.white,
+            brightBlack: theme.brightBlack,
+            brightRed: theme.brightRed,
+            brightGreen: theme.brightGreen,
+            brightYellow: theme.brightYellow,
+            brightBlue: theme.brightBlue,
+            brightMagenta: theme.brightMagenta,
+            brightCyan: theme.brightCyan,
+            brightWhite: theme.brightWhite
+          };
+
+          // Apply theme
+          xtermRefs.current[tabId].term.options.theme = xtermTheme;
+
+          // Force refresh
+          xtermRefs.current[tabId].term.refresh(0, xtermRefs.current[tabId].term.rows - 1);
+
+          // Also update the terminal container background
+          if (terminalRefs.current[tabId]) {
+            terminalRefs.current[tabId].style.backgroundColor = theme.background;
+          }
+        } else {
+          console.error('Theme not found:', themeName);
+        }
       }
     });
   };
@@ -393,7 +410,7 @@ function Terminal() {
         });
         break;
       case "theme":
-        setShowThemes(true);
+        setShowThemeSelector(true);
         term.writeln("Theme selector opened");
         break;
       case "settings":
@@ -863,14 +880,6 @@ function Terminal() {
         ))}
       </TerminalSplitManager>
 
-      {/* Theme Selector */}
-      <TerminalThemes
-        currentTheme={currentTheme}
-        onThemeChange={handleThemeChange}
-        isVisible={showThemes}
-        onClose={() => setShowThemes(false)}
-      />
-
       {/* Settings Panel */}
       <TerminalSettings
         settings={settings}
@@ -895,6 +904,20 @@ function Terminal() {
         onClose={() => setShowThemeSelector(false)}
         currentTheme={currentTheme}
         onThemeChange={handleThemeChange}
+        currentSettings={settings}
+        onSettingsChange={(newSettings) => {
+          setSettings(prev => ({ ...prev, ...newSettings }));
+          // Apply font settings to all terminals
+          Object.keys(xtermRefs.current).forEach(tabId => {
+            if (xtermRefs.current[tabId]?.term) {
+              const term = xtermRefs.current[tabId].term;
+              if (newSettings.fontSize) term.options.fontSize = newSettings.fontSize;
+              if (newSettings.fontFamily) term.options.fontFamily = newSettings.fontFamily;
+              if (newSettings.lineHeight) term.options.lineHeight = newSettings.lineHeight;
+              term.refresh(0, term.rows - 1);
+            }
+          });
+        }}
       />
 
       {/* Tab Settings */}

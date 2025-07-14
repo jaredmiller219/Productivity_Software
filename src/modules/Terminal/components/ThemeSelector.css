@@ -69,6 +69,53 @@
   box-shadow: 0 0 15px rgba(255, 0, 64, 0.5);
 }
 
+.theme-selector-tabs {
+  display: flex;
+  background: linear-gradient(90deg, #1a1a1a, #2a2a2a);
+  border-bottom: 1px solid #333;
+}
+
+.theme-selector-tabs .tab-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-selector-tabs .tab-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.theme-selector-tabs .tab-btn:hover::before {
+  left: 100%;
+}
+
+.theme-selector-tabs .tab-btn:hover {
+  background: rgba(0, 255, 65, 0.1);
+  color: #00ff41;
+}
+
+.theme-selector-tabs .tab-btn.active {
+  color: #00ff41;
+  border-bottom-color: #00ff41;
+  background: rgba(0, 255, 65, 0.1);
+}
+
 .window-content {
   flex: 1;
   padding: 24px;
@@ -346,35 +393,194 @@
   background: #00cc33;
 }
 
+/* Font Settings */
+.font-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.font-section {
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.font-section h3 {
+  margin: 0 0 16px 0;
+  color: #00ff41;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.setting-row:last-child {
+  margin-bottom: 0;
+}
+
+.setting-row label {
+  color: #ccc;
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 100px;
+  text-align: left;
+}
+
+.font-select {
+  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+  border: 1px solid #00ff41;
+  border-radius: 4px;
+  color: #00ff41;
+  padding: 6px 8px;
+  font-size: 11px;
+  min-width: 140px;
+  transition: all 0.2s ease;
+}
+
+.font-select:focus {
+  outline: none;
+  border-color: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.range-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.range-input {
+  flex: 1;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #00ff41;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.range-input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #00ff41;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.number-input {
+  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+  border: 1px solid #00ff41;
+  border-radius: 4px;
+  color: #00ff41;
+  padding: 4px 6px;
+  font-size: 11px;
+  width: 50px;
+  text-align: center;
+}
+
+.number-input:focus {
+  outline: none;
+  border-color: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.unit {
+  font-size: 10px;
+  color: #888;
+  min-width: 20px;
+}
+
+.font-preview {
+  margin-top: 20px;
+}
+
+.font-preview h4 {
+  margin: 0 0 12px 0;
+  color: #00ff41;
+  font-size: 14px;
+}
+
+.preview-text {
+  font-family: monospace;
+  white-space: pre-line;
+  line-height: 1.4;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .theme-selector-window {
     width: 95%;
     height: 90%;
   }
-  
+
   .themes-grid {
     grid-template-columns: 1fr;
   }
-  
+
+  .theme-selector-tabs {
+    flex-wrap: wrap;
+  }
+
+  .theme-selector-tabs .tab-btn {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
   .window-header {
     padding: 12px 16px;
   }
-  
+
   .window-content {
     padding: 16px;
   }
-  
+
   .color-grid {
     grid-template-columns: 1fr;
   }
-  
+
+  .setting-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .setting-row label {
+    min-width: auto;
+    text-align: left;
+  }
+
+  .range-input-group {
+    min-width: auto;
+  }
+
   .window-footer {
     flex-direction: column;
     gap: 12px;
     align-items: stretch;
   }
-  
+
   .footer-actions {
     justify-content: center;
   }
