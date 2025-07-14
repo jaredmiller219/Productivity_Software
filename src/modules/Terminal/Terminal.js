@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Terminal as XTerm } from "xterm";
-import { FitAddon } from "xterm-addon-fit";
+import {useEffect, useRef, useState} from "react";
+import {Terminal as XTerm} from "xterm";
+import {FitAddon} from "xterm-addon-fit";
 import "xterm/css/xterm.css";
-import { TERMINAL_THEMES } from "./components/TerminalThemes.js";
-import TerminalSettings, { DEFAULT_SETTINGS } from "./components/TerminalSettings.js";
+import {TERMINAL_THEMES} from "./components/TerminalThemes.js";
+import TerminalSettings, {DEFAULT_SETTINGS} from "./components/TerminalSettings.js";
 import TerminalAutocomplete from "./components/TerminalAutocomplete.js";
 import TerminalSplitManager from "./components/TerminalSplitPane.js";
 import ThemeSelector from "./components/ThemeSelector.js";
@@ -18,14 +18,14 @@ function Terminal() {
   const [showSettings, setShowSettings] = useState(false);
   const [showThemeSelector, setShowThemeSelector] = useState(false);
   const [showTabSettings, setShowTabSettings] = useState(false);
-  const [showTestPopup, setShowTestPopup] = useState(false);
+
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [autocompletePosition, setAutocompletePosition] = useState({ x: 0, y: 0 });
   const [currentInput, setCurrentInput] = useState('');
   const [commandHistory, setCommandHistory] = useState([]);
   const [splitLayout, setSplitLayout] = useState('single');
-  const [tabHistory, setTabHistory] = useState({});
+  const [, setTabHistory] = useState({}); // tabHistory state for future use
   const [tabSettings, setTabSettings] = useState({});
 
   const terminalRefs = useRef({});
@@ -54,7 +54,7 @@ function Terminal() {
           background: theme.background,
           foreground: theme.foreground,
           cursor: theme.cursor,
-          selection: theme.selection,
+          // selection: theme.selection,
           black: theme.black,
           red: theme.red,
           green: theme.green,
@@ -73,7 +73,7 @@ function Terminal() {
           brightWhite: theme.brightWhite
         },
         scrollback: settings.scrollback,
-        rendererType: "canvas",
+        // rendererType: "canvas",
         disableStdin: false,
         fontSize: settings.fontSize,
         fontFamily: settings.fontFamily,
@@ -113,27 +113,41 @@ function Terminal() {
 
       // Handle user input with enhanced features
       term.onKey(({ key, domEvent }) => {
-        const printable =
-          !domEvent.altKey && !domEvent.ctrlKey && !domEvent.metaKey;
+        const printable = !domEvent.altKey && !domEvent.ctrlKey && !domEvent.metaKey;
 
         // Handle keyboard shortcuts
         if (domEvent.ctrlKey) {
           switch (domEvent.key.toLowerCase()) {
             case 'c':
               if (settings.keyBindings.copy === 'Ctrl+C') {
-                document.execCommand('copy');
+                const selectedText = window.getSelection().toString();
+                if (selectedText) {
+                  navigator.clipboard.writeText(selectedText)
+                      .then(() => {
+                        console.log('Copied to clipboard');
+                      })
+                      .catch(err => {
+                        console.error('Failed to copy: ', err);
+                      });
+                }
                 return;
               }
               break;
+
             case 'v':
               if (settings.keyBindings.paste === 'Ctrl+V') {
-                navigator.clipboard.readText().then(text => {
-                  term.write(text);
-                  updateCurrentInput(getCurrentInput(term) + text);
-                });
+                navigator.clipboard.readText()
+                    .then(text => {
+                      term.write(text);
+                      updateCurrentInput(getCurrentInput(term) + text);
+                    })
+                    .catch(err => {
+                      console.error('Failed to paste: ', err);
+                    });
                 return;
               }
               break;
+
             case 't':
               if (settings.keyBindings.newTab === 'Ctrl+T') {
                 addTab();
@@ -143,12 +157,12 @@ function Terminal() {
           }
         }
 
-        if (domEvent.keyCode === 13) {
+        if (domEvent.key === "Enter") {
           // Enter key
           const line =
-            term.buffer.active
-              .getLine(term.buffer.active.cursorY)
-              ?.translateToString() || "";
+              term.buffer.active
+                  .getLine(term.buffer.active.cursorY)
+                  ?.translateToString() || "";
           const command = line.substring(line.lastIndexOf("$ ") + 2);
 
           if (command.trim()) {
@@ -160,14 +174,16 @@ function Terminal() {
           term.write("$ ");
           setCurrentInput('');
           setShowAutocomplete(false);
-        } else if (domEvent.keyCode === 8) {
+
+        } else if (domEvent.key === "Backspace") {
           // Backspace
           if (term.buffer.active.cursorX > 2) {
             term.write("\b \b");
             const newInput = getCurrentInput(term).slice(0, -1);
             updateCurrentInput(newInput);
           }
-        } else if (domEvent.keyCode === 9) {
+
+        } else if (domEvent.key === "Tab") {
           // Tab key - trigger autocomplete
           domEvent.preventDefault();
           const input = getCurrentInput(term);
@@ -180,6 +196,7 @@ function Terminal() {
             setCurrentInput(input);
             setShowAutocomplete(true);
           }
+
         } else if (printable) {
           term.write(key);
           const newInput = getCurrentInput(term) + key;
@@ -228,12 +245,13 @@ function Terminal() {
       if (xtermRefs.current[tabId]?.term) {
         const theme = TERMINAL_THEMES[themeName];
         if (theme) {
-          // Create theme object for xterm
-          const xtermTheme = {
+          // Create a theme object for xterm
+          // Apply theme
+          xtermRefs.current[tabId].term.options.theme = {
             background: theme.background,
             foreground: theme.foreground,
             cursor: theme.cursor,
-            selection: theme.selection,
+            // selection: theme.selection,
             black: theme.black,
             red: theme.red,
             green: theme.green,
@@ -251,9 +269,6 @@ function Terminal() {
             brightCyan: theme.brightCyan,
             brightWhite: theme.brightWhite
           };
-
-          // Apply theme
-          xtermRefs.current[tabId].term.options.theme = xtermTheme;
 
           // Force refresh
           xtermRefs.current[tabId].term.refresh(0, xtermRefs.current[tabId].term.rows - 1);
@@ -301,7 +316,7 @@ function Terminal() {
             background: theme.background,
             foreground: theme.foreground,
             cursor: theme.cursor,
-            selection: theme.selection,
+            // selection: theme.selection,
             black: theme.black,
             red: theme.red,
             green: theme.green,
@@ -576,23 +591,7 @@ function Terminal() {
     ));
   };
 
-  const duplicateTab = (id) => {
-    const tabToDuplicate = tabs.find(tab => tab.id === id);
-    if (tabToDuplicate) {
-      const newId = Math.max(...tabs.map((tab) => tab.id)) + 1;
-      const newTab = {
-        ...tabToDuplicate,
-        id: newId,
-        name: `${tabToDuplicate.name} (Copy)`
-      };
-      setTabs([...tabs, newTab]);
-      setActiveTab(newId);
-      setTabHistory(prev => ({
-        ...prev,
-        [newId]: [...(prev[id] || [])]
-      }));
-    }
-  };
+  // Removed unused duplicateTab function
 
   // Close the terminal tab
   const closeTab = (tabId, event) => {
@@ -621,7 +620,7 @@ function Terminal() {
   useEffect(() => {
     // Initialize the first terminal
     initTerminal(1).then(() => {});
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Initialize terminal when tab becomes active or new tabs are created
   useEffect(() => {
@@ -632,23 +631,18 @@ function Terminal() {
         });
       }
     });
-  }, [tabs]);
+  }, [tabs]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Initialize terminal when tab becomes active
   useEffect(() => {
-    console.log('🎯 ACTIVE TAB EFFECT: Active tab changed to:', activeTab);
     if (activeTab) {
-      console.log(`🎯 ACTIVE TAB EFFECT: Ensuring terminal ${activeTab} is initialized...`);
-      console.log(`🎯 ACTIVE TAB EFFECT: Is tab ${activeTab} already initialized?`, initializedTabs.current.has(activeTab));
       initTerminal(activeTab).then(() => {
-        console.log(`🎯 ACTIVE TAB EFFECT: Terminal ${activeTab} initialization completed`);
+        console.log(`Terminal ${activeTab} initialization completed`);
       }).catch(error => {
-        console.error(`🎯 ACTIVE TAB EFFECT: Error initializing terminal ${activeTab}:`, error);
+        console.error(`Error initializing terminal ${activeTab}:`, error);
       });
-    } else {
-      console.log('🎯 ACTIVE TAB EFFECT: No active tab set');
     }
-  }, [activeTab]);
+  }, [activeTab]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fit terminal when tab becomes active
   useEffect(() => {
@@ -745,10 +739,7 @@ function Terminal() {
         <div className="terminal-controls">
           <button
             className="control-btn theme-btn"
-            onClick={() => {
-              setShowTestPopup(true);
-              setShowThemeSelector(true);
-            }}
+            onClick={() => setShowThemeSelector(true)}
             title="Change Terminal Theme"
           >
             🎨 Themes
@@ -923,71 +914,7 @@ function Terminal() {
         availableThemes={Object.keys(TERMINAL_THEMES)}
       />
 
-      {/* Test Popup */}
-      {showTestPopup && (
-        <div
-          className="test-popup-overlay"
-          onClick={() => setShowTestPopup(false)}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0, 0, 0, 0.8)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 2000
-          }}
-        >
-          <div
-            className="test-popup-content"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              background: 'linear-gradient(145deg, #1a1a1a, #2a2a2a)',
-              border: '2px solid #00ff41',
-              borderRadius: '12px',
-              padding: '40px',
-              textAlign: 'center',
-              color: '#00ff41',
-              boxShadow: '0 20px 60px rgba(0, 255, 65, 0.3)',
-              minWidth: '300px'
-            }}
-          >
-            <h2 style={{ margin: '0 0 20px 0', fontSize: '24px' }}>
-              🎉 Button Pressed!
-            </h2>
-            <p style={{ margin: '0 0 30px 0', fontSize: '16px', color: '#ccc' }}>
-              The theme button is working correctly!
-            </p>
-            <button
-              onClick={() => setShowTestPopup(false)}
-              style={{
-                background: 'linear-gradient(145deg, #00ff41, #00cc33)',
-                border: 'none',
-                color: '#000000',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.transform = 'scale(1.05)';
-                e.target.style.boxShadow = '0 4px 15px rgba(0, 255, 65, 0.4)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.transform = 'scale(1)';
-                e.target.style.boxShadow = 'none';
-              }}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }

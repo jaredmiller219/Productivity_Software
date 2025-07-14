@@ -179,7 +179,8 @@ function TerminalThemes({ currentTheme, onThemeChange, isVisible, onClose }) {
 
   if (!isVisible) return null;
 
-  const theme = TERMINAL_THEMES[selectedTheme];
+  // const theme = TERMINAL_THEMES[selectedTheme];
+  const theme = TERMINAL_THEMES[selectedTheme] || TERMINAL_THEMES.cyber;
 
   return (
     <div className="terminal-themes-overlay">

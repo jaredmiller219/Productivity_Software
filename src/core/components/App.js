@@ -14,7 +14,7 @@ function App() {
   const handleNotesPositionChange = (position) => {
     setNotesPosition(position);
     if (position === "right" && activeModule === "notes") {
-      // If notes are moved to right panel and currently active, switch to modeling
+      // If notes are moved to the right panel and currently active, switch to modeling
       setActiveModule("modeling");
     }
   };

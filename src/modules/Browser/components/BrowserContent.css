@@ -239,13 +239,13 @@
   }
 }
 
-/* Security indicators */
+/* Security indicators - removed visible borders */
 .webview[src^="https://"] {
-  border-left: 3px solid #28a745;
+  /* Secure HTTPS connection - no visual indicator */
 }
 
 .webview[src^="http://"] {
-  border-left: 3px solid #ffc107;
+  /* Insecure HTTP connection - no visual indicator */
 }
 
 /* Focus states for accessibility */

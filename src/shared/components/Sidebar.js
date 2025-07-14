@@ -20,7 +20,7 @@ function Sidebar({ activeModule, setActiveModule, notesPosition, onNotesPosition
     }
 
     if (moduleId === "notes" && notesPosition === "right") {
-      // If notes is in right panel, bring it back to main
+      // If notes is in the right panel, bring it back to main
       onNotesPositionChange("main");
     }
     setActiveModule(moduleId);

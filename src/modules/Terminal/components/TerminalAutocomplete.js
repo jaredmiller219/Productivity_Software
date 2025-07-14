@@ -114,7 +114,7 @@ function TerminalAutocomplete({
     const currentWord = words[words.length - 1];
     const isFirstWord = words.length === 1;
 
-    let newSuggestions = [];
+    let newSuggestions;
 
     if (isFirstWord) {
       // Suggest commands
@@ -157,7 +157,7 @@ function TerminalAutocomplete({
       const pathSuggestions = [];
       if (currentWord.includes('/') || currentWord.includes('\\')) {
         // This would typically involve filesystem access
-        // For now, we'll add some common paths
+        // For now we'll add some common paths
         const commonPaths = ['/', '/home', '/usr', '/var', '/etc', '/tmp', './'];
         pathSuggestions.push(...commonPaths
           .filter(path => path.toLowerCase().startsWith(currentWord.toLowerCase()))
