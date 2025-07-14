@@ -33,6 +33,8 @@
     "eject": "npx react-scripts eject",
     "electron:dev": "concurrently \"npx react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "electron:build": "npm run build && cp main.js build/electron.js && cp preload.js build/preload.js && electron-builder",
+    "electron:build:clean": "node scripts/clean-build.mjs && npm run electron:build",
+    "cleanup": "node scripts/cleanup-space.mjs",
     "electron:prod": "npm run build && cp main.js build/electron.js && cp preload.js build/preload.js && npx electron .",
     "electron:package": "npm run build && cp main.js build/electron.js && cp preload.js build/preload.js && electron-builder",
     "electron:clean": "rimraf build dist",
@@ -64,12 +66,44 @@
     ],
     "mac": {
       "category": "public.app-category.productivity",
-      "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist"
+      "identity": null,
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["arm64"]
+        }
+      ]
     },
-    "afterSign": "scripts/notarize.js",
+    "dmg": {
+      "background": null,
+      "title": "${productName} ${version}",
+      "icon": null,
+      "iconSize": 80,
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      },
+      "format": "ULFO"
+    },
+    "afterSign": "scripts/notarize.cjs",
+
     "win": {
       "target": "nsis"
     },
