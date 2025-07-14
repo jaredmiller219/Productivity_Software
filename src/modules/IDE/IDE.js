@@ -62,7 +62,7 @@ function IDE() {
           onFileDuplicate={duplicateFile}
           getFileIcon={getFileIcon}
         />
-        
+
         <div className="ide-editor-container">
           {activeFile ? (
             <CodeEditor
@@ -83,8 +83,11 @@ function IDE() {
             </div>
           )}
         </div>
-        
-        {isSearchVisible && (
+      </div>
+
+      {/* Completely separate overlay layer */}
+      {isSearchVisible && (
+        <div className="search-overlay">
           <SearchPanel
             isVisible={isSearchVisible}
             onClose={() => setIsSearchVisible(false)}
@@ -92,8 +95,8 @@ function IDE() {
             onFileSelect={selectFile}
             getFileIcon={getFileIcon}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
