@@ -58,23 +58,20 @@ const FileExplorer = ({
     handleCloseContextMenu();
   };
 
-  // Group files by type for better organization
-  const groupedFiles = files.reduce((acc, file) => {
-    const type = file.type || 'other';
-    if (!acc[type]) acc[type] = [];
-    acc[type].push(file);
-    return acc;
-  }, {});
-
-  const fileTypeOrder = ['html', 'css', 'js', 'json', 'md', 'txt', 'other'];
+  // Simple flat file list - no grouping
 
   return (
     <div className="file-explorer">
       <div className="explorer-header">
-        <h3>
-          <span className="explorer-icon">📁</span>
-          EXPLORER
-        </h3>
+        <div className="header-content">
+          <h3>
+            <span className="explorer-icon">📁</span>
+            EXPLORER
+          </h3>
+          {files.length > 0 && (
+            <span className="file-count-badge">{files.length}</span>
+          )}
+        </div>
         <button
           className="create-file-btn"
           onClick={() => setShowCreateDialog(true)}
