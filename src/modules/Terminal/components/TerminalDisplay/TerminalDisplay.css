@@ -41,12 +41,10 @@
 }
 
 .command-output {
-  margin-left: 24px;
   margin-bottom: 4px;
 }
 
 .command-error {
-  margin-left: 24px;
   margin-bottom: 4px;
   color: #f44747;
 }
@@ -87,7 +85,7 @@
   border-radius: 2px;
 }
 
-/* Animation for new entries */
+/* Animation for new entries
 .terminal-entry {
   animation: fadeIn 0.2s ease-in;
 }
@@ -101,7 +99,7 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
+} */
 
 /* Responsive design */
 @media (max-width: 768px) {

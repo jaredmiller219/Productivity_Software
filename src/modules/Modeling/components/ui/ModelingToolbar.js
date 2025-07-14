@@ -262,8 +262,7 @@ const ModelingToolbar = ({
           title={section.title}
         >
           <span className="section-icon">{section.icon}</span>
-          <span className="section-label">{section.title}</span>
-          <span className="dropdown-arrow">{isOpen ? '▼' : '▶'}</span>
+          <span className="dropdown-arrow">▶</span>
         </button>
 
         {isOpen && (

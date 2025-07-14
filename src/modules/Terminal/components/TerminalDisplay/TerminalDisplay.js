@@ -40,13 +40,13 @@ const TerminalDisplay = ({ history, onTerminalClick }) => {
         <div key={index} className="terminal-entry">
           {entry.type === "command" && (
             <div className="command-line">
-              <span className="timestamp">{formatTimestamp(entry.timestamp)}</span>
+              {/* <span className="timestamp">{formatTimestamp(entry.timestamp)}</span> */}
               <span className="prompt">$</span>
               <span className="command">{entry.content}</span>
             </div>
           )}
           {entry.type === "output" && (
-            <div className="command-output">
+            <div className={index < 3 ? "welcome-output" : "command-output"}>
               {renderOutput(entry.content)}
             </div>
           )}

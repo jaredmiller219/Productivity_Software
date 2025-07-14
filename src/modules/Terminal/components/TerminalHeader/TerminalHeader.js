@@ -59,11 +59,11 @@ const TerminalHeader = ({
         {stats && (
           <div className="terminal-stats">
             <span className="stat-item">
-              Commands: {stats.commandCount}
+              Developer Terminal
             </span>
-            <span className="stat-item">
+            {/* <span className="stat-item">
               Uptime: {formatUptime(stats.uptime)}
-            </span>
+            </span> */}
           </div>
         )}
       </div>

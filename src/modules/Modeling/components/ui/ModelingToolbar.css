@@ -15,16 +15,17 @@
 }
 
 /* Dropdown Section Styles */
-.toolbar-section {
+.modeling-toolbar-container .toolbar-section {
   position: relative;
   /* display: inline-block; */
 }
 
-.section-button {
+.modeling-toolbar-container .section-button {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid #4a4a4a;
   border-radius: 6px;
@@ -34,41 +35,45 @@
   font-weight: 500;
   transition: all 0.2s ease;
   white-space: nowrap;
+  min-width: 40px;
+  height: 40px;
+  position: relative;
 }
 
-.section-button:hover {
+.modeling-toolbar-container .section-button:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: #0078d4;
   color: #ffffff;
 }
 
-.section-button.open {
+.modeling-toolbar-container .section-button.open {
   background: #0078d4;
   border-color: #0078d4;
   color: #ffffff;
 }
 
-.section-icon {
-  font-size: 16px;
+.modeling-toolbar-container .section-icon {
+  font-size: 18px;
   line-height: 1;
 }
 
-.section-label {
-  font-size: 12px;
-  font-weight: 500;
-}
 
-.dropdown-arrow {
-  font-size: 10px;
-  margin-left: 4px;
+
+.modeling-toolbar-container .dropdown-arrow {
+  font-size: 8px;
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
   transition: transform 0.2s ease;
+  opacity: 0.7;
+  transform: rotate(0deg);
 }
 
-.section-button.open .dropdown-arrow {
+.modeling-toolbar-container .section-button.open .dropdown-arrow {
   transform: rotate(90deg);
 }
 
-.dropdown-menu {
+.modeling-toolbar-container .dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
@@ -95,7 +100,7 @@
   }
 }
 
-.dropdown-item {
+.modeling-toolbar-container .dropdown-item {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -111,28 +116,28 @@
   transition: all 0.15s ease;
 }
 
-.dropdown-item:hover:not(:disabled) {
+.modeling-toolbar-container .dropdown-item:hover:not(:disabled) {
   background: #0078d4;
   color: #ffffff;
 }
 
-.dropdown-item.active {
+.modeling-toolbar-container .dropdown-item.active {
   background: rgba(0, 120, 212, 0.3);
   color: #ffffff;
 }
 
-.dropdown-item:disabled {
+.modeling-toolbar-container .dropdown-item:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.item-icon {
+.modeling-toolbar-container .item-icon {
   font-size: 14px;
   line-height: 1;
   min-width: 16px;
 }
 
-.item-label {
+.modeling-toolbar-container .item-label {
   flex: 1;
   font-size: 12px;
 }
@@ -254,15 +259,13 @@
     gap: 6px;
   }
 
-  .section-button {
-    padding: 6px 10px;
+  .modeling-toolbar-container .section-button {
+    padding: 6px;
+    min-width: 36px;
+    height: 36px;
   }
 
-  .section-label {
-    display: none;
-  }
-
-  .dropdown-menu {
+  .modeling-toolbar-container .dropdown-menu {
     min-width: 180px;
   }
 }
@@ -277,11 +280,13 @@
     justify-content: center;
   }
 
-  .section-button {
-    padding: 6px 8px;
+  .modeling-toolbar-container .section-button {
+    padding: 5px;
+    min-width: 32px;
+    height: 32px;
   }
 
-  .dropdown-menu {
+  .modeling-toolbar-container .dropdown-menu {
     min-width: 160px;
     left: 50%;
     transform: translateX(-50%);
@@ -289,29 +294,29 @@
 }
 
 /* Focus states for accessibility */
-.section-button:focus,
-.dropdown-item:focus {
+.modeling-toolbar-container .section-button:focus,
+.modeling-toolbar-container .dropdown-item:focus {
   outline: 2px solid #0078d4;
   outline-offset: 2px;
 }
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-  .section-button {
+  .modeling-toolbar-container .section-button {
     border-color: #ffffff;
     color: #ffffff;
   }
 
-  .dropdown-menu {
+  .modeling-toolbar-container .dropdown-menu {
     background: #000000;
     border-color: #ffffff;
   }
 
-  .dropdown-item {
+  .modeling-toolbar-container .dropdown-item {
     color: #ffffff;
   }
 
-  .dropdown-item:hover:not(:disabled) {
+  .modeling-toolbar-container .dropdown-item:hover:not(:disabled) {
     background: #ffffff;
     color: #000000;
   }
