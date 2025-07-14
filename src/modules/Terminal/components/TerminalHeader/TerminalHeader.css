@@ -1,0 +1,251 @@
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background-color: #2d2d30;
+  border-bottom: 1px solid #3c3c3c;
+  color: #cccccc;
+  font-size: 12px;
+  position: relative;
+}
+
+.terminal-header.light {
+  background-color: #f3f3f3;
+  border-bottom-color: #e1e1e1;
+  color: #333333;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.terminal-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.terminal-icon {
+  font-size: 14px;
+}
+
+.terminal-time {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 11px;
+  color: #9d9d9d;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+}
+
+.terminal-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.stat-item {
+  font-size: 11px;
+  color: #9d9d9d;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.header-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 4px 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  color: #cccccc;
+}
+
+.header-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.header-btn:active {
+  transform: scale(0.95);
+}
+
+.header-btn.clear-btn:hover {
+  background-color: rgba(220, 53, 69, 0.2);
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.terminal-header.light .header-btn {
+  color: #666666;
+}
+
+.terminal-header.light .header-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.stats-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 16px;
+  background-color: #252526;
+  border: 1px solid #3c3c3c;
+  border-radius: 6px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  min-width: 250px;
+  animation: slideDown 0.2s ease-out;
+}
+
+.terminal-header.light .stats-dropdown {
+  background-color: #ffffff;
+  border-color: #e1e1e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stats-header {
+  font-size: 12px;
+  font-weight: 600;
+  color: #cccccc;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #3c3c3c;
+}
+
+.stats-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #9d9d9d;
+}
+
+.stat-value {
+  font-size: 11px;
+  font-weight: 500;
+  color: #cccccc;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+.terminal-header.light .stat-value {
+  color: #333333;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .terminal-header {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  
+  .header-left {
+    gap: 12px;
+  }
+  
+  .terminal-time {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+  
+  .header-controls {
+    gap: 2px;
+  }
+  
+  .header-btn {
+    padding: 3px 5px;
+    font-size: 11px;
+  }
+  
+  .stats-dropdown {
+    right: 12px;
+    padding: 10px;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .terminal-header {
+    padding: 4px 8px;
+  }
+  
+  .header-center {
+    display: none; /* Hide stats on very small screens */
+  }
+  
+  .stats-dropdown {
+    right: 8px;
+    left: 8px;
+    min-width: auto;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .terminal-header {
+    border-bottom-width: 2px;
+  }
+  
+  .header-btn:hover {
+    border-color: currentColor;
+  }
+  
+  .stats-dropdown {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .header-btn,
+  .stats-dropdown {
+    transition: none;
+  }
+  
+  .stats-dropdown {
+    animation: none;
+  }
+  
+  .header-btn:active {
+    transform: none;
+  }
+}

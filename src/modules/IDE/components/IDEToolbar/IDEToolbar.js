@@ -18,60 +18,87 @@ const IDEToolbar = ({
   const searchTimeoutRef = useRef(null);
 
   const fileTemplates = [
-    { name: 'HTML5 Template', extension: 'html', content: `<!DOCTYPE html>
+    { 
+      name: 'HTML5 Template', 
+      extension: 'html', 
+      content: `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-  
+    
 </body>
-</html>` },
-    { name: 'CSS Stylesheet', extension: 'css', content: `/* Stylesheet */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+</html>` 
+    },
+    { 
+      name: 'CSS Stylesheet', 
+      extension: 'css', 
+      content: `/* CSS Stylesheet */
 
 body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-}` },
-    { name: 'JavaScript Module', extension: 'js', content: `// JavaScript Module
-'use strict';
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
 
-// Your code here
-console.log('Module loaded');` },
-    { name: 'React Component', extension: 'jsx', content: `import React from 'react';
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}` 
+    },
+    { 
+      name: 'JavaScript Module', 
+      extension: 'js', 
+      content: `// JavaScript Module
 
-const Component = () => {
-  return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
-  );
+export default class MyClass {
+    constructor() {
+        this.init();
+    }
+    
+    init() {
+        console.log('Module initialized');
+    }
+}` 
+    },
+    { 
+      name: 'React Component', 
+      extension: 'jsx', 
+      content: `import React from 'react';
+
+const MyComponent = () => {
+    return (
+        <div>
+            <h1>Hello World</h1>
+        </div>
+    );
 };
 
-export default Component;` },
-    { name: 'JSON Data', extension: 'json', content: `{
-  "name": "example",
-  "version": "1.0.0",
-  "description": ""
-}` },
-    { name: 'Markdown Document', extension: 'md', content: `# Document Title
-
-## Introduction
-
-Your content here...` }
+export default MyComponent;` 
+    },
+    { 
+      name: 'JSON Data', 
+      extension: 'json', 
+      content: `{
+    "name": "my-project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    }
+}` 
+    }
   ];
 
   const handleNewFile = () => {
-    const fileName = prompt('Enter file name (with extension):');
-    if (fileName) {
-      onNewFile(fileName);
+    setShowTemplates(false);
+    if (onNewFile) {
+      onNewFile('untitled.txt', '');
     }
   };
 
@@ -105,7 +132,7 @@ Your content here...` }
       const results = onSearch(query);
       setSearchResults(results);
       setShowSearchResults(results.length > 0 && !openPanel);
-
+      
       // Only open the search panel if explicitly requested
       if (openPanel && results.length > 0 && onToggleSearch && !isSearchVisible) {
         onToggleSearch();
@@ -116,7 +143,7 @@ Your content here...` }
   const handleSearchInputChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-
+    
     // Debounced search - search as user types (with a small delay)
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
@@ -145,12 +172,12 @@ Your content here...` }
     if (onToggleSearch) {
       // Always toggle the search panel regardless of current state
       onToggleSearch();
-
+      
       // If we're opening the panel and have a search query, perform the search
       if (!isSearchVisible && searchQuery.trim()) {
         handleSearch(searchQuery, true);
       }
-
+      
       // Hide dropdown when opening the panel
       if (!isSearchVisible) {
         setShowSearchResults(false);
@@ -161,7 +188,7 @@ Your content here...` }
   const handleResultClick = (result) => {
     // Hide the dropdown
     setShowSearchResults(false);
-
+    
     // You could add logic here to jump to the specific line in the file
     // For now, we'll just open the search panel with the current query
     handleSearch(searchQuery, true);
@@ -203,7 +230,7 @@ Your content here...` }
               </button>
             )}
           </div>
-
+          
           {/* Search results dropdown */}
           {showSearchResults && searchResults.length > 0 && (
             <div className="search-results-dropdown">
@@ -211,8 +238,8 @@ Your content here...` }
                 Found {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
               </div>
               {searchResults.slice(0, 5).map((result, index) => (
-                <div
-                  key={index}
+                <div 
+                  key={index} 
                   className="search-result-item"
                   onClick={() => handleResultClick(result)}
                 >
@@ -241,9 +268,9 @@ Your content here...` }
               </span>
             </div>
           )}
-
+          
           <div className="dropdown">
-            <button
+            <button 
               className="toolbar-btn-small stats-btn"
               onClick={() => setShowStats(!showStats)}
               title="Project statistics"
@@ -332,8 +359,6 @@ Your content here...` }
           </div>
         </div>
       </div>
-
-
     </div>
   );
 };

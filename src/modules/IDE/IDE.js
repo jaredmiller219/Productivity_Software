@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import FileExplorer from "./components/FileExplorer.js";
-import CodeEditor from "./components/CodeEditor.js";
-import IDEToolbar from "./components/IDEToolbar.js";
-import SearchPanel from "./components/SearchPanel.js";
+import FileExplorer from "./components/FileExplorer/FileExplorer.js";
+import CodeEditor from "./components/CodeEditor/CodeEditor.js";
+import IDEToolbar from "./components/IDEToolbar/IDEToolbar.js";
+import SearchPanel from "./components/SearchPanel/SearchPanel.js";
 import { useIDE } from "./hooks/useIDE.js";
 import "./IDE.css";
 

@@ -8,6 +8,7 @@
   min-height: 32px;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
 }
 
 .toolbar-section {
@@ -36,51 +37,43 @@
   min-width: 0;
 }
 
-.file-actions,
-.search-actions,
-.project-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .toolbar-btn {
   background-color: #464647;
   color: #cccccc;
   border: 1px solid #5a5a5c;
   border-radius: 4px;
-  padding: 4px 16px;
+  padding: 4px 12px;
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
   transition: all 0.2s ease;
-  white-space: nowrap;
   min-width: 80px;
-  height: 25px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 4px;
 }
 
 .toolbar-btn:hover {
   background-color: #5a5a5c;
-  border-color: #6c757d;
+  border-color: #6c6c6e;
 }
 
 .toolbar-btn.primary {
-  background-color: #007bff;
-  border-color: #0056b3;
+  background-color: #0e639c;
+  border-color: #1177bb;
 }
 
 .toolbar-btn.primary:hover {
-  background-color: #0056b3;
-  border-color: #004085;
+  background-color: #1177bb;
+  border-color: #1e88cc;
 }
 
 .toolbar-btn.active {
   background-color: #ffc107;
-  color: #212529;
   border-color: #e0a800;
+  color: #212529;
 }
 
 .toolbar-btn.active:hover {
@@ -309,11 +302,7 @@
   font-weight: bold;
 }
 
-.stats-btn:hover {
-  background-color: #1e7e34;
-  border-color: #155724;
-}
-
+/* Dropdown styles */
 .dropdown {
   position: relative;
 }
@@ -321,40 +310,24 @@
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  left: 0;
-  background-color: #252526;
-  border: 1px solid #3c3c3c;
+  right: 0;
+  background-color: #2d2d30;
+  border: 1px solid #5a5a5c;
   border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  z-index: 100;
   min-width: 200px;
-  max-height: 300px;
-  overflow-y: auto;
-  animation: slideDown 0.2s ease-out;
-}
-
-.stats-menu {
-  min-width: 250px;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  max-width: 300px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 }
 
 .dropdown-header {
   padding: 8px 12px;
-  background-color: #2d2d30;
-  border-bottom: 1px solid #3c3c3c;
+  background-color: #3c3c3c;
+  border-bottom: 1px solid #5a5a5c;
   font-size: 11px;
   font-weight: 600;
-  color: #9d9d9d;
+  color: #888;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -369,13 +342,19 @@
   color: #cccccc;
   cursor: pointer;
   font-size: 12px;
-  transition: background-color 0.2s ease;
-  width: 100%;
   text-align: left;
+  width: 100%;
+  transition: background-color 0.2s ease;
 }
 
 .dropdown-item:hover {
-  background-color: #37373d;
+  background-color: #3c3c3c;
+}
+
+.dropdown-separator {
+  height: 1px;
+  background-color: #5a5a5c;
+  margin: 4px 0;
 }
 
 .template-name {
@@ -384,40 +363,14 @@
 
 .template-ext {
   font-size: 10px;
-  color: #9d9d9d;
+  color: #888;
   background-color: #464647;
   padding: 2px 6px;
   border-radius: 3px;
 }
 
-.dropdown-separator {
-  height: 1px;
-  background-color: #3c3c3c;
-  margin: 4px 0;
-}
-
-.active-file-info {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
-  background-color: #37373d;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.file-indicator {
-  font-size: 10px;
-}
-
-.file-name {
-  font-weight: 500;
-  color: #cccccc;
-}
-
-.modified-dot {
-  color: #ffc107;
-  font-size: 10px;
+.stats-menu {
+  min-width: 250px;
 }
 
 .stat-item {
@@ -429,37 +382,17 @@
 }
 
 .stat-label {
-  color: #9d9d9d;
-  font-weight: 500;
+  color: #888;
 }
 
 .stat-value {
   color: #cccccc;
-  font-weight: 600;
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-weight: 500;
 }
 
 .stat-value.small {
   font-size: 10px;
-  font-family: inherit;
-}
-
-/* Scrollbar for dropdown menus */
-.dropdown-menu::-webkit-scrollbar {
-  width: 6px;
-}
-
-.dropdown-menu::-webkit-scrollbar-track {
-  background: #2d2d30;
-}
-
-.dropdown-menu::-webkit-scrollbar-thumb {
-  background: #464647;
-  border-radius: 3px;
-}
-
-.dropdown-menu::-webkit-scrollbar-thumb:hover {
-  background: #5a5a5c;
+  color: #888;
 }
 
 /* Responsive design */
@@ -505,19 +438,6 @@
 
   .file-name-compact {
     font-size: 11px;
-  }
-  
-  .active-file-info {
-    padding: 3px 6px;
-    font-size: 11px;
-  }
-  
-  .dropdown-menu {
-    min-width: 180px;
-  }
-  
-  .stats-menu {
-    min-width: 200px;
   }
 }
 
