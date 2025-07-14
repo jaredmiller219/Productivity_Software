@@ -2,8 +2,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: #f8f9fa;
-  border-right: 1px solid #e9ecef;
 }
 
 .notes-header {
@@ -11,15 +9,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  border-bottom: 1px solid #e9ecef;
-  background-color: #fff;
 }
 
 .notes-header h3 {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #495057;
 }
 
 .create-note-btn {
@@ -40,7 +35,6 @@
 
 .notes-controls {
   padding: 12px 16px;
-  background-color: #fff;
   border-bottom: 1px solid #e9ecef;
   display: flex;
   flex-direction: column;
@@ -57,14 +51,12 @@
   border: 1px solid #ced4da;
   border-radius: 6px;
   font-size: 14px;
-  background-color: #f8f9fa;
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .search-input:focus {
   outline: none;
   border-color: #007bff;
-  background-color: #fff;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
 }
 
@@ -89,21 +81,15 @@
   border: 1px solid #ced4da;
   border-radius: 4px;
   font-size: 12px;
-  background-color: #fff;
 }
 
 .sort-order-btn {
-  background-color: #f8f9fa;
   border: 1px solid #ced4da;
   border-radius: 4px;
   padding: 6px 10px;
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.2s ease;
-}
-
-.sort-order-btn:hover {
-  background-color: #e9ecef;
 }
 
 .notes-list {
@@ -124,7 +110,6 @@
   align-items: flex-start;
   padding: 12px;
   margin-bottom: 8px;
-  background-color: #fff;
   border: 1px solid #e9ecef;
   border-radius: 8px;
   cursor: pointer;
@@ -140,7 +125,6 @@
 
 .note-item.active {
   border-color: #007bff;
-  background-color: #f0f8ff;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
 }
 
@@ -152,7 +136,6 @@
 .note-title {
   font-weight: 600;
   font-size: 14px;
-  color: #212529;
   margin-bottom: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -166,6 +149,7 @@
   margin-bottom: 8px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 1; 
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -208,7 +192,6 @@
   cursor: pointer;
   font-size: 12px;
   transition: all 0.2s ease;
-  background-color: #fff;
 }
 
 .duplicate-note-btn:hover {
@@ -285,10 +268,180 @@
 .right-panel-mode .note-preview {
   font-size: 11px;
   -webkit-line-clamp: 1; /* Show only 1 line in right panel */
+  line-clamp: 1; /* Standard property for compatibility */
 }
 
 .right-panel-mode .note-meta {
   font-size: 10px;
+}
+
+/* Theme styles */
+.notes-container.theme-light .notes-list-container {
+  background-color: #f8f9fa;
+  border-right: 1px solid #e9ecef;
+}
+
+.notes-container.theme-light .notes-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e9ecef;
+  color: #495057;
+}
+
+.notes-container.theme-light .notes-controls {
+  background-color: #fff;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.notes-container.theme-light .search-input {
+  background-color: #f8f9fa;
+  color: #212529;
+  border-color: #ced4da;
+}
+
+.notes-container.theme-light .search-input:focus {
+  background-color: #fff;
+}
+
+.notes-container.theme-light .sort-select {
+  background-color: #fff;
+  color: #212529;
+}
+
+.notes-container.theme-light .sort-order-btn {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+.notes-container.theme-light .sort-order-btn:hover {
+  background-color: #e9ecef;
+}
+
+.notes-container.theme-light .note-item {
+  background-color: #fff;
+  color: #212529;
+}
+
+.notes-container.theme-light .note-item.active {
+  background-color: #f0f8ff;
+}
+
+.notes-container.theme-light .note-title {
+  color: #212529;
+}
+
+.notes-container.theme-light .duplicate-note-btn,
+.notes-container.theme-light .delete-note-btn {
+  background-color: #fff;
+  color: #212529;
+}
+
+.notes-container.theme-dark .notes-list-container {
+  background-color: #21262d;
+  border-right: 1px solid #30363d;
+}
+
+.notes-container.theme-dark .notes-header {
+  background-color: #21262d;
+  border-bottom: 1px solid #30363d;
+  color: #f0f6fc;
+}
+
+.notes-container.theme-dark .notes-controls {
+  background-color: #21262d;
+  border-bottom: 1px solid #30363d;
+}
+
+.notes-container.theme-dark .search-input {
+  background-color: #0d1117;
+  color: #f0f6fc;
+  border-color: #30363d;
+}
+
+.notes-container.theme-dark .search-input:focus {
+  background-color: #161b22;
+  border-color: #58a6ff;
+}
+
+.notes-container.theme-dark .search-icon {
+  color: #8b949e;
+}
+
+.notes-container.theme-dark .sort-select {
+  background-color: #0d1117;
+  color: #f0f6fc;
+  border-color: #30363d;
+}
+
+.notes-container.theme-dark .sort-order-btn {
+  background-color: #21262d;
+  color: #f0f6fc;
+  border-color: #30363d;
+}
+
+.notes-container.theme-dark .sort-order-btn:hover {
+  background-color: #30363d;
+}
+
+.notes-container.theme-dark .note-item {
+  background-color: #161b22;
+  color: #f0f6fc;
+  border-color: #30363d;
+}
+
+.notes-container.theme-dark .note-item:hover {
+  border-color: #58a6ff;
+  box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+}
+
+.notes-container.theme-dark .note-item.active {
+  background-color: rgba(88, 166, 255, 0.1);
+  border-color: #58a6ff;
+}
+
+.notes-container.theme-dark .note-title {
+  color: #f0f6fc;
+}
+
+.notes-container.theme-dark .note-preview {
+  color: #8b949e;
+}
+
+.notes-container.theme-dark .note-meta {
+  color: #6e7681;
+}
+
+.notes-container.theme-dark .duplicate-note-btn,
+.notes-container.theme-dark .delete-note-btn {
+  background-color: #21262d;
+  color: #f0f6fc;
+  border-color: #30363d;
+}
+
+.notes-container.theme-dark .duplicate-note-btn:hover {
+  border-color: #58a6ff;
+  background-color: rgba(88, 166, 255, 0.1);
+}
+
+.notes-container.theme-dark .delete-note-btn:hover {
+  border-color: #f85149;
+  background-color: rgba(248, 81, 73, 0.1);
+}
+
+.notes-container.theme-dark .empty-notes {
+  color: #8b949e;
+}
+
+/* Scrollbar styling for dark theme */
+.notes-container.theme-dark .notes-list::-webkit-scrollbar-track {
+  background: #161b22;
+}
+
+.notes-container.theme-dark .notes-list::-webkit-scrollbar-thumb {
+  background: #30363d;
+}
+
+.notes-container.theme-dark .notes-list::-webkit-scrollbar-thumb:hover {
+  background: #484f58;
 }
 
 /* Responsive design */

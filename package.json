@@ -16,6 +16,7 @@
     "xterm-addon-fit": "^0.7.0"
   },
   "devDependencies": {
+    "@electron/notarize": "^2.1.0",
     "@types/three": "^0.178.1",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
@@ -31,9 +32,9 @@
     "test": "npx react-scripts test",
     "eject": "npx react-scripts eject",
     "electron:dev": "concurrently \"npx react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron:build": "npm run build && cp main.js build/electron.js && cp preload.js build/preload.js && sed -i '' 's|../build/index.html|index.html|g' build/electron.js && sed -i '' 's|import isDev from \"electron-is-dev\";|const isDev = false;|g' build/electron.js && electron-builder",
-    "electron:prod": "npm run build && cp main.js build/electron.js && cp preload.js build/preload.js && sed -i '' 's|../build/index.html|index.html|g' build/electron.js && sed -i '' 's|import isDev from \"electron-is-dev\";|const isDev = false;|g' build/electron.js && npx electron .",
-    "electron:package": "npm run build && cp main.js build/electron.js && cp preload.js build/preload.js && sed -i '' 's|../build/index.html|index.html|g' build/electron.js && sed -i '' 's|import isDev from \"electron-is-dev\";|const isDev = false;|g' build/electron.js && electron-builder",
+    "electron:build": "npm run build && cp main.js build/electron.js && cp preload.js build/preload.js && electron-builder",
+    "electron:prod": "npm run build && cp main.js build/electron.js && cp preload.js build/preload.js && npx electron .",
+    "electron:package": "npm run build && cp main.js build/electron.js && cp preload.js build/preload.js && electron-builder",
     "electron:clean": "rimraf build dist",
     "electron:run": "electron .",
     "electron:start": "concurrently \"cross-env BROWSER=none NODE_OPTIONS='--no-deprecation' GENERATE_SOURCEMAP=false npx react-scripts start\" \"wait-on http://localhost:3000 && electron . --no-devtools\"",
@@ -62,8 +63,13 @@
       "node_modules/**/*"
     ],
     "mac": {
-      "category": "public.app-category.productivity"
+      "category": "public.app-category.productivity",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
     },
+    "afterSign": "scripts/notarize.js",
     "win": {
       "target": "nsis"
     },

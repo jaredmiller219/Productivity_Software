@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: #fff;
   position: relative;
 }
 
@@ -13,7 +12,6 @@
   right: 0;
   bottom: 0;
   z-index: 1000;
-  background-color: #fff;
 }
 
 .note-editor.right-panel {
@@ -25,7 +23,6 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  background-color: #f8f9fa;
 }
 
 .empty-state {
@@ -56,7 +53,6 @@
   align-items: center;
   padding: 16px 20px;
   border-bottom: 1px solid #e9ecef;
-  background-color: #f8f9fa;
 }
 
 .note-title-input {
@@ -65,7 +61,6 @@
   background: none;
   font-size: 20px;
   font-weight: 600;
-  color: #212529;
   padding: 8px 0;
   outline: none;
 }
@@ -100,10 +95,8 @@
   display: flex;
   gap: 16px;
   padding: 8px 20px;
-  background-color: #f8f9fa;
   border-bottom: 1px solid #e9ecef;
   font-size: 12px;
-  color: #6c757d;
 }
 
 .editor-toolbar {
@@ -111,7 +104,6 @@
   align-items: center;
   gap: 4px;
   padding: 8px 20px;
-  background-color: #fff;
   border-bottom: 1px solid #e9ecef;
 }
 
@@ -132,7 +124,6 @@
 
 .editor-toolbar button:hover {
   border-color: #dee2e6;
-  background-color: #f8f9fa;
 }
 
 .toolbar-separator {
@@ -156,7 +147,6 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.6;
-  color: #212529;
   resize: none;
   background: none;
 }
@@ -171,10 +161,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 20px;
-  background-color: #f8f9fa;
   border-top: 1px solid #e9ecef;
   font-size: 12px;
-  color: #6c757d;
 }
 
 .editor-shortcuts {
@@ -305,4 +293,131 @@
 /* Selection styles */
 .note-content-input::selection {
   background-color: rgba(0, 123, 255, 0.2);
+}
+
+/* Theme styles */
+.notes-container.theme-light .note-editor {
+  background-color: #ffffff;
+  color: #212529;
+}
+
+.notes-container.theme-light .note-editor-empty {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+
+.notes-container.theme-light .editor-header {
+  background-color: #f8f9fa;
+  border-bottom-color: #e9ecef;
+}
+
+.notes-container.theme-light .note-title-input {
+  color: #212529;
+}
+
+.notes-container.theme-light .note-title-input::placeholder {
+  color: #adb5bd;
+}
+
+.notes-container.theme-light .editor-stats {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border-bottom-color: #e9ecef;
+}
+
+.notes-container.theme-light .editor-toolbar {
+  background-color: #fff;
+  border-bottom-color: #e9ecef;
+}
+
+.notes-container.theme-light .editor-toolbar button:hover {
+  background-color: #f8f9fa;
+}
+
+.notes-container.theme-light .editor-content {
+  background-color: #ffffff;
+}
+
+.notes-container.theme-light .note-content-input {
+  color: #212529;
+}
+
+.notes-container.theme-light .note-content-input::placeholder {
+  color: #adb5bd;
+}
+
+.notes-container.theme-light .editor-footer {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border-top-color: #e9ecef;
+}
+
+.notes-container.theme-dark .note-editor {
+  background-color: #0d1117;
+  color: #f0f6fc;
+}
+
+.notes-container.theme-dark .note-editor-empty {
+  background-color: #161b22;
+  color: #8b949e;
+}
+
+.notes-container.theme-dark .editor-header {
+  background-color: #21262d;
+  border-bottom-color: #30363d;
+}
+
+.notes-container.theme-dark .note-title-input {
+  color: #f0f6fc;
+}
+
+.notes-container.theme-dark .note-title-input::placeholder {
+  color: #6e7681;
+}
+
+.notes-container.theme-dark .editor-stats {
+  background-color: #21262d;
+  color: #8b949e;
+  border-bottom-color: #30363d;
+}
+
+.notes-container.theme-dark .editor-toolbar {
+  background-color: #161b22;
+  border-bottom-color: #30363d;
+}
+
+.notes-container.theme-dark .editor-toolbar button {
+  color: #f0f6fc;
+}
+
+.notes-container.theme-dark .editor-toolbar button:hover {
+  background-color: #21262d;
+  border-color: #444c56;
+}
+
+.notes-container.theme-dark .editor-content {
+  background-color: #0d1117;
+}
+
+.notes-container.theme-dark .note-content-input {
+  color: #f0f6fc;
+}
+
+.notes-container.theme-dark .note-content-input::placeholder {
+  color: #6e7681;
+}
+
+.notes-container.theme-dark .editor-footer {
+  background-color: #21262d;
+  color: #8b949e;
+  border-top-color: #30363d;
+}
+
+.notes-container.theme-dark .save-status {
+  color: #3fb950;
+}
+
+/* Selection styles for dark theme */
+.notes-container.theme-dark .note-content-input::selection {
+  background-color: rgba(88, 166, 255, 0.3);
 }
