@@ -4,7 +4,7 @@
   border-top: 1px solid #3c3c3c;
 }
 
-.terminal-input-line {
+.input-line {
   display: flex;
   align-items: center;
   padding: 12px 16px;
@@ -41,7 +41,7 @@
   outline: none;
 }
 
-.suggestions-container {
+.suggestions-dropdown {
   position: absolute;
   bottom: 100%;
   left: 0;
@@ -51,21 +51,19 @@
   border-bottom: none;
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
   z-index: 100;
-}
-
-.suggestions-list {
   max-height: 200px;
   overflow-y: auto;
 }
 
 .suggestion-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 8px 16px;
   cursor: pointer;
   transition: background-color 0.1s ease;
   border-bottom: 1px solid #3c3c3c;
+  color: #569cd6;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .suggestion-item:hover,
@@ -77,49 +75,26 @@
   border-bottom: none;
 }
 
-.suggestion-command {
-  color: #569cd6;
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.suggestion-description {
-  color: #9d9d9d;
-  font-size: 12px;
-  font-style: italic;
-  margin-left: 12px;
-}
-
-.suggestions-hint {
-  padding: 6px 16px;
-  background-color: #2d2d30;
-  border-top: 1px solid #3c3c3c;
-  font-size: 11px;
-  color: #9d9d9d;
-  text-align: center;
-}
-
 /* Scrollbar for suggestions */
-.suggestions-list::-webkit-scrollbar {
+.suggestions-dropdown::-webkit-scrollbar {
   width: 6px;
 }
 
-.suggestions-list::-webkit-scrollbar-track {
+.suggestions-dropdown::-webkit-scrollbar-track {
   background: #2d2d30;
 }
 
-.suggestions-list::-webkit-scrollbar-thumb {
+.suggestions-dropdown::-webkit-scrollbar-thumb {
   background: #464647;
   border-radius: 3px;
 }
 
-.suggestions-list::-webkit-scrollbar-thumb:hover {
+.suggestions-dropdown::-webkit-scrollbar-thumb:hover {
   background: #5a5a5c;
 }
 
 /* Animation for suggestions */
-.suggestions-container {
+.suggestions-dropdown {
   animation: slideUp 0.15s ease-out;
 }
 
@@ -136,7 +111,7 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .terminal-input-line {
+  .input-line {
     padding: 10px 12px;
   }
   
@@ -147,38 +122,18 @@
   
   .suggestion-item {
     padding: 6px 12px;
-  }
-  
-  .suggestion-command {
     font-size: 13px;
-  }
-  
-  .suggestion-description {
-    font-size: 11px;
-  }
-  
-  .suggestions-hint {
-    padding: 4px 12px;
-    font-size: 10px;
   }
 }
 
 @media (max-width: 480px) {
-  .terminal-input-line {
+  .input-line {
     padding: 8px 10px;
   }
   
   .prompt,
   .terminal-input {
     font-size: 12px;
-  }
-  
-  .suggestion-description {
-    display: none; /* Hide descriptions on very small screens */
-  }
-  
-  .suggestions-hint {
-    display: none; /* Hide hint on very small screens */
   }
 }
 
@@ -194,7 +149,7 @@
     border-top-color: #ffffff;
   }
   
-  .suggestions-container {
+  .suggestions-dropdown {
     border-color: #ffffff;
   }
   

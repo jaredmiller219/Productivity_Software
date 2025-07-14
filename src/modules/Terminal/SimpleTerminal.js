@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import TerminalHeader from "./components/TerminalHeader.js";
-import TerminalDisplay from "./components/TerminalDisplay.js";
-import TerminalInput from "./components/TerminalInput.js";
+import TerminalHeader from "./components/TerminalHeader/TerminalHeader.js";
+import TerminalDisplay from "./components/TerminalDisplay/TerminalDisplay.js";
+import TerminalInput from "./components/TerminalInput/TerminalInput.js";
 import { useTerminal } from "./hooks/useTerminal.js";
 import "./SimpleTerminal.css";
 
@@ -18,8 +18,10 @@ function SimpleTerminal() {
     getStats
   } = useTerminal();
 
-  const handleSubmit = (command) => {
-    processCommand(command);
+  const handleSubmit = () => {
+    if (input && input.trim()) {
+      processCommand(input);
+    }
     setInput("");
   };
 

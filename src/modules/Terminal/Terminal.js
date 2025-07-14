@@ -2,12 +2,12 @@ import {useEffect, useRef, useState} from "react";
 import {Terminal as XTerm} from "xterm";
 import {FitAddon} from "xterm-addon-fit";
 import "xterm/css/xterm.css";
-import {TERMINAL_THEMES} from "./components/TerminalThemes.js";
-import TerminalSettings, {DEFAULT_SETTINGS} from "./components/TerminalSettings.js";
-import TerminalAutocomplete from "./components/TerminalAutocomplete.js";
-import TerminalSplitManager from "./components/TerminalSplitPane.js";
-import ThemeSelector from "./components/ThemeSelector.js";
-import TabSettings from "./components/TabSettings.js";
+import {TERMINAL_THEMES} from "./components/TerminalThemes/TerminalThemes.js";
+import TerminalSettings, {DEFAULT_SETTINGS} from "./components/TerminalSettings/TerminalSettings.js";
+import TerminalAutocomplete from "./components/TerminalAutocomplete/TerminalAutocomplete.js";
+import TerminalSplitManager from "./components/TerminalSplitPane/TerminalSplitPane.js";
+import ThemeSelector from "./components/ThemeSelector/ThemeSelector.js";
+import TabSettings from "./components/TabSettings/TabSettings.js";
 import "./Terminal.css";
 
 function Terminal() {

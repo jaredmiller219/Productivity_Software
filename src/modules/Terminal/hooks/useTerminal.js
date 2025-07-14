@@ -26,6 +26,7 @@ export const useTerminal = () => {
 
   // Process a command
   const processCommand = useCallback((cmd) => {
+    if (!cmd || typeof cmd !== 'string') return;
     const command = cmd.trim();
     
     // Add command to history

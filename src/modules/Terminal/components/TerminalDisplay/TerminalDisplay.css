@@ -10,71 +10,52 @@
   cursor: text;
 }
 
-.terminal-history {
-  min-height: 100%;
+.terminal-entry {
+  margin-bottom: 8px;
 }
 
-.terminal-line {
+.command-line {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 4px;
-  padding: 2px 0;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
-
-.terminal-line.command {
   color: #569cd6;
   font-weight: 500;
 }
 
-.terminal-line.error {
-  color: #f44747;
-}
-
-.terminal-line.output {
-  color: #d4d4d4;
-}
-
-.line-icon {
-  display: inline-block;
-  width: 16px;
+.timestamp {
+  color: #888;
+  font-size: 11px;
   margin-right: 8px;
-  font-size: 12px;
   opacity: 0.7;
-  flex-shrink: 0;
-}
-
-.line-content {
-  flex: 1;
-  min-width: 0;
 }
 
 .prompt {
   color: #4ec9b0;
   font-weight: bold;
-  margin-right: 4px;
+  margin-right: 8px;
 }
 
-.command-text {
+.command {
   color: #569cd6;
   font-weight: 500;
 }
 
-.output-text {
-  color: #d4d4d4;
+.command-output {
+  margin-left: 24px;
+  margin-bottom: 4px;
 }
 
-.output-text.error {
+.command-error {
+  margin-left: 24px;
+  margin-bottom: 4px;
   color: #f44747;
 }
 
-.output-text.success {
-  color: #4ec9b0;
-}
-
-.output-text.warning {
-  color: #ffcc02;
+.output-line {
+  color: #d4d4d4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.4;
 }
 
 /* Scrollbar styling */
@@ -101,13 +82,13 @@
 }
 
 /* Hover effects */
-.terminal-line:hover {
+.terminal-entry:hover {
   background-color: rgba(255, 255, 255, 0.02);
   border-radius: 2px;
 }
 
-/* Animation for new lines */
-.terminal-line {
+/* Animation for new entries */
+.terminal-entry {
   animation: fadeIn 0.2s ease-in;
 }
 
@@ -129,10 +110,13 @@
     font-size: 13px;
   }
   
-  .line-icon {
-    width: 14px;
-    margin-right: 6px;
-    font-size: 11px;
+  .timestamp {
+    display: none;
+  }
+  
+  .command-output,
+  .command-error {
+    margin-left: 16px;
   }
 }
 
@@ -142,7 +126,8 @@
     font-size: 12px;
   }
   
-  .line-icon {
-    display: none; /* Hide icons on very small screens */
+  .command-output,
+  .command-error {
+    margin-left: 12px;
   }
 }
