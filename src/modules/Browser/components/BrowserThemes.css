@@ -39,7 +39,7 @@
   font-size: 18px;
 }
 
-.close-btn {
+.browser-themes-panel .close-btn {
   background: none;
   border: none;
   color: #6c757d;
@@ -55,7 +55,7 @@
   transition: all 0.2s;
 }
 
-.close-btn:hover {
+.browser-themes-panel .close-btn:hover {
   background: #e9ecef;
   color: #495057;
 }
@@ -360,11 +360,11 @@
     color: #fff;
   }
   
-  .close-btn {
+  .browser-themes-panel .close-btn {
     color: #ccc;
   }
-  
-  .close-btn:hover {
+
+  .browser-themes-panel .close-btn:hover {
     background: #555;
     color: #fff;
   }

@@ -14,10 +14,11 @@ const BrowserContent = ({
     if (!webview) return;
 
     const handleLoadStart = () => {
-      // Loading started
+      console.log("Webview started loading");
     };
 
     const handleLoadStop = () => {
+      console.log("Webview stopped loading");
       onLoad();
     };
 
@@ -68,21 +69,25 @@ const BrowserContent = ({
     </div>
   );
 
-  const renderLoadingState = () => (
-    <div className="loading-state">
-      <div className="loading-spinner-large"></div>
-      <p>Loading page...</p>
-      <div className="loading-progress">
-        <div className="progress-bar"></div>
+
+
+  const renderLoadingState = () => {
+    console.log("Rendering loading state, isLoading:", isLoading);
+    return (
+      <div className="loading-state">
+        <p>Loading page...</p>
+        <div className="loading-progress">
+          <div className="progress-bar"></div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="browser-content">
       {error && renderErrorState()}
       {isLoading && !error && renderLoadingState()}
-      
+
       <webview
         ref={webviewRef}
         src={currentUrl}

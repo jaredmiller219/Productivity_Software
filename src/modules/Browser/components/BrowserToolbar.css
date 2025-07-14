@@ -1,11 +1,14 @@
 .browser-toolbar {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 12px 16px;
   background-color: #f8f9fa;
   border-bottom: 1px solid #e9ecef;
   gap: 12px;
-  min-height: 48px;
+  height: 56px;
+  min-height: 56px;
+  max-height: 56px;
+  box-sizing: border-box;
 }
 
 .browser-navigation {
@@ -17,16 +20,20 @@
   background-color: #ffffff;
   border: 1px solid #dee2e6;
   border-radius: 6px;
-  padding: 8px 12px;
+  padding: 6px 8px;
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
   transition: all 0.2s ease;
-  min-width: 36px;
+  width: 36px;
   height: 36px;
+  max-width: 36px;
+  max-height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .nav-button:hover:not(.disabled) {
@@ -45,14 +52,7 @@
   background-color: #f8f9fa;
 }
 
-.nav-button.loading {
-  animation: spin 1s linear infinite;
-}
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
 
 .url-form {
   display: flex;
@@ -68,9 +68,12 @@
   position: relative;
   background-color: #ffffff;
   border: 1px solid #dee2e6;
-  border-radius: 24px;
+  border-radius: 18px;
   padding: 0 16px;
+  height: 36px;
+  max-height: 36px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 
 .url-input-container:focus-within {
@@ -79,8 +82,8 @@
 }
 
 .security-icon {
-  margin-right: 8px;
-  font-size: 14px;
+  margin-right: 10px;
+  font-size: 16px;
   opacity: 0.7;
 }
 
@@ -88,36 +91,33 @@
   flex: 1;
   border: none;
   outline: none;
-  padding: 10px 0;
-  font-size: 14px;
+  padding: 8px 0;
+  font-size: 16px;
   background: transparent;
+  height: 24px;
+  line-height: 24px;
 }
 
 .url-input::placeholder {
   color: #6c757d;
 }
 
-.loading-spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid #e9ecef;
-  border-top: 2px solid #007bff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-left: 8px;
-}
+
 
 .go-button {
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 6px;
-  padding: 8px 16px;
+  padding: 6px 12px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   transition: background-color 0.2s ease;
   height: 36px;
+  max-height: 36px;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .go-button:hover {
@@ -138,15 +138,19 @@
   background-color: #ffffff;
   border: 1px solid #dee2e6;
   border-radius: 6px;
-  padding: 8px;
+  padding: 6px;
   cursor: pointer;
   font-size: 16px;
   transition: all 0.2s ease;
   width: 36px;
   height: 36px;
+  max-width: 36px;
+  max-height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .action-button:hover {

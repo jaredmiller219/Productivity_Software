@@ -26,6 +26,7 @@ function Browser() {
     goBack,
     goForward,
     refresh,
+    stop,
     createNewTab,
     closeTab,
     switchTab,
@@ -66,6 +67,7 @@ function Browser() {
           onBack={goBack}
           onForward={goForward}
           onRefresh={refresh}
+          onStop={stop}
           onAddBookmark={addBookmark}
           onToggleBookmarks={handleToggleBookmarks}
         />

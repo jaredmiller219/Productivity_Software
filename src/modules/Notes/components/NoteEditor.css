@@ -25,24 +25,24 @@
   height: 100%;
 }
 
-.empty-state {
+.note-editor-empty .empty-state {
   text-align: center;
   color: #6c757d;
   max-width: 300px;
 }
 
-.empty-icon {
+.note-editor-empty .empty-icon {
   font-size: 48px;
   margin-bottom: 16px;
 }
 
-.empty-state h3 {
+.note-editor-empty .empty-state h3 {
   margin: 0 0 8px 0;
   font-size: 18px;
   font-weight: 600;
 }
 
-.empty-state p {
+.note-editor-empty .empty-state p {
   margin: 0;
   font-size: 14px;
   line-height: 1.5;

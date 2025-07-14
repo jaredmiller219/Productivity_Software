@@ -12,6 +12,7 @@ const BrowserToolbar = ({
   onBack,
   onForward,
   onRefresh,
+  onStop,
   onAddBookmark,
   onToggleBookmarks
 }) => {
@@ -72,12 +73,12 @@ const BrowserToolbar = ({
         >
           →
         </button>
-        <button 
-          onClick={onRefresh} 
-          className={`nav-button ${isLoading ? 'loading' : ''}`}
-          title="Refresh page"
+        <button
+          onClick={isLoading ? onStop : onRefresh}
+          className="nav-button"
+          title={isLoading ? "Stop loading" : "Refresh page"}
         >
-          {isLoading ? '⏳' : '↻'}
+          {isLoading ? '✕' : '↻'}
         </button>
       </div>
 
@@ -94,7 +95,7 @@ const BrowserToolbar = ({
             placeholder="Search or enter URL"
             spellCheck="false"
           />
-          {isLoading && <div className="loading-spinner"></div>}
+
         </div>
         <button type="submit" className="go-button" title="Navigate">
           Go

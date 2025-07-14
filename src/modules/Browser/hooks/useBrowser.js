@@ -7,7 +7,7 @@ import { useState, useCallback, useRef } from 'react';
 export const useBrowser = () => {
   const [url, setUrl] = useState("https://www.google.com");
   const [currentUrl, setCurrentUrl] = useState("https://www.google.com");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); // Start with false, only set true when actually navigating
   const [error, setError] = useState(null);
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -43,7 +43,7 @@ export const useBrowser = () => {
   // Navigate to URL
   const navigateToUrl = useCallback((targetUrl) => {
     const formattedUrl = formatUrl(targetUrl);
-    
+
     setCurrentUrl(formattedUrl);
     setUrl(formattedUrl);
     setError(null);
@@ -58,20 +58,41 @@ export const useBrowser = () => {
     setHistoryIndex(prev => prev + 1);
 
     // Update active tab
-    setTabs(prev => prev.map(tab => 
-      tab.id === activeTabId 
+    setTabs(prev => prev.map(tab =>
+      tab.id === activeTabId
         ? { ...tab, url: formattedUrl, title: "Loading..." }
         : tab
     ));
 
+    // Set a timeout to clear loading state if it gets stuck
+    const loadingTimeout = setTimeout(() => {
+      console.log("Loading timeout reached, clearing loading state");
+      setIsLoading(false);
+    }, 10000); // 10 second timeout
+
     if (webviewRef.current) {
       try {
         webviewRef.current.src = formattedUrl;
+
+        // Clear timeout when navigation starts successfully
+        const clearTimeoutOnLoad = () => {
+          clearTimeout(loadingTimeout);
+        };
+
+        // Store timeout reference for cleanup
+        webviewRef.current._loadingTimeout = loadingTimeout;
+        webviewRef.current._clearTimeoutOnLoad = clearTimeoutOnLoad;
+
       } catch (error) {
         console.error("Error navigating:", error);
         setError(`Failed to navigate: ${error.message}`);
         setIsLoading(false);
+        clearTimeout(loadingTimeout);
       }
+    } else {
+      // No webview available, clear loading immediately
+      setIsLoading(false);
+      clearTimeout(loadingTimeout);
     }
   }, [formatUrl, historyIndex, activeTabId]);
 
@@ -107,9 +128,41 @@ export const useBrowser = () => {
   const refresh = useCallback(() => {
     setIsLoading(true);
     setError(null);
-    
+
     if (webviewRef.current) {
-      webviewRef.current.reload();
+      try {
+        // For webview elements, we need to reload by setting the src again
+        const currentSrc = webviewRef.current.src || currentUrl;
+        webviewRef.current.src = currentSrc;
+      } catch (error) {
+        console.error("Error refreshing:", error);
+        setError(`Failed to refresh: ${error.message}`);
+        setIsLoading(false);
+      }
+    } else {
+      // Fallback: navigate to current URL
+      navigateToUrl(currentUrl);
+    }
+  }, [currentUrl, navigateToUrl]);
+
+  const stop = useCallback(() => {
+    console.log("Stopping page load");
+    setIsLoading(false);
+    setError(null);
+
+    if (webviewRef.current) {
+      try {
+        // Stop the webview from loading
+        webviewRef.current.stop();
+      } catch (error) {
+        console.error("Error stopping:", error);
+      }
+    }
+
+    // Clear any pending loading timeout
+    if (webviewRef.current?._loadingTimeout) {
+      clearTimeout(webviewRef.current._loadingTimeout);
+      webviewRef.current._loadingTimeout = null;
     }
   }, []);
 
@@ -180,14 +233,21 @@ export const useBrowser = () => {
 
   // Webview event handlers
   const handleWebviewLoad = useCallback(() => {
+    console.log("Webview load completed");
     setIsLoading(false);
     setError(null);
-    
+
+    // Clear any pending loading timeout
+    if (webviewRef.current?._loadingTimeout) {
+      clearTimeout(webviewRef.current._loadingTimeout);
+      webviewRef.current._loadingTimeout = null;
+    }
+
     // Update tab title
     if (webviewRef.current) {
       const title = webviewRef.current.getTitle() || "Untitled";
-      setTabs(prev => prev.map(tab => 
-        tab.id === activeTabId 
+      setTabs(prev => prev.map(tab =>
+        tab.id === activeTabId
           ? { ...tab, title }
           : tab
       ));
@@ -195,8 +255,15 @@ export const useBrowser = () => {
   }, [activeTabId]);
 
   const handleWebviewError = useCallback((errorEvent) => {
+    console.log("Webview load error:", errorEvent);
     setIsLoading(false);
     setError(`Failed to load page: ${errorEvent.errorDescription || 'Unknown error'}`);
+
+    // Clear any pending loading timeout
+    if (webviewRef.current?._loadingTimeout) {
+      clearTimeout(webviewRef.current._loadingTimeout);
+      webviewRef.current._loadingTimeout = null;
+    }
   }, []);
 
   // Get navigation state
@@ -225,6 +292,7 @@ export const useBrowser = () => {
     goBack,
     goForward,
     refresh,
+    stop,
     
     // Tab management
     createNewTab,

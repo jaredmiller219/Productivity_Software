@@ -12,6 +12,7 @@ This document outlines the comprehensive structure of the Dev Productivity Suite
 │   └── assets/               # Static images, icons, etc.
 ├── src/                      # Source code (organized by domain)
 ├── dist/                     # Built application files
+├── scripts/                  # Build and utility scripts
 ├── package.json              # Dependencies and scripts
 ├── README.md                 # Project documentation
 └── PROJECT_STRUCTURE.md      # This file
@@ -63,6 +64,51 @@ modules/
 │   └── types/              # Module type definitions
 ```
 
+## 📝 Notes Module (Enhanced)
+
+```
+modules/Notes/
+├── Notes.js                 # Main notes interface with theme support
+├── Notes.css                # Notes module styles with dark/light themes
+├── components/              # Notes components
+│   ├── NotesList.js        # Notes list with search and sorting
+│   ├── NotesList.css       # Notes list styles
+│   ├── NoteEditor.js       # Rich text note editor
+│   ├── NoteEditor.css      # Note editor styles
+│   ├── NotesSearch.js      # Advanced search component
+│   ├── NotesSearch.css     # Search component styles
+│   ├── RichTextEditor.js   # Rich text editing with markdown
+│   └── RichTextEditor.css  # Rich text editor styles
+├── hooks/                  # Notes-specific hooks
+│   ├── useNotes.js         # Main notes management hook
+│   └── useNotesTheme.js    # Theme management hook
+├── utils/                  # Notes utilities
+└── constants/              # Notes constants
+```
+
+## ⚡ Terminal Module (Enhanced)
+
+```
+modules/Terminal/
+├── SimpleTerminal.js        # Main terminal interface
+├── SimpleTerminal.css       # Terminal module styles
+├── components/              # Terminal components
+│   ├── TerminalDisplay/    # Terminal output display
+│   │   ├── TerminalDisplay.js    # Command output rendering
+│   │   └── TerminalDisplay.css   # Display styles (no animations)
+│   ├── TerminalInput/      # Command input handling
+│   │   ├── TerminalInput.js      # Input component
+│   │   └── TerminalInput.css     # Input styles
+│   └── TerminalHeader/     # Terminal header with stats
+│       ├── TerminalHeader.js     # Header component
+│       └── TerminalHeader.css    # Header styles
+├── hooks/                  # Terminal-specific hooks
+│   └── useTerminal.js      # Terminal state management
+├── utils/                  # Terminal utilities
+│   └── commandProcessor.js # Command processing logic
+└── constants/              # Terminal constants
+```
+
 ## 🎨 3D Modeling Module (Advanced)
 
 ```
@@ -103,7 +149,7 @@ modules/Modeling/
 └── types/                  # Modeling type definitions
 ```
 
-## 💻 IDE Module
+## 💻 IDE Module (Enhanced)
 
 ```
 modules/IDE/
@@ -113,32 +159,47 @@ modules/IDE/
 │   ├── editor/            # Code editor components
 │   ├── syntax/            # Syntax highlighting
 │   ├── themes/            # Editor themes
-│   └── plugins/           # IDE plugins
+│   ├── plugins/           # IDE plugins
+│   └── IDEToolbar/        # IDE toolbar with search
+│       ├── IDEToolbar.js  # Toolbar component with search functionality
+│       └── IDEToolbar.css # Toolbar styles
 ├── hooks/                 # IDE hooks
 ├── utils/                 # IDE utilities
 ├── constants/             # IDE constants
 └── types/                 # IDE types
 ```
 
-## 📝 Other Modules
+## 🌐 Browser Module
 
 ```
-modules/
-├── Notes/                 # Note-taking system
-│   ├── Notes.js          # Rich text editor
-│   ├── components/       # Note components
-│   └── utils/            # Note utilities
-├── Browser/              # Web browser
-│   ├── Browser.js        # Browser interface
-│   ├── components/       # Browser components
-│   └── utils/            # Browser utilities
-└── Terminal/             # Terminal emulator
-    ├── SimpleTerminal.js # Terminal interface
-    ├── components/       # Terminal components
-    └── utils/            # Terminal utilities
+modules/Browser/
+├── Browser.js              # Main browser interface
+├── Browser.css             # Browser styles
+├── components/             # Browser components
+│   ├── AddressBar/        # URL input and navigation
+│   ├── TabManager/        # Tab management
+│   └── WebView/           # Web content display
+├── hooks/                 # Browser hooks
+├── utils/                 # Browser utilities
+└── constants/             # Browser constants
 ```
 
 ## 🔧 Key Features by Module
+
+### Notes Module
+
+- **Advanced Search**: Multi-field search with filters, tags, categories, date ranges
+- **Rich Text Editor**: Markdown support, formatting toolbar, keyboard shortcuts
+- **Theme Support**: Light/dark mode toggle
+- **Flexible Layout**: Main area or right panel positioning
+- **Organization**: Search, sort, duplicate, and categorize notes
+
+### Terminal Module
+
+- **Clean Output**: No animations, customizable indentation
+- **Command History**: Persistent command history and statistics
+- **Header Stats**: Command count and uptime tracking
+- **Welcome Messages**: Indented initial messages for better UX
 
 ### 3D Modeling Module
 
@@ -152,30 +213,17 @@ modules/
 ### IDE Module
 
 - **Code Editor**: Monaco-based editor with syntax highlighting
+- **Advanced Search**: File and content search with dropdown results
 - **Multi-language Support**: JavaScript, Python, C++, and more
 - **Project Management**: File explorer, search, and navigation
 - **Debugging**: Integrated debugging tools
-- **Extensions**: Plugin system for additional functionality
-
-### Notes Module
-
-- **Rich Text**: Advanced text editing with formatting
-- **Organization**: Folders, tags, and search
-- **Collaboration**: Real-time editing and sharing
-- **Export**: Multiple export formats
 
 ### Browser Module
 
 - **Web Browsing**: Full-featured web browser
+- **Tab Management**: Multiple tabs with navigation
 - **Bookmarks**: Bookmark management and organization
-- **History**: Browsing history and search
 - **Developer Tools**: Integrated web development tools
-
-### Terminal Module
-
-- **Command Execution**: Full terminal emulator
-- **Multiple Shells**: Support for various shell environments
-- **Customization**: Themes and configuration options
 
 ## 🛠️ Technology Stack
 
@@ -211,8 +259,20 @@ npm run electron   # Start Electron in development
 
 ```bash
 npm run build           # Build React application
-npm run electron:build # Build Electron application
+npm run electron:build # Build Electron application (recommended)
 npm run dist           # Create distribution packages
+npm run cleanup        # Clean old builds and cache
+```
+
+### Build Scripts
+
+```
+scripts/
+├── build-info.mjs      # Build system information
+├── clean-build.mjs     # Clean build process
+├── cleanup-space.mjs   # Cleanup utility
+├── verify-build.mjs    # Build verification
+└── notarize.cjs        # macOS notarization
 ```
 
 ### Output
@@ -234,14 +294,25 @@ dist/
 5. **Accessibility**: WCAG-compliant UI with keyboard navigation
 6. **Responsive Design**: Adaptive layouts for different screen sizes
 7. **Professional Quality**: Industry-standard code organization and practices
+8. **Theme Support**: Consistent light/dark mode across modules
+9. **Flexible Layouts**: Adaptive UI for different panel configurations
 
 ## 🔄 Data Flow
 
-1. **App.js** manages global application state
-2. **Sidebar.js** handles module navigation
-3. **Workspace.js** renders the active module
-4. **Module components** manage domain-specific state
+1. **App.js** manages global application state and panel positioning
+2. **Sidebar.js** handles module navigation with context menus
+3. **Workspace.js** renders the active module with conditional layouts
+4. **Module components** manage domain-specific state and themes
 5. **Hooks** encapsulate complex logic and side effects
 6. **Utils** provide pure functions and utilities
 
-This architecture ensures maintainability, scalability, and professional-grade code organization suitable for a comprehensive productivity suite.
+## 🎨 UI/UX Features
+
+- **Flexible Panel System**: Notes can be positioned in main area, right panel, or hidden
+- **Context Menus**: Right-click functionality for enhanced navigation
+- **Theme Consistency**: Unified theming across all modules
+- **Responsive Design**: Adaptive layouts for different screen sizes
+- **Professional Styling**: Clean, modern interface with consistent spacing
+- **Keyboard Shortcuts**: Comprehensive keyboard navigation support
+
+This architecture ensures maintainability, scalability, and professional-grade code organization suitable for a comprehensive productivity suite with advanced search, theming, and layout flexibility.
