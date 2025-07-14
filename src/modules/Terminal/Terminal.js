@@ -18,6 +18,7 @@ function Terminal() {
   const [showSettings, setShowSettings] = useState(false);
   const [showThemeSelector, setShowThemeSelector] = useState(false);
   const [showTabSettings, setShowTabSettings] = useState(false);
+  const [showTestPopup, setShowTestPopup] = useState(false);
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [autocompletePosition, setAutocompletePosition] = useState({ x: 0, y: 0 });
@@ -42,6 +43,10 @@ function Terminal() {
     try {
       // Initialize xterm.js with current theme and settings
       const theme = TERMINAL_THEMES[currentTheme];
+      if (!theme) {
+        console.error(`Theme ${currentTheme} not found!`);
+        return;
+      }
       const term = new XTerm({
         cursorBlink: settings.cursorBlink,
         cursorStyle: settings.cursorStyle,
@@ -216,7 +221,6 @@ function Terminal() {
   };
 
   const handleThemeChange = (themeName) => {
-    console.log('Changing theme to:', themeName, TERMINAL_THEMES[themeName]);
     setCurrentTheme(themeName);
 
     // Apply theme to all terminals
@@ -224,8 +228,6 @@ function Terminal() {
       if (xtermRefs.current[tabId]?.term) {
         const theme = TERMINAL_THEMES[themeName];
         if (theme) {
-          console.log('Applying theme to terminal', tabId, theme);
-
           // Create theme object for xterm
           const xtermTheme = {
             background: theme.background,
@@ -261,7 +263,7 @@ function Terminal() {
             terminalRefs.current[tabId].style.backgroundColor = theme.background;
           }
         } else {
-          console.error('Theme not found:', themeName);
+          console.error(`Theme ${themeName} not found!`);
         }
       }
     });
@@ -550,7 +552,8 @@ function Terminal() {
       cwd: "~",
       status: "ready"
     };
-    setTabs([...tabs, newTab]);
+
+    setTabs(prevTabs => [...prevTabs, newTab]);
     setActiveTab(newId);
     setTabHistory(prev => ({ ...prev, [newId]: [] }));
     setTabSettings(prev => ({
@@ -624,15 +627,26 @@ function Terminal() {
   useEffect(() => {
     tabs.forEach(tab => {
       if (!initializedTabs.current.has(tab.id)) {
-        initTerminal(tab.id).then(() => {});
+        initTerminal(tab.id).then(() => {}).catch(error => {
+          console.error(`Error initializing terminal ${tab.id}:`, error);
+        });
       }
     });
   }, [tabs]);
 
   // Initialize terminal when tab becomes active
   useEffect(() => {
+    console.log('🎯 ACTIVE TAB EFFECT: Active tab changed to:', activeTab);
     if (activeTab) {
-      initTerminal(activeTab).then(() => {});
+      console.log(`🎯 ACTIVE TAB EFFECT: Ensuring terminal ${activeTab} is initialized...`);
+      console.log(`🎯 ACTIVE TAB EFFECT: Is tab ${activeTab} already initialized?`, initializedTabs.current.has(activeTab));
+      initTerminal(activeTab).then(() => {
+        console.log(`🎯 ACTIVE TAB EFFECT: Terminal ${activeTab} initialization completed`);
+      }).catch(error => {
+        console.error(`🎯 ACTIVE TAB EFFECT: Error initializing terminal ${activeTab}:`, error);
+      });
+    } else {
+      console.log('🎯 ACTIVE TAB EFFECT: No active tab set');
     }
   }, [activeTab]);
 
@@ -727,81 +741,14 @@ function Terminal() {
   return (
     <div className="terminal-container">
       <div className="terminal-header">
-        <div className="terminal-tabs">
-          {tabs.map((tab) => (
-            <div
-              key={tab.id}
-              className={`terminal-tab ${activeTab === tab.id ? "active" : ""}`}
-              onClick={() => setActiveTab(tab.id)}
-              onDoubleClick={() => {
-                const newName = prompt('Rename tab:', tab.name);
-                if (newName && newName.trim()) {
-                  renameTab(tab.id, newName.trim());
-                }
-              }}
-              onContextMenu={(e) => {
-                e.preventDefault();
-                // Show context menu for tab operations
-                const menu = document.createElement('div');
-                menu.className = 'tab-context-menu';
-                menu.innerHTML = `
-                  <div onclick="window.duplicateTab(${tab.id})">Duplicate Tab</div>
-                  <div onclick="window.renameTab(${tab.id})">Rename Tab</div>
-                  <div onclick="window.closeTab(${tab.id})">Close Tab</div>
-                `;
-                menu.style.position = 'fixed';
-                menu.style.left = e.clientX + 'px';
-                menu.style.top = e.clientY + 'px';
-                document.body.appendChild(menu);
-
-                // Add global functions for context menu
-                window.duplicateTab = (id) => {
-                  duplicateTab(id);
-                  document.body.removeChild(menu);
-                };
-                window.renameTab = (id) => {
-                  const newName = prompt('Rename tab:', tab.name);
-                  if (newName && newName.trim()) {
-                    renameTab(id, newName.trim());
-                  }
-                  document.body.removeChild(menu);
-                };
-                window.closeTab = (id) => {
-                  closeTab(id, { stopPropagation: () => {} });
-                  document.body.removeChild(menu);
-                };
-
-                // Remove menu on click outside
-                setTimeout(() => {
-                  document.addEventListener('click', () => {
-                    if (document.body.contains(menu)) {
-                      document.body.removeChild(menu);
-                    }
-                  }, { once: true });
-                }, 100);
-              }}
-            >
-              <span className="tab-icon">⚡</span>
-              <span className="tab-name">{tab.name}</span>
-              <span className="tab-status">{tab.status === 'running' ? '●' : '○'}</span>
-              <button
-                className="close-tab-btn"
-                onClick={(e) => closeTab(tab.id, e)}
-                title="Close tab"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-          <button className="add-tab-btn" onClick={addTab} title="New terminal (Ctrl+T)">
-            ⚡+ <span className="shortcut-hint">Ctrl+T</span>
-          </button>
-        </div>
 
         <div className="terminal-controls">
           <button
             className="control-btn theme-btn"
-            onClick={() => setShowThemeSelector(true)}
+            onClick={() => {
+              setShowTestPopup(true);
+              setShowThemeSelector(true);
+            }}
             title="Change Terminal Theme"
           >
             🎨 Themes
@@ -864,6 +811,52 @@ function Terminal() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Internal Tab Bar */}
+      <div className="internal-tab-bar">
+        <div className="tab-list">
+          {tabs.map((tab) => (
+            <div
+              key={tab.id}
+              className={`internal-tab ${activeTab === tab.id ? "active" : ""}`}
+              onClick={() => setActiveTab(tab.id)}
+              onDoubleClick={() => {
+                const newName = prompt('Rename tab:', tab.name);
+                if (newName && newName.trim()) {
+                  renameTab(tab.id, newName.trim());
+                }
+              }}
+              title={`${tab.name} - Click to switch, double-click to rename`}
+            >
+              <span className="internal-tab-icon">⚡</span>
+              <span className="internal-tab-name">{tab.name}</span>
+              <span className="internal-tab-status">
+                {tab.status === 'running' ? '●' : '○'}
+              </span>
+              {tabs.length > 1 && (
+                <button
+                  className="internal-close-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closeTab(tab.id, e);
+                  }}
+                  title="Close tab"
+                >
+                  ×
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <button
+          className="internal-add-tab-btn"
+          onClick={addTab}
+          title="Add new terminal tab (Ctrl+T)"
+        >
+          <span className="add-icon">+</span>
+        </button>
       </div>
 
       <TerminalSplitManager layout={splitLayout}>
@@ -929,6 +922,72 @@ function Terminal() {
         onSettingsChange={handleTabSettingsChange}
         availableThemes={Object.keys(TERMINAL_THEMES)}
       />
+
+      {/* Test Popup */}
+      {showTestPopup && (
+        <div
+          className="test-popup-overlay"
+          onClick={() => setShowTestPopup(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.8)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 2000
+          }}
+        >
+          <div
+            className="test-popup-content"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: 'linear-gradient(145deg, #1a1a1a, #2a2a2a)',
+              border: '2px solid #00ff41',
+              borderRadius: '12px',
+              padding: '40px',
+              textAlign: 'center',
+              color: '#00ff41',
+              boxShadow: '0 20px 60px rgba(0, 255, 65, 0.3)',
+              minWidth: '300px'
+            }}
+          >
+            <h2 style={{ margin: '0 0 20px 0', fontSize: '24px' }}>
+              🎉 Button Pressed!
+            </h2>
+            <p style={{ margin: '0 0 30px 0', fontSize: '16px', color: '#ccc' }}>
+              The theme button is working correctly!
+            </p>
+            <button
+              onClick={() => setShowTestPopup(false)}
+              style={{
+                background: 'linear-gradient(145deg, #00ff41, #00cc33)',
+                border: 'none',
+                color: '#000000',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.transform = 'scale(1.05)';
+                e.target.style.boxShadow = '0 4px 15px rgba(0, 255, 65, 0.4)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.transform = 'scale(1)';
+                e.target.style.boxShadow = 'none';
+              }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

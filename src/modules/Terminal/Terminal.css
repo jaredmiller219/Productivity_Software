@@ -446,6 +446,300 @@
     inset 0 2px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
+/* Floating Add Tab Button */
+.floating-add-tab-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(145deg, #56d364, #2ea043);
+  border: 2px solid #56d364;
+  color: #ffffff;
+  padding: 16px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+  box-shadow:
+    0 8px 25px rgba(86, 211, 100, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  user-select: none;
+}
+
+.floating-add-tab-btn:hover {
+  background: linear-gradient(145deg, #7ee787, #46d051);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow:
+    0 12px 35px rgba(86, 211, 100, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3);
+}
+
+.floating-add-tab-btn:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.floating-add-tab-btn .add-icon {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.floating-add-tab-btn .add-text {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Internal Tab Bar */
+.internal-tab-bar {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, #161b22 0%, #21262d 50%, #161b22 100%);
+  border-bottom: 1px solid rgba(240, 246, 252, 0.1);
+  padding: 8px 12px;
+  gap: 8px;
+  min-height: 40px;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.tab-list {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tab-list::-webkit-scrollbar {
+  display: none;
+}
+
+.internal-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(145deg, rgba(33, 38, 45, 0.6), rgba(22, 27, 34, 0.6));
+  border: 1px solid rgba(240, 246, 252, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  min-width: 120px;
+  max-width: 200px;
+  position: relative;
+  backdrop-filter: blur(10px);
+  color: #8b949e;
+  font-size: 12px;
+}
+
+.internal-tab:hover {
+  background: linear-gradient(145deg, rgba(88, 166, 255, 0.15), rgba(139, 233, 253, 0.1));
+  border-color: rgba(88, 166, 255, 0.3);
+  color: #f0f6fc;
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 12px rgba(88, 166, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.internal-tab.active {
+  background: linear-gradient(145deg, #58a6ff, #1f6feb);
+  border-color: #58a6ff;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 16px rgba(88, 166, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.internal-tab-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.internal-tab-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.internal-tab-status {
+  font-size: 8px;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.internal-close-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.internal-close-btn:hover {
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff6b6b;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.internal-add-tab-btn {
+  background: linear-gradient(145deg, rgba(86, 211, 100, 0.8), rgba(46, 160, 67, 0.8));
+  border: 1px solid rgba(86, 211, 100, 0.3);
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 32px;
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 2px 8px rgba(86, 211, 100, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.internal-add-tab-btn:hover {
+  background: linear-gradient(145deg, #56d364, #2ea043);
+  border-color: #56d364;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow:
+    0 6px 20px rgba(86, 211, 100, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3);
+}
+
+.internal-add-tab-btn:active {
+  transform: translateY(0) scale(1.02);
+}
+
+.internal-add-tab-btn .add-icon {
+  line-height: 1;
+}
+
+/* Floating Themes Button */
+.floating-themes-btn {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  background: linear-gradient(145deg, #f778ba, #d73a7b);
+  border: 2px solid #f778ba;
+  color: #ffffff;
+  padding: 16px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+  box-shadow:
+    0 8px 25px rgba(247, 120, 186, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  user-select: none;
+}
+
+.floating-themes-btn:hover {
+  background: linear-gradient(145deg, #ff7eb6, #e85aad);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow:
+    0 12px 35px rgba(247, 120, 186, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3);
+}
+
+.floating-themes-btn:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.floating-themes-btn .themes-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.floating-themes-btn .themes-text {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .internal-tab-bar {
+    padding: 6px 8px;
+    min-height: 36px;
+  }
+
+  .internal-tab {
+    min-width: 80px;
+    max-width: 120px;
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .internal-tab-name {
+    max-width: 60px;
+  }
+
+  .internal-add-tab-btn {
+    min-width: 32px;
+    height: 28px;
+    padding: 6px 8px;
+    font-size: 14px;
+  }
+
+  .floating-add-tab-btn {
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+
+  .floating-add-tab-btn .add-text {
+    display: none;
+  }
+
+  .floating-themes-btn {
+    bottom: 80px;
+    left: 20px;
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+
+  .floating-themes-btn .themes-text {
+    display: none;
+  }
+}
+
 /* Position shortcuts help relative to help button */
 .terminal-controls {
   position: relative;

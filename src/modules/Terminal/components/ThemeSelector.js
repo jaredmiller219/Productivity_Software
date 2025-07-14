@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TERMINAL_THEMES } from './TerminalThemes';
+import { TERMINAL_THEMES } from './TerminalThemes.js';
 import './ThemeSelector.css';
 
 const FONT_FAMILIES = [
@@ -18,6 +18,13 @@ const FONT_FAMILIES = [
 ];
 
 function ThemeSelector({ isVisible, onClose, currentTheme, onThemeChange, currentSettings, onSettingsChange }) {
+  console.log('🎨 THEME SELECTOR: Component rendered with props:', {
+    isVisible,
+    currentTheme,
+    currentSettings,
+    availableThemes: Object.keys(TERMINAL_THEMES)
+  });
+
   const [selectedTheme, setSelectedTheme] = useState(currentTheme);
   const [previewTheme, setPreviewTheme] = useState(null);
   const [activeTab, setActiveTab] = useState('themes');
@@ -27,6 +34,13 @@ function ThemeSelector({ isVisible, onClose, currentTheme, onThemeChange, curren
     lineHeight: 1.2,
     letterSpacing: 0,
     ...currentSettings
+  });
+
+  console.log('🎨 THEME SELECTOR: Component state:', {
+    selectedTheme,
+    previewTheme,
+    activeTab,
+    fontSettings
   });
 
   useEffect(() => {
@@ -39,18 +53,36 @@ function ThemeSelector({ isVisible, onClose, currentTheme, onThemeChange, curren
     setSelectedTheme(currentTheme);
   }, [currentTheme]);
 
-  if (!isVisible) return null;
+  if (!isVisible) {
+    console.log('🎨 THEME SELECTOR: Component not visible, returning null');
+    return null;
+  }
+
+  console.log('🎨 THEME SELECTOR: Component is visible, rendering...');
 
   const handleThemeSelect = (themeName) => {
+    console.log('🎨 THEME SELECTOR: Theme selected:', themeName);
+    console.log('🎨 THEME SELECTOR: Theme object:', TERMINAL_THEMES[themeName]);
     setSelectedTheme(themeName);
     setPreviewTheme(themeName);
   };
 
   const handleApply = () => {
+    console.log('🎨 THEME SELECTOR: Apply button clicked');
+    console.log('🎨 THEME SELECTOR: Applying theme:', selectedTheme);
+    console.log('🎨 THEME SELECTOR: Applying font settings:', fontSettings);
+    console.log('🎨 THEME SELECTOR: onThemeChange function:', onThemeChange);
+    console.log('🎨 THEME SELECTOR: onSettingsChange function:', onSettingsChange);
+
     onThemeChange(selectedTheme);
+    console.log('🎨 THEME SELECTOR: Theme change called');
+
     if (onSettingsChange) {
       onSettingsChange(fontSettings);
+      console.log('🎨 THEME SELECTOR: Settings change called');
     }
+
+    console.log('🎨 THEME SELECTOR: Closing theme selector');
     onClose();
   };
 
