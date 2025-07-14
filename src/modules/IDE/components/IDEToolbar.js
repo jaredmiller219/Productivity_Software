@@ -12,6 +12,7 @@ const IDEToolbar = ({
 }) => {
   const [showStats, setShowStats] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const fileTemplates = [
     { name: 'HTML5 Template', extension: 'html', content: `<!DOCTYPE html>
@@ -92,80 +93,59 @@ Your content here...` }
 
   return (
     <div className="ide-toolbar">
-      <div className="toolbar-section">
-        <div className="file-actions">
-          <div className="dropdown">
-            <button 
-              className="toolbar-btn primary"
-              onClick={() => setShowTemplates(!showTemplates)}
-              title="Create new file from template"
-            >
-              📄 New
-            </button>
-            {showTemplates && (
-              <div className="dropdown-menu">
-                <div className="dropdown-header">File Templates</div>
-                {fileTemplates.map((template, index) => (
-                  <button
-                    key={index}
-                    className="dropdown-item"
-                    onClick={() => handleTemplateSelect(template)}
-                  >
-                    <span className="template-name">{template.name}</span>
-                    <span className="template-ext">.{template.extension}</span>
-                  </button>
-                ))}
-                <div className="dropdown-separator"></div>
-                <button
-                  className="dropdown-item"
-                  onClick={handleNewFile}
-                >
-                  <span className="template-name">Empty File</span>
-                  <span className="template-ext">custom</span>
-                </button>
-              </div>
+      {/* Empty left section for spacing */}
+      <div className="toolbar-section toolbar-left">
+      </div>
+
+      {/* Search bar in the center */}
+      <div className="toolbar-section toolbar-center">
+        <div className="search-container">
+          <div className="search-input-wrapper">
+            <span className="search-icon">🔍</span>
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search files, functions, variables..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' && onSearch) {
+                  onSearch(searchQuery);
+                }
+              }}
+            />
+            {searchQuery && (
+              <button
+                className="search-clear"
+                onClick={() => setSearchQuery('')}
+                title="Clear search"
+              >
+                ✕
+              </button>
             )}
           </div>
-
-          <button 
-            className="toolbar-btn"
-            onClick={onSave}
-            title="Save current file (Ctrl+S)"
-          >
-            💾 Save
-          </button>
         </div>
       </div>
 
-      <div className="toolbar-section">
-        <div className="search-actions">
-          <button 
-            className={`toolbar-btn ${isSearchVisible ? 'active' : ''}`}
-            onClick={onToggleSearch}
-            title="Toggle search in files"
-          >
-            🔍 Search
-          </button>
-        </div>
-      </div>
-
-      <div className="toolbar-section">
-        <div className="project-info">
+      {/* Small buttons on the right */}
+      <div className="toolbar-section toolbar-right">
+        <div className="right-controls">
           {activeFile && (
-            <div className="active-file-info">
-              <span className="file-indicator">📄</span>
-              <span className="file-name">{activeFile.name}</span>
-              {activeFile.isModified && <span className="modified-dot">●</span>}
+            <div className="active-file-compact">
+              <span className="file-name-compact" title={activeFile.name}>
+                {activeFile.name}
+                {activeFile.isModified && <span className="modified-dot">●</span>}
+              </span>
             </div>
           )}
-          
+
           <div className="dropdown">
-            <button 
-              className="toolbar-btn stats-btn"
+            <button
+              className="toolbar-btn-small stats-btn"
               onClick={() => setShowStats(!showStats)}
               title="Project statistics"
             >
-              📊 Stats
+              📊
             </button>
             {showStats && (
               <div className="dropdown-menu stats-menu">
@@ -205,8 +185,52 @@ Your content here...` }
               </div>
             )}
           </div>
+
+          <div className="dropdown">
+            <button
+              className="toolbar-btn-small primary"
+              onClick={() => setShowTemplates(!showTemplates)}
+              title="File actions"
+            >
+              📄
+            </button>
+            {showTemplates && (
+              <div className="dropdown-menu">
+                <div className="dropdown-header">File Actions</div>
+                <button
+                  className="dropdown-item"
+                  onClick={onSave}
+                >
+                  <span className="template-name">💾 Save File</span>
+                  <span className="template-ext">Ctrl+S</span>
+                </button>
+                <div className="dropdown-separator"></div>
+                <div className="dropdown-header">New File Templates</div>
+                {fileTemplates.map((template, index) => (
+                  <button
+                    key={index}
+                    className="dropdown-item"
+                    onClick={() => handleTemplateSelect(template)}
+                  >
+                    <span className="template-name">{template.name}</span>
+                    <span className="template-ext">.{template.extension}</span>
+                  </button>
+                ))}
+                <div className="dropdown-separator"></div>
+                <button
+                  className="dropdown-item"
+                  onClick={handleNewFile}
+                >
+                  <span className="template-name">Empty File</span>
+                  <span className="template-ext">custom</span>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
+
+
     </div>
   );
 };

@@ -156,8 +156,7 @@
   padding: 8px 12px;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 60px;
-  height: 60px;
+  min-width: 400px;
   gap: 4px;
 }
 
