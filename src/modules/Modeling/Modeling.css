@@ -41,17 +41,6 @@
 
 /* Enhanced styling for Blender-like appearance */
 
-.modeling-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #0078d4 0%, #005a9e 50%, #0078d4 100%);
-  z-index: 1001;
-}
-
 /* Responsive design improvements */
 
 @media (max-width: 1200px) {
