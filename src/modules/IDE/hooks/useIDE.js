@@ -6,9 +6,22 @@ import { useGlobalState } from '../../../shared/hooks/useGlobalState.js';
  * @returns {Object} IDE state and operations
  */
 export const useIDE = () => {
-  // Use global state management for IDE
-  const { state, updateState } = useGlobalState('ide', {
-    files: [
+  // Load saved files from localStorage or use defaults
+  const getSavedFiles = () => {
+    try {
+      const savedFiles = localStorage.getItem('ide-files');
+      if (savedFiles) {
+        const parsedFiles = JSON.parse(savedFiles);
+        if (parsedFiles && parsedFiles.length > 0) {
+          return parsedFiles;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load saved files:', error);
+    }
+
+    // Return default files if no saved files
+    return [
       {
         id: 1,
         name: "index.html",
@@ -29,7 +42,7 @@ export const useIDE = () => {
 </html>`,
         lastModified: Date.now(),
         isModified: false
-        },
+      },
       {
         id: 2,
         name: "styles.css",
@@ -40,19 +53,18 @@ body {
   margin: 0;
   padding: 20px;
   background-color: #f5f5f5;
-  line-height: 1.6;
+  color: #333;
 }
 
 h1 {
-  color: #333;
+  color: #2c3e50;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 p {
-  color: #666;
-  text-align: center;
-  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 15px;
 }`,
         lastModified: Date.now(),
         isModified: false
@@ -60,23 +72,23 @@ p {
       {
         id: 3,
         name: "script.js",
-        type: "js",
-        content: `// Main application script
+        type: "javascript",
+        content: `// Welcome to your new project!
+console.log('Hello World!');
+
+// Add your JavaScript code here
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Page loaded successfully!');
-
-  // Add some interactivity
-  const heading = document.querySelector('h1');
-  if (heading) {
-    heading.addEventListener('click', function() {
-      this.style.color = this.style.color === 'blue' ? '#333' : 'blue';
-    });
-  }
 });`,
         lastModified: Date.now(),
         isModified: false
-      },
-    ],
+      }
+    ];
+  };
+
+  // Use global state management for IDE
+  const { state, updateState } = useGlobalState('ide', {
+    files: getSavedFiles(),
     activeFile: null,
     editorContent: '',
     searchQuery: '',
@@ -85,6 +97,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Extract state values
   const { files, activeFile, editorContent, searchQuery, isSearchVisible } = state;
+
+
+
+  // Save files to localStorage whenever files change
+  useEffect(() => {
+    if (files && files.length > 0) {
+      try {
+        localStorage.setItem('ide-files', JSON.stringify(files));
+      } catch (error) {
+        console.error('Failed to save files:', error);
+      }
+    }
+  }, [files]);
 
   // Tab state management - remembers each tab's current state
   const [tabStates, setTabStates] = useState({});
