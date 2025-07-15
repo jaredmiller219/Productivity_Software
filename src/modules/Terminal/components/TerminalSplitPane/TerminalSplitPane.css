@@ -1,0 +1,54 @@
+.terminal-split-manager {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+.terminal-split-horizontal {
+  flex-direction: row;
+}
+
+.terminal-split-vertical {
+  flex-direction: column;
+}
+
+.terminal-split-single {
+  flex-direction: column;
+}
+
+.terminal-split-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  min-height: 100px;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+}
+
+.terminal-split-pane:not(:last-child) {
+  border-right: 1px solid rgba(240, 246, 252, 0.1);
+}
+
+.terminal-split-vertical .terminal-split-pane:not(:last-child) {
+  border-right: none;
+  border-bottom: 1px solid rgba(240, 246, 252, 0.1);
+}
+
+.terminal-split-resizer {
+  background: rgba(240, 246, 252, 0.1);
+  cursor: col-resize;
+  width: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.terminal-split-resizer:hover {
+  background: rgba(88, 166, 255, 0.3);
+}
+
+.terminal-split-vertical .terminal-split-resizer {
+  cursor: row-resize;
+  height: 2px;
+  width: auto;
+}

@@ -214,3 +214,22 @@ ipcMain.on("read-file", (event, { path }) => {
     event.sender.send("file-opened", { path, content: data });
   });
 });
+
+// Handle save dialog with invoke/handle pattern
+ipcMain.handle('show-save-dialog', async (event, options) => {
+  const result = await dialog.showSaveDialog(options);
+  return result;
+});
+
+// Handle file writing with invoke/handle pattern
+ipcMain.handle('write-file', async (event, filePath, data) => {
+  return new Promise((resolve, reject) => {
+    writeFile(filePath, data, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ success: true, path: filePath });
+      }
+    });
+  });
+});

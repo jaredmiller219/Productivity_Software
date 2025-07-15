@@ -1,6 +1,7 @@
 import React from 'react';
 import Notes from '../../modules/Notes/Notes.js';
 import SimpleTerminal from '../../modules/Terminal/SimpleTerminal.js';
+import Terminal from '../../modules/Terminal/Terminal.js';
 import Browser from '../../modules/Browser/Browser.js';
 import IDE from '../../modules/IDE/IDE.js';
 import Modeling from '../../modules/Modeling/Modeling.js';
@@ -13,6 +14,8 @@ function Workspace({ activeModule, showNotes, onNotesCountChange }) {
         return showNotes ? <Notes onNotesCountChange={onNotesCountChange} /> : <Modeling />;
       case 'terminal':
         return <SimpleTerminal />;
+      case 'debug-terminal':
+        return <Terminal />;
       case 'browser':
         return <Browser />;
       case 'ide':

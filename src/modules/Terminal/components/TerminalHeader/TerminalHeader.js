@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './TerminalHeader.css';
 
-const TerminalHeader = ({ 
-  onClear, 
-  onToggleTheme, 
-  onExport, 
+const TerminalHeader = ({
+  onClear,
+  onToggleTheme,
+  onExport,
   stats,
-  theme = 'dark' 
+  theme = 'dark',
+  onShowThemes,
+  onShowSettings,
+  onShowHelp
 }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showStats, setShowStats] = useState(false);
@@ -43,6 +46,32 @@ const TerminalHeader = ({
     }
   };
 
+  const handleExport = async () => {
+    try {
+      const exportData = {
+        timestamp: new Date().toISOString(),
+        theme,
+        stats: stats || {},
+        // Add any other terminal data you want to export
+      };
+
+      // Use Electron's save dialog
+      const result = await window.electronAPI.showSaveDialog({
+        defaultPath: `terminal-session-${Date.now()}.json`,
+        filters: [
+          { name: 'JSON Files', extensions: ['json'] },
+          { name: 'All Files', extensions: ['*'] }
+        ]
+      });
+
+      if (!result.canceled && result.filePath) {
+        await window.electronAPI.writeFile(result.filePath, JSON.stringify(exportData, null, 2));
+      }
+    } catch (error) {
+      console.error('Export failed:', error);
+    }
+  };
+
   return (
     <div className={`terminal-header ${theme}`}>
       <div className="header-left">
@@ -50,9 +79,9 @@ const TerminalHeader = ({
           <span className="terminal-icon">⚡</span>
           <span>Terminal</span>
         </div>
-        <div className="terminal-time">
+        {/* <div className="terminal-time">
           {formatTime(currentTime)}
-        </div>
+        </div> */}
       </div>
 
       <div className="header-center">
@@ -70,37 +99,62 @@ const TerminalHeader = ({
 
       <div className="header-right">
         <div className="header-controls">
-          <button
-            className="header-btn"
-            onClick={() => setShowStats(!showStats)}
-            title="Toggle stats"
-          >
-            📊
-          </button>
-          
-          <button
-            className="header-btn"
-            onClick={onToggleTheme}
-            title="Toggle theme"
-          >
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-          
-          <button
-            className="header-btn"
-            onClick={onExport}
-            title="Export session"
-          >
-            📤
-          </button>
-          
-          <button
-            className="header-btn clear-btn"
-            onClick={onClear}
-            title="Clear terminal"
-          >
-            🗑️
-          </button>
+          {/* Info & Stats Group */}
+          <div className="control-group">
+            <button
+              className="header-btn"
+              onClick={() => setShowStats(!showStats)}
+              title="Toggle stats"
+            >
+              📊
+            </button>
+
+            <button
+              className="header-btn"
+              onClick={onShowHelp}
+              title="Help & shortcuts"
+            >
+              ❓
+            </button>
+          </div>
+
+          {/* Customization Group */}
+          <div className="control-group">
+            <button
+              className="header-btn"
+              onClick={onShowThemes}
+              title="Terminal themes"
+            >
+              🎨
+            </button>
+
+            <button
+              className="header-btn"
+              onClick={onShowSettings}
+              title="Terminal settings"
+            >
+              ⚙️
+            </button>
+          </div>
+
+          {/* Actions Group */}
+          <div className="control-group">
+            <button
+              className="header-btn"
+              onClick={handleExport}
+              title="Export session"
+            >
+              📤
+            </button>
+
+            <button
+              className="header-btn clear-btn"
+              onClick={onClear}
+              title="Clear terminal"
+            >
+              🗑️
+            </button>
+          </div>
         </div>
       </div>
 

@@ -40,3 +40,301 @@
     transition: none !important;
   }
 }
+
+/* Simple Tab Bar - matches SimpleTerminal styling */
+.simple-tab-bar {
+  display: flex;
+  align-items: center;
+  background-color: #2d2d2d;
+  border-bottom: 1px solid #3e3e3e;
+  padding: 4px 8px;
+  gap: 4px;
+}
+
+.terminal-container.light .simple-tab-bar {
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.simple-tab-list {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+}
+
+.simple-tab {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  background-color: #3e3e3e;
+  border: 1px solid #555;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  gap: 6px;
+  min-width: 80px;
+}
+
+.terminal-container.light .simple-tab {
+  background-color: #e0e0e0;
+  border: 1px solid #c0c0c0;
+  color: #333;
+}
+
+.simple-tab.active {
+  background-color: #007acc;
+  border-color: #007acc;
+  color: white;
+}
+
+.terminal-container.light .simple-tab.active {
+  background-color: #0078d4;
+  border-color: #0078d4;
+  color: white;
+}
+
+.simple-tab:hover:not(.active) {
+  background-color: #4e4e4e;
+}
+
+.terminal-container.light .simple-tab:hover:not(.active) {
+  background-color: #d0d0d0;
+}
+
+.simple-tab-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.simple-close-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.simple-close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.simple-add-tab-btn {
+  background-color: #3e3e3e;
+  border: 1px solid #555;
+  color: #d4d4d4;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  min-width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.terminal-container.light .simple-add-tab-btn {
+  background-color: #e0e0e0;
+  border: 1px solid #c0c0c0;
+  color: #333;
+}
+
+.simple-add-tab-btn:hover {
+  background-color: #4e4e4e;
+}
+
+.terminal-container.light .simple-add-tab-btn:hover {
+  background-color: #d0d0d0;
+}
+
+/* Simple Modal Styles */
+.simple-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.simple-modal {
+  background-color: #2d2d2d;
+  border: 1px solid #555;
+  border-radius: 8px;
+  min-width: 400px;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.terminal-container.light .simple-modal {
+  background-color: #f0f0f0;
+  border: 1px solid #c0c0c0;
+  color: #333;
+}
+
+.simple-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #555;
+  background-color: #3e3e3e;
+}
+
+.terminal-container.light .simple-modal-header {
+  background-color: #e0e0e0;
+  border-bottom: 1px solid #c0c0c0;
+}
+
+.simple-modal-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #d4d4d4;
+}
+
+.terminal-container.light .simple-modal-header h3 {
+  color: #333;
+}
+
+.simple-modal-header button {
+  background: none;
+  border: none;
+  color: #d4d4d4;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.terminal-container.light .simple-modal-header button {
+  color: #333;
+}
+
+.simple-modal-header button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.simple-modal-content {
+  padding: 20px;
+}
+
+/* Theme Options */
+.theme-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.theme-option {
+  padding: 12px 16px;
+  background-color: #3e3e3e;
+  border: 1px solid #555;
+  border-radius: 6px;
+  color: #d4d4d4;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.terminal-container.light .theme-option {
+  background-color: #e0e0e0;
+  border: 1px solid #c0c0c0;
+  color: #333;
+}
+
+.theme-option:hover {
+  background-color: #4e4e4e;
+  border-color: #007acc;
+}
+
+.terminal-container.light .theme-option:hover {
+  background-color: #d0d0d0;
+  border-color: #0078d4;
+}
+
+.theme-option.active {
+  background-color: #007acc;
+  border-color: #007acc;
+  color: white;
+}
+
+.terminal-container.light .theme-option.active {
+  background-color: #0078d4;
+  border-color: #0078d4;
+  color: white;
+}
+
+/* Settings and Help Sections */
+.settings-section,
+.help-section {
+  margin-bottom: 20px;
+}
+
+.settings-section h4,
+.help-section h4 {
+  margin: 0 0 12px 0;
+  color: #007acc;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.terminal-container.light .settings-section h4,
+.terminal-container.light .help-section h4 {
+  color: #0078d4;
+}
+
+.settings-section p {
+  margin: 8px 0;
+  font-size: 13px;
+  color: #b0b0b0;
+}
+
+.terminal-container.light .settings-section p {
+  color: #666;
+}
+
+.help-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.help-section li {
+  margin: 6px 0;
+  font-size: 13px;
+  color: #b0b0b0;
+}
+
+.terminal-container.light .help-section li {
+  color: #666;
+}
+
+.help-section code {
+  background-color: #1e1e1e;
+  color: #00ff41;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.terminal-container.light .help-section code {
+  background-color: #f5f5f5;
+  color: #d73a49;
+}

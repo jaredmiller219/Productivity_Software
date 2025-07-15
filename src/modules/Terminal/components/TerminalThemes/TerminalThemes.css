@@ -1,0 +1,75 @@
+.terminal-themes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+  border-radius: 8px;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+}
+
+.theme-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-preview:hover {
+  border-color: rgba(88, 166, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.theme-preview.active {
+  border-color: #58a6ff;
+  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.3);
+}
+
+.theme-name {
+  font-weight: 600;
+  color: #f0f6fc;
+  font-size: 14px;
+}
+
+.theme-colors {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.theme-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 246, 252, 0.2);
+}
+
+.theme-description {
+  font-size: 12px;
+  color: #8b949e;
+  line-height: 1.4;
+}
+
+.themes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.theme-category {
+  margin-bottom: 24px;
+}
+
+.theme-category-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #f0f6fc;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(240, 246, 252, 0.1);
+}

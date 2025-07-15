@@ -113,15 +113,32 @@ function BrowserSettings({ settings = DEFAULT_SETTINGS, onSettingsChange, isVisi
     setLocalSettings(DEFAULT_SETTINGS);
   };
 
-  const handleExportSettings = () => {
-    const dataStr = JSON.stringify(localSettings, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'browser-settings.json';
-    link.click();
-    URL.revokeObjectURL(url);
+  const handleExportSettings = async () => {
+    try {
+      const result = await window.electronAPI.showSaveDialog({
+        defaultPath: 'browser-settings.json',
+        filters: [
+          { name: 'JSON Files', extensions: ['json'] },
+          { name: 'All Files', extensions: ['*'] }
+        ]
+      });
+
+      if (!result.canceled && result.filePath) {
+        await window.electronAPI.writeFile(result.filePath, JSON.stringify(localSettings, null, 2));
+        console.log('Browser settings exported successfully to:', result.filePath);
+      }
+    } catch (error) {
+      console.error('Export failed:', error);
+      // Fallback to browser download if Electron API is not available
+      const dataStr = JSON.stringify(localSettings, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'browser-settings.json';
+      link.click();
+      URL.revokeObjectURL(url);
+    }
   };
 
   const handleImportSettings = (event) => {

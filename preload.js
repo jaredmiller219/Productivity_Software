@@ -18,5 +18,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onFileSaved: (callback) => ipcRenderer.on('file-saved', callback),
   
   // Remove listeners
-  removeAllListeners: (channel) => ipcRenderer.removeAllListeners(channel)
+  removeAllListeners: (channel) => ipcRenderer.removeAllListeners(channel),
+  showSaveDialog: (options) => ipcRenderer.invoke('show-save-dialog', options),
+  writeFile: (filePath, data) => ipcRenderer.invoke('write-file', filePath, data)
 });

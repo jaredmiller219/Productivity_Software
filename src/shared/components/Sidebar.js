@@ -6,6 +6,7 @@ function Sidebar({ activeModule, setActiveModule, notesPosition, onNotesPosition
   const modules = [
     { id: "notes", name: "Notes", icon: "📝" },
     { id: "terminal", name: "Terminal", icon: "⚡" },
+    { id: "debug-terminal", name: "Debug Terminal", icon: "🔧" },
     { id: "browser", name: "Browser", icon: "🌐" },
     { id: "ide", name: "IDE", icon: "💻" },
     { id: "modeling", name: "3D Modeling", icon: "🎨" },
