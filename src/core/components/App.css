@@ -126,3 +126,330 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
+
+/* Debug state toggle button */
+.debug-state-toggle {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+}
+
+.state-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 11px;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.state-toggle-btn:hover {
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+  border-color: #666;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.state-toggle-btn.enabled {
+  border-color: #4CAF50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.state-toggle-btn.enabled:hover {
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.state-toggle-btn.disabled {
+  border-color: #f44336;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+}
+
+.state-toggle-btn.disabled:hover {
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+}
+
+.toggle-icon {
+  font-size: 14px;
+}
+
+.toggle-text {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* State toggle confirmation dialog */
+.state-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.state-dialog {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 1px solid #444;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  max-width: 500px;
+  width: 90%;
+  color: #fff;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+}
+
+.state-dialog-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #444;
+}
+
+.state-dialog-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #f0c674;
+}
+
+.state-dialog-content {
+  padding: 24px;
+}
+
+.state-dialog-content p {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #ccc;
+}
+
+.state-dialog-question {
+  font-weight: 600;
+  color: #fff !important;
+  margin-bottom: 16px !important;
+}
+
+.state-dialog-note {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  border-left: 4px solid #f0c674;
+}
+
+.state-dialog-note p {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #ccc;
+  text-align: left;
+}
+
+.state-dialog-note p:last-child {
+  margin-bottom: 0;
+}
+
+.state-dialog-note strong {
+  color: #f0c674;
+  font-weight: 600;
+}
+
+.state-dialog-options {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.state-dialog-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 16px;
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  flex: 1;
+  min-height: 80px;
+}
+
+.btn-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.state-dialog-btn:hover {
+  background: linear-gradient(135deg, #3a3a3a 0%, #4a4a4a 100%);
+  border-color: #666;
+  transform: translateY(-1px);
+}
+
+.state-dialog-btn.clear-btn:hover {
+  border-color: #f44336;
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+.state-dialog-btn.keep-btn:hover {
+  border-color: #4CAF50;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-icon {
+  font-size: 16px;
+}
+
+.btn-text {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.btn-hint {
+  font-size: 12px;
+  color: #999;
+  line-height: 1.4;
+  text-align: left;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+.state-dialog-cancel {
+  background: none;
+  border: 1px solid #555;
+  border-radius: 6px;
+  color: #ccc;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.state-dialog-cancel:hover {
+  background: #333;
+  border-color: #666;
+  color: #fff;
+}
+
+/* Option box pattern styles */
+.option-box-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+  border: 1px solid #555;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.option-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.option-checkbox:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.option-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #4CAF50;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.option-text {
+  font-size: 14px;
+  color: #fff;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.option-box-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.option-box-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  min-width: 140px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.option-box-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3a3a3a 0%, #4a4a4a 100%);
+  border-color: #666;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.apply-btn {
+  border-color: #4CAF50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.apply-btn:hover:not(:disabled) {
+  border-color: #4CAF50;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.apply-btn:disabled {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-color: #333;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.cancel-btn {
+  border-color: #f44336;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+}
+
+.cancel-btn:hover {
+  border-color: #f44336;
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+}

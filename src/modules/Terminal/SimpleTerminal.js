@@ -1,20 +1,59 @@
 import React, { useState } from "react";
+import { flushSync } from 'react-dom';
+import { useGlobalState } from '../../shared/hooks/useGlobalState.js';
 import TerminalHeader from "./components/TerminalHeader/TerminalHeader.js";
 import TerminalDisplay from "./components/TerminalDisplay/TerminalDisplay.js";
 import TerminalInput from "./components/TerminalInput/TerminalInput.js";
 import "./SimpleTerminal.css";
 
 function SimpleTerminal() {
-  const [theme, setTheme] = useState('dark');
-  const [tabs, setTabs] = useState([{ id: 1, name: "Terminal 1" }]);
-  const [activeTab, setActiveTab] = useState(1);
-  const [showThemes, setShowThemes] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const [showHelp, setShowHelp] = useState(false);
-  const [showDebug, setShowDebug] = useState(false);
-  const [debugPosition, setDebugPosition] = useState({ x: 50, y: 50 });
-  const [debugSize, setDebugSize] = useState({ width: 400, height: 500 });
-  const [debugMinimized, setDebugMinimized] = useState(false);
+  // Create a separate terminal state for each tab
+  const createNewTerminalState = () => {
+    return {
+      history: [
+        { type: "output", content: "Welcome to Dev Suite Terminal", timestamp: Date.now() },
+        { type: "output", content: "Type 'help' for available commands", timestamp: Date.now() }
+      ],
+      input: "",
+      historyIndex: -1,
+      commandCount: 0
+    };
+  };
+
+  // Use global state management for terminal
+  const { state, updateState } = useGlobalState('terminal', {
+    theme: 'dark',
+    tabs: [{ id: 1, name: "Terminal 1" }],
+    activeTab: 1,
+    showThemes: false,
+    showSettings: false,
+    showHelp: false,
+    showDebug: false,
+    debugPosition: { x: 50, y: 50 },
+    debugSize: { width: 400, height: 500 },
+    debugMinimized: false,
+    tabStates: {
+      1: createNewTerminalState()
+    }
+  });
+
+  // Extract state values
+  const { theme, tabs, activeTab, showThemes, showSettings, showHelp, showDebug, debugPosition, debugSize, debugMinimized, tabStates } = state;
+
+  // State setter wrappers for global state
+  const setTheme = (value) => updateState({ theme: typeof value === 'function' ? value(theme) : value });
+  const setTabs = (value) => updateState({ tabs: typeof value === 'function' ? value(tabs) : value });
+  const setActiveTab = (value) => updateState({ activeTab: value });
+  const setShowThemes = (value) => updateState({ showThemes: value });
+  const setShowSettings = (value) => updateState({ showSettings: value });
+  const setShowHelp = (value) => updateState({ showHelp: value });
+  const setShowDebug = (value) => updateState({ showDebug: value });
+  const setDebugPosition = (value) => updateState({ debugPosition: value });
+  const setDebugSize = (value) => updateState({ debugSize: value });
+  const setDebugMinimized = (value) => updateState({ debugMinimized: value });
+  const setTabStates = (value) => updateState({ tabStates: typeof value === 'function' ? value(tabStates) : value });
+
+  // Local state for drag/resize (don't persist these)
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
@@ -22,30 +61,32 @@ function SimpleTerminal() {
   const debugContentRef = React.useRef(null);
   const tabStatesRef = React.useRef(null);
 
-  // Create a separate terminal state for each tab
-  const createNewTerminalState = () => {
-    return {
-      history: [
-        { type: "output", content: "Welcome to Dev Suite Terminal", timestamp: Date.now() },
-        { type: "output", content: "This is a simulated terminal environment.", timestamp: Date.now() },
-        { type: "output", content: 'Type "help" for available commands.', timestamp: Date.now() },
-      ],
-      input: '',
-      historyIndex: -1,
-      commandCount: 0
-    };
-  };
-
-  // Initialize with first tab
-  const [tabStates, setTabStates] = useState({
-    1: createNewTerminalState()
-  });
-
   // Get current tab's state
   const currentTabState = tabStates[activeTab] || createNewTerminalState();
 
+  // Local state for input (for immediate UI updates)
+  const [localInput, setLocalInput] = useState(currentTabState.input || "");
+
+  // Ensure the current tab state exists in global state
+  React.useEffect(() => {
+    if (!tabStates[activeTab]) {
+      setTabStates(prev => ({
+        ...prev,
+        [activeTab]: createNewTerminalState()
+      }));
+    }
+  }, [activeTab, tabStates, setTabStates]);
+
+  // Sync local input with global state when tab changes
+  React.useEffect(() => {
+    setLocalInput(currentTabState.input || "");
+  }, [activeTab, currentTabState.input]);
+
   // Terminal functions for current tab
   const setInput = (value) => {
+    // Update local state immediately for UI responsiveness
+    setLocalInput(value);
+    // Update global state for persistence
     setTabStates(prev => ({
       ...prev,
       [activeTab]: { ...prev[activeTab], input: value }
@@ -55,6 +96,8 @@ function SimpleTerminal() {
   const processCommand = (command) => {
     const timestamp = Date.now();
     const cmd = command.toLowerCase().trim();
+
+
 
     // Add the command to history first
     const commandEntry = {
@@ -100,16 +143,20 @@ function SimpleTerminal() {
       timestamp
     } : null;
 
+    const newTabState = {
+      ...tabStates[activeTab],
+      history: outputEntry
+        ? [...tabStates[activeTab].history, commandEntry, outputEntry]
+        : [...tabStates[activeTab].history, commandEntry],
+      commandCount: tabStates[activeTab].commandCount + 1,
+      historyIndex: -1
+    };
+
+
+
     setTabStates(prev => ({
       ...prev,
-      [activeTab]: {
-        ...prev[activeTab],
-        history: outputEntry
-          ? [...prev[activeTab].history, commandEntry, outputEntry]
-          : [...prev[activeTab].history, commandEntry],
-        commandCount: prev[activeTab].commandCount + 1,
-        historyIndex: -1
-      }
+      [activeTab]: newTabState
     }));
   };
 
@@ -142,6 +189,9 @@ function SimpleTerminal() {
     }
 
     const command = newIndex === -1 ? '' : commandHistory[newIndex].content;
+    // Update local input immediately
+    setLocalInput(command);
+    // Update global state
     setTabStates(prev => ({
       ...prev,
       [activeTab]: { ...prev[activeTab], historyIndex: newIndex, input: command }
@@ -175,10 +225,13 @@ function SimpleTerminal() {
   };
 
   const handleSubmit = () => {
-    if (currentTabState.input && currentTabState.input.trim()) {
-      processCommand(currentTabState.input);
+    const command = localInput;
+    if (command && command.trim()) {
+      // Clear input immediately
+      setInput("");
+      // Process command
+      processCommand(command);
     }
-    setInput("");
   };
 
   const handleToggleTheme = () => {
@@ -411,7 +464,7 @@ function SimpleTerminal() {
       />
 
       <TerminalInput
-        input={currentTabState.input}
+        input={localInput}
         onInputChange={setInput}
         onSubmit={handleSubmit}
         onHistoryNavigate={navigateHistory}

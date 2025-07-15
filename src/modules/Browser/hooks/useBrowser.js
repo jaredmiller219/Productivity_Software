@@ -1,26 +1,44 @@
 import { useState, useCallback, useRef } from 'react';
+import { useGlobalState } from '../../../shared/hooks/useGlobalState.js';
 
 /**
  * Custom hook for managing browser state and navigation
  * @returns {Object} Browser state and operations
  */
 export const useBrowser = () => {
-  const [url, setUrl] = useState("https://www.google.com");
-  const [currentUrl, setCurrentUrl] = useState("https://www.google.com");
-  const [isLoading, setIsLoading] = useState(false); // Start with false, only set true when actually navigating
-  const [error, setError] = useState(null);
-  const [history, setHistory] = useState([]);
-  const [historyIndex, setHistoryIndex] = useState(-1);
-  const [bookmarks, setBookmarks] = useState([
-    { id: 1, title: "Google", url: "https://www.google.com", favicon: "🔍" },
-    { id: 2, title: "GitHub", url: "https://github.com", favicon: "🐙" },
-    { id: 3, title: "Stack Overflow", url: "https://stackoverflow.com", favicon: "📚" },
-  ]);
-  const [tabs, setTabs] = useState([
-    { id: 1, title: "New Tab", url: "https://www.google.com", isActive: true }
-  ]);
-  const [activeTabId, setActiveTabId] = useState(1);
-  
+  // Use global state management for browser
+  const { state, updateState } = useGlobalState('browser', {
+    url: "https://www.google.com",
+    currentUrl: "https://www.google.com",
+    isLoading: false,
+    error: null,
+    history: [],
+    historyIndex: -1,
+    bookmarks: [
+      { id: 1, title: "Google", url: "https://www.google.com", favicon: "🔍" },
+      { id: 2, title: "GitHub", url: "https://github.com", favicon: "🐙" },
+      { id: 3, title: "Stack Overflow", url: "https://stackoverflow.com", favicon: "📚" },
+    ],
+    tabs: [
+      { id: 1, title: "New Tab", url: "https://www.google.com", isActive: true }
+    ],
+    activeTabId: 1
+  });
+
+  // Extract state values
+  const { url, currentUrl, isLoading, error, history, historyIndex, bookmarks, tabs, activeTabId } = state;
+
+  // State setter wrappers for global state
+  const setUrl = (value) => updateState({ url: value });
+  const setCurrentUrl = (value) => updateState({ currentUrl: value });
+  const setIsLoading = (value) => updateState({ isLoading: value });
+  const setError = (value) => updateState({ error: value });
+  const setHistory = (value) => updateState({ history: typeof value === 'function' ? value(history) : value });
+  const setHistoryIndex = (value) => updateState({ historyIndex: value });
+  const setBookmarks = (value) => updateState({ bookmarks: typeof value === 'function' ? value(bookmarks) : value });
+  const setTabs = (value) => updateState({ tabs: typeof value === 'function' ? value(tabs) : value });
+  const setActiveTabId = (value) => updateState({ activeTabId: value });
+
   const webviewRef = useRef(null);
 
   // Validate and format URL

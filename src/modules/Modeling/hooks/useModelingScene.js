@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useGlobalState } from '../../../shared/hooks/useGlobalState.js';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
@@ -12,14 +13,30 @@ import {
 } from '../utils/viewport/threeUtils.js';
 
 export const useModelingScene = (containerRef) => {
+  // Use global state management for modeling
+  const { state, updateState } = useGlobalState('modeling', {
+    selectedObject: null,
+    mode: "translate",
+    objects: [],
+    lights: [],
+    activePanel: "objects",
+    snapToGrid: false
+  });
+
+  // Extract state values
+  const { selectedObject, mode, objects, lights, activePanel, snapToGrid } = state;
+
+  // State setter wrappers for global state
+  const setSelectedObject = (value) => updateState({ selectedObject: value });
+  const setMode = (value) => updateState({ mode: value });
+  const setObjects = (value) => updateState({ objects: typeof value === 'function' ? value(objects) : value });
+  const setLights = (value) => updateState({ lights: typeof value === 'function' ? value(lights) : value });
+  const setActivePanel = (value) => updateState({ activePanel: value });
+  const setSnapToGrid = (value) => updateState({ snapToGrid: value });
+
+  // Local state for Three.js objects (don't persist these)
   const [scene, setScene] = useState(null);
   const [transformControls, setTransformControls] = useState(null);
-  const [selectedObject, setSelectedObject] = useState(null);
-  const [mode, setMode] = useState("translate");
-  const [objects, setObjects] = useState([]);
-  const [lights, setLights] = useState([]);
-  const [activePanel, setActivePanel] = useState("objects");
-  const [snapToGrid, setSnapToGrid] = useState(false);
 
   const renderSettings = {
     shadows: true,

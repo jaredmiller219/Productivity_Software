@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "../../shared/components/Sidebar.js";
 import Workspace from "../../shared/components/Workspace.js";
 import Notes from "../../modules/Notes/Notes.js";
+import { useGlobalStateManager, useGlobalState } from "../../shared/hooks/useGlobalState.js";
 import "./App.css";
 
 function App() {
@@ -10,6 +11,12 @@ function App() {
   const [notesPanelWidth, setNotesPanelWidth] = useState(350);
   const [isResizing, setIsResizing] = useState(false);
   const [notesCount, setNotesCount] = useState(0);
+
+  // Global state management for debug mode
+  const { isPersistent, togglePersistence, clearAllStates, getDebugInfo, isDebugMode } = useGlobalStateManager();
+  const [showStateDialog, setShowStateDialog] = useState(false);
+
+
 
   const handleNotesPositionChange = (position) => {
     setNotesPosition(position);
@@ -35,6 +42,36 @@ function App() {
 
   const handleMouseUp = () => {
     setIsResizing(false);
+  };
+
+  const handleStateToggle = () => {
+    setShowStateDialog(true);
+  };
+
+  // Option box pattern handlers - use global state to remember checkbox states
+  const { state: dialogState, updateState: updateDialogState } = useGlobalState('dialog-options', {
+    optionTogglePersistence: true,
+    optionClearStates: false
+  });
+
+  const { optionTogglePersistence, optionClearStates } = dialogState;
+  const setOptionTogglePersistence = (value) => updateDialogState({ optionTogglePersistence: value });
+  const setOptionClearStates = (value) => updateDialogState({ optionClearStates: value });
+
+  const handleOptionBoxApply = () => {
+    if (optionTogglePersistence) {
+      if (optionClearStates) {
+        clearAllStates();
+      }
+      togglePersistence();
+    }
+    setShowStateDialog(false);
+    // Keep checkbox states for next time - don't reset
+  };
+
+  const handleOptionBoxCancel = () => {
+    setShowStateDialog(false);
+    // Keep checkbox states for next time - don't reset
   };
 
   React.useEffect(() => {
@@ -99,6 +136,79 @@ function App() {
           )}
         </div>
       </div>
+
+      {/* Debug toggle button - only visible in development */}
+      {isDebugMode && (
+        <div className="debug-state-toggle">
+          <button
+            onClick={handleStateToggle}
+            className={`state-toggle-btn ${isPersistent ? 'enabled' : 'disabled'}`}
+            title={`Tab state persistence: ${isPersistent ? 'ON' : 'OFF'}\nClick to ${isPersistent ? 'disable' : 'enable'}`}
+          >
+            <span className="toggle-icon">{isPersistent ? '💾' : '🚫'}</span>
+            <span className="toggle-text">
+              {isPersistent ? 'State: ON' : 'State: OFF'}
+            </span>
+          </button>
+        </div>
+      )}
+
+      {/* State toggle confirmation dialog */}
+      {showStateDialog && (
+        <div className="state-dialog-overlay">
+          <div className="state-dialog">
+            <div className="state-dialog-header">
+              <h3>State Management Options</h3>
+            </div>
+            <div className="state-dialog-content">
+              <p className="state-dialog-question">
+                What would you like to do with tab state persistence?
+              </p>
+              <div className="state-dialog-note">
+                <p><strong>Tab State Persistence:</strong> Remembers your work across all tabs (open files, terminal history, notes, etc.) when you switch between them.</p>
+                <p><strong>Clear States:</strong> Resets all tabs to their default state, removing any saved work or history.</p>
+              </div>
+              <div className="option-box-container">
+                <label className="option-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={optionTogglePersistence}
+                    onChange={(e) => setOptionTogglePersistence(e.target.checked)}
+                  />
+                  <span className="option-text">
+                    {isPersistent ? 'Disable' : 'Enable'} tab state persistence
+                  </span>
+                </label>
+                <label className="option-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={optionClearStates}
+                    onChange={(e) => setOptionClearStates(e.target.checked)}
+                  />
+                  <span className="option-text">
+                    Clear all existing saved states
+                  </span>
+                </label>
+              </div>
+              <div className="option-box-buttons">
+                <button
+                  onClick={handleOptionBoxApply}
+                  className="option-box-btn apply-btn"
+                  disabled={!optionTogglePersistence && !optionClearStates}
+                >
+                  Apply Changes
+                </button>
+                <button
+                  onClick={handleOptionBoxCancel}
+                  className="option-box-btn cancel-btn"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

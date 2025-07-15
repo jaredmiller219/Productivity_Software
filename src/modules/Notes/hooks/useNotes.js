@@ -1,36 +1,45 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useGlobalState } from '../../../shared/hooks/useGlobalState.js';
 
 /**
  * Custom hook for managing notes state and operations
  * @returns {Object} Notes state and operations
  */
 export const useNotes = () => {
-  const [notes, setNotes] = useState([]);
-  const [currentNote, setCurrentNote] = useState({ id: null, title: '', content: '' });
+  // Use global state management for notes
+  const { state, updateState } = useGlobalState('notes', {
+    notes: [],
+    currentNote: { id: null, title: '', content: '' }
+  });
 
-  // Load notes from localStorage on mount
+  // Extract state values
+  const { notes, currentNote } = state;
+
+  // Load notes from localStorage on mount (only if no notes in global state)
   useEffect(() => {
-    const savedNotes = localStorage.getItem('notes');
-    if (savedNotes) {
-      try {
-        const parsedNotes = JSON.parse(savedNotes);
-        setNotes(parsedNotes);
-      } catch (error) {
-        console.error('Failed to parse saved notes:', error);
-        localStorage.removeItem('notes');
+    if (notes.length === 0) {
+      const savedNotes = localStorage.getItem('notes');
+      if (savedNotes) {
+        try {
+          const parsedNotes = JSON.parse(savedNotes);
+          updateState({ notes: parsedNotes });
+        } catch (error) {
+          console.error('Failed to parse saved notes:', error);
+          localStorage.removeItem('notes');
+        }
       }
     }
-  }, []);
+  }, [notes.length, updateState]);
 
   // Save notes to localStorage
   const saveNotes = useCallback((updatedNotes) => {
     try {
       localStorage.setItem('notes', JSON.stringify(updatedNotes));
-      setNotes(updatedNotes);
+      updateState({ notes: updatedNotes });
     } catch (error) {
       console.error('Failed to save notes:', error);
     }
-  }, []);
+  }, [updateState]);
 
   // Create a new note
   const createNewNote = useCallback(() => {
@@ -43,7 +52,7 @@ export const useNotes = () => {
     };
     const updatedNotes = [...notes, newNote];
     saveNotes(updatedNotes);
-    setCurrentNote(newNote);
+    updateState({ currentNote: newNote });
     return newNote;
   }, [notes, saveNotes]);
 
@@ -51,12 +60,12 @@ export const useNotes = () => {
   const updateCurrentNote = useCallback((field, value) => {
     if (!currentNote.id) return;
 
-    const updatedNote = { 
-      ...currentNote, 
+    const updatedNote = {
+      ...currentNote,
       [field]: value,
       updatedAt: new Date().toISOString()
     };
-    setCurrentNote(updatedNote);
+    updateState({ currentNote: updatedNote });
 
     const updatedNotes = notes.map(note =>
       note.id === currentNote.id ? updatedNote : note
@@ -70,14 +79,14 @@ export const useNotes = () => {
     saveNotes(updatedNotes);
     
     if (currentNote.id === id) {
-      setCurrentNote({ id: null, title: '', content: '' });
+      updateState({ currentNote: { id: null, title: '', content: '' } });
     }
   }, [notes, currentNote.id, saveNotes]);
 
   // Select a note
   const selectNote = useCallback((note) => {
-    setCurrentNote(note);
-  }, []);
+    updateState({ currentNote: note });
+  }, [updateState]);
 
   // Duplicate a note
   const duplicateNote = useCallback((id) => {
@@ -94,7 +103,7 @@ export const useNotes = () => {
 
     const updatedNotes = [...notes, duplicatedNote];
     saveNotes(updatedNotes);
-    setCurrentNote(duplicatedNote);
+    updateState({ currentNote: duplicatedNote });
     return duplicatedNote;
   }, [notes, saveNotes]);
 

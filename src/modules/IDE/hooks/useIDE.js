@@ -1,16 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useGlobalState } from '../../../shared/hooks/useGlobalState.js';
 
 /**
  * Custom hook for managing IDE state and file operations
  * @returns {Object} IDE state and operations
  */
 export const useIDE = () => {
-  const [files, setFiles] = useState([
-    {
-      id: 1,
-      name: "index.html",
-      type: "html",
-      content: `<!DOCTYPE html>
+  // Use global state management for IDE
+  const { state, updateState } = useGlobalState('ide', {
+    files: [
+      {
+        id: 1,
+        name: "index.html",
+        type: "html",
+        content: `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -24,14 +27,14 @@ export const useIDE = () => {
   <script src="script.js"></script>
 </body>
 </html>`,
-      lastModified: Date.now(),
-      isModified: false
-    },
-    {
-      id: 2,
-      name: "styles.css",
-      type: "css",
-      content: `/* Global Styles */
+        lastModified: Date.now(),
+        isModified: false
+        },
+      {
+        id: 2,
+        name: "styles.css",
+        type: "css",
+        content: `/* Global Styles */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
@@ -51,17 +54,17 @@ p {
   text-align: center;
   font-size: 16px;
 }`,
-      lastModified: Date.now(),
-      isModified: false
-    },
-    {
-      id: 3,
-      name: "script.js",
-      type: "js",
-      content: `// Main application script
+        lastModified: Date.now(),
+        isModified: false
+      },
+      {
+        id: 3,
+        name: "script.js",
+        type: "js",
+        content: `// Main application script
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Page loaded successfully!');
-  
+
   // Add some interactivity
   const heading = document.querySelector('h1');
   if (heading) {
@@ -70,29 +73,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });`,
-      lastModified: Date.now(),
-      isModified: false
-    },
-  ]);
+        lastModified: Date.now(),
+        isModified: false
+      },
+    ],
+    activeFile: null,
+    editorContent: '',
+    searchQuery: '',
+    isSearchVisible: false
+  });
 
-  const [activeFile, setActiveFile] = useState(null);
-  const [editorContent, setEditorContent] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  // Extract state values
+  const { files, activeFile, editorContent, searchQuery, isSearchVisible } = state;
+
+  // Tab state management - remembers each tab's current state
+  const [tabStates, setTabStates] = useState({});
+  const [preserveTabStates, setPreserveTabStates] = useState(true);
 
   // Initialize active file
   useEffect(() => {
     if (files.length > 0 && !activeFile) {
-      setActiveFile(files[0]);
+      updateState({ activeFile: files[0] });
     }
-  }, [files, activeFile]);
+  }, [files, activeFile, updateState]);
 
   // Update editor content when active file changes (but not when just the isModified flag changes)
   useEffect(() => {
     if (activeFile) {
-      setEditorContent(activeFile.content);
+      updateState({ editorContent: activeFile.content });
     }
-  }, [activeFile?.id, activeFile?.content]); // Only trigger on file ID or content change, not isModified
+  }, [activeFile?.id, activeFile?.content, updateState]); // Only trigger on file ID or content change, not isModified
 
   // Get file icon based on type
   const getFileIcon = useCallback((type) => {
@@ -156,12 +166,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (activeFile && activeFile.isModified) {
       saveFile(activeFile.id, editorContent);
     }
-    setActiveFile(file);
-  }, [activeFile, editorContent]);
+    updateState({ activeFile: file });
+  }, [activeFile, editorContent, updateState]);
 
   // Handle editor content change
   const updateEditorContent = useCallback((content) => {
-    setEditorContent(content);
+    updateState({ editorContent: content });
 
     // Mark file as modified if content changed
     if (activeFile && content !== activeFile.content) {
@@ -170,33 +180,40 @@ document.addEventListener('DOMContentLoaded', function() {
           ? { ...file, isModified: true }
           : file
       );
-      setFiles(updatedFiles);
 
-      // Only update activeFile if it's not already marked as modified
-      if (!activeFile.isModified) {
-        setActiveFile(prev => ({ ...prev, isModified: true }));
-      }
+      const updatedActiveFile = !activeFile.isModified
+        ? { ...activeFile, isModified: true }
+        : activeFile;
+
+      updateState({
+        files: updatedFiles,
+        activeFile: updatedActiveFile
+      });
     }
-  }, [activeFile, files]);
+  }, [activeFile, files, updateState]);
 
   // Save file
   const saveFile = useCallback((fileId, content) => {
     const updatedFiles = files.map(file =>
-      file.id === fileId 
-        ? { 
-            ...file, 
-            content, 
+      file.id === fileId
+        ? {
+            ...file,
+            content,
             lastModified: Date.now(),
-            isModified: false 
+            isModified: false
           }
         : file
     );
-    setFiles(updatedFiles);
-    
-    if (activeFile && activeFile.id === fileId) {
-      setActiveFile(prev => ({ ...prev, content, isModified: false }));
-    }
-  }, [files, activeFile]);
+
+    const updatedActiveFile = activeFile && activeFile.id === fileId
+      ? { ...activeFile, content, isModified: false }
+      : activeFile;
+
+    updateState({
+      files: updatedFiles,
+      activeFile: updatedActiveFile
+    });
+  }, [files, activeFile, updateState]);
 
   // Save current file
   const saveCurrentFile = useCallback(() => {
@@ -227,10 +244,12 @@ document.addEventListener('DOMContentLoaded', function() {
       isModified: false
     };
 
-    setFiles(prev => [...prev, newFile]);
-    setActiveFile(newFile);
+    updateState({
+      files: [...files, newFile],
+      activeFile: newFile
+    });
     return newFile;
-  }, []);
+  }, [files, updateState]);
 
   // Delete file
   const deleteFile = useCallback((fileId) => {
@@ -239,15 +258,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const updatedFiles = files.filter(file => file.id !== fileId);
-    setFiles(updatedFiles);
 
     // If deleted file was active, switch to first remaining file
-    if (activeFile && activeFile.id === fileId) {
-      setActiveFile(updatedFiles[0]);
-    }
-    
+    const newActiveFile = activeFile && activeFile.id === fileId
+      ? updatedFiles[0]
+      : activeFile;
+
+    updateState({
+      files: updatedFiles,
+      activeFile: newActiveFile
+    });
+
     return true;
-  }, [files, activeFile]);
+  }, [files, activeFile, updateState]);
 
   // Duplicate file
   const duplicateFile = useCallback((fileId) => {
@@ -321,6 +344,15 @@ document.addEventListener('DOMContentLoaded', function() {
       lastModified: Math.max(...files.map(file => file.lastModified))
     };
   }, [files]);
+
+  // Search functions
+  const setSearchQuery = useCallback((query) => {
+    updateState({ searchQuery: query });
+  }, [updateState]);
+
+  const setIsSearchVisible = useCallback((visible) => {
+    updateState({ isSearchVisible: visible });
+  }, [updateState]);
 
   return {
     // State
