@@ -115,11 +115,39 @@ export default MyComponent;`
 
   const handleContextMenu = (e, file) => {
     e.preventDefault();
-    setContextMenu({
-      x: e.clientX,
-      y: e.clientY,
-      file
-    });
+
+    // Always close any existing context menu first
+    setContextMenu(null);
+
+    // Small delay to ensure clean transition between menus
+    setTimeout(() => {
+      // Get the file element that was right-clicked
+      const fileElement = e.currentTarget;
+      const rect = fileElement.getBoundingClientRect();
+
+      // Get viewport dimensions
+      const viewportHeight = window.innerHeight;
+
+      // Estimate context menu height
+      const menuHeight = 80;
+
+      // Position menu right below the file element with same width
+      let x = rect.left;
+      let y = rect.bottom; // No gap - right below the file
+      const width = rect.width; // Same width as the file element
+
+      // Adjust vertical position if menu would go off-screen
+      if (y + menuHeight > viewportHeight) {
+        y = rect.top - menuHeight; // Show above the file instead
+      }
+
+      setContextMenu({
+        x,
+        y,
+        width,
+        file
+      });
+    }, 10); // 10ms delay for smooth transition
   };
 
   const handleCloseContextMenu = () => {
@@ -243,9 +271,13 @@ export default MyComponent;`
       {contextMenu && (
         <>
           <div className="context-menu-overlay" onClick={handleCloseContextMenu} />
-          <div 
+          <div
             className="context-menu"
-            style={{ left: contextMenu.x, top: contextMenu.y }}
+            style={{
+              left: 10,
+              top: contextMenu.y-45,
+              width: contextMenu.width
+            }}
           >
             <button onClick={() => handleDuplicateFile(contextMenu.file)}>
               📋 Duplicate
