@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './FileExplorer.css';
 
 const FileExplorer = ({
@@ -115,44 +115,59 @@ export default MyComponent;`
 
   const handleContextMenu = (e, file) => {
     e.preventDefault();
+    e.stopPropagation();
 
-    // Always close any existing context menu first
-    setContextMenu(null);
+    // Get the file element that was right-clicked
+    const fileElement = e.currentTarget;
+    const rect = fileElement.getBoundingClientRect();
 
-    // Small delay to ensure clean transition between menus
-    setTimeout(() => {
-      // Get the file element that was right-clicked
-      const fileElement = e.currentTarget;
-      const rect = fileElement.getBoundingClientRect();
+    // Get viewport dimensions
+    const viewportHeight = window.innerHeight;
 
-      // Get viewport dimensions
-      const viewportHeight = window.innerHeight;
+    // Estimate context menu height
+    const menuHeight = 80;
 
-      // Estimate context menu height
-      const menuHeight = 80;
+    // Position menu right below the file element with same width
+    let x = rect.left;
+    let y = rect.bottom; // No gap - right below the file
+    const width = rect.width; // Same width as the file element
 
-      // Position menu right below the file element with same width
-      let x = rect.left;
-      let y = rect.bottom; // No gap - right below the file
-      const width = rect.width; // Same width as the file element
+    // Adjust vertical position if menu would go off-screen
+    if (y + menuHeight > viewportHeight) {
+      y = rect.top - menuHeight; // Show above the file instead
+    }
 
-      // Adjust vertical position if menu would go off-screen
-      if (y + menuHeight > viewportHeight) {
-        y = rect.top - menuHeight; // Show above the file instead
+    // Force immediate context menu switch - this replaces any existing menu
+    setContextMenu({
+      x,
+      y,
+      width,
+      file: {
+        ...file,
+        // Add a timestamp to force re-render if same file is right-clicked
+        timestamp: Date.now()
       }
-
-      setContextMenu({
-        x,
-        y,
-        width,
-        file
-      });
-    }, 10); // 10ms delay for smooth transition
+    });
   };
 
   const handleCloseContextMenu = () => {
     setContextMenu(null);
   };
+
+  // Close context menu when clicking outside
+  useEffect(() => {
+    if (contextMenu) {
+      const handleClickOutside = (e) => {
+        // Don't close if clicking on a file (let the file handle it)
+        if (!e.target.closest('.file-item') && !e.target.closest('.context-menu')) {
+          setContextMenu(null);
+        }
+      };
+
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [contextMenu]);
 
   const handleDeleteFile = (file) => {
     if (window.confirm(`Are you sure you want to delete ${file.name}?`)) {
@@ -259,6 +274,7 @@ export default MyComponent;`
               className={`file-item ${activeFile?.id === file.id ? 'active' : ''}`}
               onClick={() => onFileSelect(file)}
               onContextMenu={(e) => handleContextMenu(e, file)}
+              data-has-context-menu="true"
             >
               <span className="file-icon">{getFileIcon(file.type)}</span>
               <span className="file-name">{file.name}</span>
@@ -270,7 +286,7 @@ export default MyComponent;`
 
       {contextMenu && (
         <>
-          <div className="context-menu-overlay" onClick={handleCloseContextMenu} />
+          <div className="context-menu-overlay" />
           <div
             className="context-menu"
             style={{

@@ -78,6 +78,25 @@ function App() {
     }
   }, []);
 
+  // Prevent default browser context menu globally, but allow custom ones
+  useEffect(() => {
+    const handleContextMenu = (event) => {
+      // Check if the target has a custom context menu handler
+      const hasCustomContextMenu = event.target.closest('[data-has-context-menu]');
+
+      // Only prevent default if no custom context menu is present
+      if (!hasCustomContextMenu) {
+        event.preventDefault();
+      }
+    };
+
+    document.addEventListener('contextmenu', handleContextMenu);
+
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+    };
+  }, []);
+
   const handleOptionBoxApply = () => {
     if (optionTogglePersistence) {
       if (optionClearStates) {
