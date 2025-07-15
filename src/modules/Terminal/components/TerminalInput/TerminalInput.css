@@ -30,6 +30,10 @@
   font-size: 14px;
   line-height: 1.4;
   caret-color: #4ec9b0;
+  /* Add smooth transitions for VSCode-like feel */
+  transition: all 0.15s ease-out;
+  /* Add a subtle glow effect to simulate thicker cursor */
+  text-shadow: 0 0 1px #4ec9b0;
 }
 
 .terminal-input::placeholder {
@@ -141,6 +145,23 @@
 .terminal-input:focus-visible {
   box-shadow: none;
   outline: none;
+}
+
+/* VSCode-style focus animation */
+.terminal-input:focus {
+  animation: cursor-expand 0.15s ease-out;
+  text-shadow: 0 0 2px #4ec9b0;
+}
+
+@keyframes cursor-expand {
+  0% {
+    transform: scaleY(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
 }
 
 /* High contrast mode support */
