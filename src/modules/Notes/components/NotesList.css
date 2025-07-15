@@ -71,7 +71,7 @@
   /* right: 12px; */
   left: 0px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) scaleX(-1);
   color: #6c757d;
   font-size: 14px;
 }
