@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FileExplorer from "./components/FileExplorer/FileExplorer.js";
 import CodeEditor from "./components/CodeEditor/CodeEditor.js";
 import IDEToolbar from "./components/IDEToolbar/IDEToolbar.js";
@@ -28,6 +28,26 @@ function IDE() {
   const handleToggleSearch = () => {
     setIsSearchVisible(!isSearchVisible);
   };
+
+  // Handle keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // Check for Cmd+S (Mac) or Ctrl+S (Windows/Linux)
+      if ((event.metaKey || event.ctrlKey) && event.key === 's') {
+        event.preventDefault();
+        if (activeFile) {
+          saveCurrentFile();
+          console.log('File saved via keyboard shortcut');
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeFile, saveCurrentFile]);
 
   const handleNewFile = (fileName, content = '') => {
     createNewFile(fileName, content);

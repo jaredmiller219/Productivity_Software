@@ -8,7 +8,8 @@ class GlobalStateManager {
   constructor() {
     this.states = new Map();
     this.listeners = new Set();
-    this.persistentMode = process.env.NODE_ENV === 'development'; // Default to true in dev
+    // Always enabled in production, controllable in development
+    this.persistentMode = process.env.NODE_ENV === 'production' ? true : true; // Always true in production, default true in dev
   }
 
   // Set state for a specific module/tab
@@ -41,14 +42,26 @@ class GlobalStateManager {
     this.listeners.forEach(listener => listener(moduleId, null));
   }
 
-  // Clear all states
+  // Clear all states (only allowed in development)
   clearAllStates() {
+    // In production, don't allow clearing states
+    if (process.env.NODE_ENV === 'production') {
+      console.warn('State clearing is disabled in production builds');
+      return;
+    }
+
     this.states.clear();
     this.listeners.forEach(listener => listener('*', null));
   }
 
-  // Toggle persistent mode
+  // Toggle persistent mode (only allowed in development)
   setPersistentMode(enabled) {
+    // In production, always keep persistence enabled
+    if (process.env.NODE_ENV === 'production') {
+      console.warn('State persistence is always enabled in production builds');
+      return;
+    }
+
     this.persistentMode = enabled;
     if (!enabled) {
       this.clearAllStates();
