@@ -45,16 +45,22 @@
   position: relative;
 }
 
-.notes-list-container .search-input {
+.notes-list-container .search-container .search-input {
   width: 100%;
   padding: 8px 12px 8px 36px;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #212529 !important;
   border: 1px solid #ced4da;
   border-radius: 6px;
   font-size: 14px;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transition: none !important;
 }
 
-.notes-list-container .search-input:focus {
+.notes-list-container .search-container .search-input:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
@@ -84,12 +90,13 @@
 }
 
 .sort-order-btn {
+  background-color: #f8f9fa;
+  color: #212529;
   border: 1px solid #ced4da;
   border-radius: 4px;
   padding: 6px 10px;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.2s ease;
 }
 
 .notes-list {
@@ -241,7 +248,7 @@
   gap: 8px;
 }
 
-.right-panel-mode .notes-list-container .search-input {
+.right-panel-mode .notes-list-container .search-container .search-input {
   padding: 6px 10px 6px 28px;
   font-size: 12px;
 }
@@ -292,14 +299,32 @@
   border-bottom: 1px solid #e9ecef;
 }
 
-.notes-container.theme-light .notes-list-container .search-input {
-  background-color: #f8f9fa;
-  color: #212529;
-  border-color: #ced4da;
+div.notes-container.theme-light .notes-list-container .search-container .search-input,
+div.notes-container.theme-light .notes-list-container .search-container input.search-input,
+.notes-container.theme-light .search-container .search-input {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #212529 !important;
+  border-color: #ced4da !important;
 }
 
-.notes-container.theme-light .notes-list-container .search-input:focus {
-  background-color: #fff;
+div.notes-container.theme-light .notes-list-container .search-container .search-input:focus {
+  background-color: #ffffff !important;
+  border-color: #007bff !important;
+}
+
+div.notes-container.theme-light .notes-list-container .search-container .search-input::placeholder {
+  color: #6c757d !important;
+}
+
+/* Override browser autofill styles for light theme */
+div.notes-container.theme-light .notes-list-container .search-container .search-input:-webkit-autofill,
+div.notes-container.theme-light .notes-list-container .search-container .search-input:-webkit-autofill:hover,
+div.notes-container.theme-light .notes-list-container .search-container .search-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #212529 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 .notes-container.theme-light .sort-select {
@@ -351,15 +376,32 @@
   border-bottom: 1px solid #30363d;
 }
 
-.notes-container.theme-dark .notes-list-container .search-input {
-  background-color: #0d1117;
-  color: #f0f6fc;
-  border-color: #30363d;
+.notes-container.theme-dark .notes-list-container .search-container .search-input,
+.notes-container.theme-dark .notes-list-container .search-container input.search-input,
+.notes-container.theme-dark .search-container .search-input {
+  background: #0d1117 !important;
+  background-color: #0d1117 !important;
+  color: #f0f6fc !important;
+  border-color: #30363d !important;
 }
 
-.notes-container.theme-dark .notes-list-container .search-input:focus {
-  background-color: #161b22;
-  border-color: #58a6ff;
+.notes-container.theme-dark .notes-list-container .search-container .search-input:focus {
+  background-color: #161b22 !important;
+  border-color: #58a6ff !important;
+}
+
+.notes-container.theme-dark .notes-list-container .search-container .search-input::placeholder {
+  color: #8b949e !important;
+}
+
+/* Override browser autofill styles for dark theme */
+.notes-container.theme-dark .notes-list-container .search-container .search-input:-webkit-autofill,
+.notes-container.theme-dark .notes-list-container .search-container .search-input:-webkit-autofill:hover,
+.notes-container.theme-dark .notes-list-container .search-container .search-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #0d1117 inset !important;
+  -webkit-text-fill-color: #f0f6fc !important;
+  background: #0d1117 !important;
+  background-color: #0d1117 !important;
 }
 
 .notes-container.theme-dark .notes-list-container .search-icon {
