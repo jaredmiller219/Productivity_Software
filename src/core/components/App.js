@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../../shared/components/Sidebar.js";
 import Workspace from "../../shared/components/Workspace.js";
 import Notes from "../../modules/Notes/Notes.js";
@@ -58,6 +58,26 @@ function App() {
   const setOptionTogglePersistence = (value) => updateDialogState({ optionTogglePersistence: value });
   const setOptionClearStates = (value) => updateDialogState({ optionClearStates: value });
 
+  // Prevent Cmd+R from refreshing the page (only in production)
+  useEffect(() => {
+    // Only prevent refresh in production builds
+    if (process.env.NODE_ENV === 'production') {
+      const handleKeyDown = (event) => {
+        // Check for Cmd+R (Mac) or Ctrl+R (Windows/Linux)
+        if ((event.metaKey || event.ctrlKey) && event.key === 'r') {
+          event.preventDefault();
+          console.log('Page refresh prevented. Use menu bar to refresh.');
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, []);
+
   const handleOptionBoxApply = () => {
     if (optionTogglePersistence) {
       if (optionClearStates) {
@@ -94,6 +114,9 @@ function App() {
           notesPosition={notesPosition}
           onNotesPositionChange={handleNotesPositionChange}
           notesCount={notesCount}
+          isPersistent={isPersistent}
+          onStateToggle={handleStateToggle}
+          isDebugMode={isDebugMode}
         />
 
         <div className="main-content">
@@ -137,21 +160,7 @@ function App() {
         </div>
       </div>
 
-      {/* Debug toggle button - only visible in development */}
-      {isDebugMode && (
-        <div className="debug-state-toggle">
-          <button
-            onClick={handleStateToggle}
-            className={`state-toggle-btn ${isPersistent ? 'enabled' : 'disabled'}`}
-            title={`Tab state persistence: ${isPersistent ? 'ON' : 'OFF'}\nClick to ${isPersistent ? 'disable' : 'enable'}`}
-          >
-            <span className="toggle-icon">{isPersistent ? '💾' : '🚫'}</span>
-            <span className="toggle-text">
-              {isPersistent ? 'State: ON' : 'State: OFF'}
-            </span>
-          </button>
-        </div>
-      )}
+
 
       {/* State toggle confirmation dialog */}
       {showStateDialog && (

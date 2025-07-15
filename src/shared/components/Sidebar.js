@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "./Sidebar.css";
 
-function Sidebar({ activeModule, setActiveModule, notesPosition, onNotesPositionChange, notesCount }) {
+function Sidebar({ activeModule, setActiveModule, notesPosition, onNotesPositionChange, notesCount, projectStats, isPersistent, onStateToggle, isDebugMode }) {
   const [showNotesMenu, setShowNotesMenu] = useState(false);
+  const [showStats, setShowStats] = useState(false);
   const baseModules = [
     { id: "notes", name: "Notes", icon: "📝" },
     { id: "terminal", name: "Terminal", icon: "⚡" },
@@ -68,6 +69,23 @@ function Sidebar({ activeModule, setActiveModule, notesPosition, onNotesPosition
           </div>
         ))}
       </div>
+
+      {/* Status toggle button at bottom - only visible in development */}
+      {isDebugMode && (
+        <div className="sidebar-status">
+          <button
+            onClick={onStateToggle}
+            className={`status-toggle-btn ${isPersistent ? 'enabled' : 'disabled'}`}
+            title={`Tab state persistence: ${isPersistent ? 'ON' : 'OFF'}\nClick to ${isPersistent ? 'disable' : 'enable'}`}
+          >
+            <span className="status-icon">{isPersistent ? '💾' : '🚫'}</span>
+            <div className="status-text">
+              <span className="status-label">State</span>
+              <span className="status-value">{isPersistent ? 'ON' : 'OFF'}</span>
+            </div>
+          </button>
+        </div>
+      )}
 
       {notesPosition === "hidden" && notesCount > 0 && (
         <div className="sidebar-footer">
