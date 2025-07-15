@@ -87,12 +87,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }, [files, activeFile]);
 
-  // Update editor content when active file changes
+  // Update editor content when active file changes (but not when just the isModified flag changes)
   useEffect(() => {
     if (activeFile) {
       setEditorContent(activeFile.content);
     }
-  }, [activeFile]);
+  }, [activeFile?.id, activeFile?.content]); // Only trigger on file ID or content change, not isModified
 
   // Get file icon based on type
   const getFileIcon = useCallback((type) => {
@@ -162,16 +162,20 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle editor content change
   const updateEditorContent = useCallback((content) => {
     setEditorContent(content);
-    
+
     // Mark file as modified if content changed
     if (activeFile && content !== activeFile.content) {
       const updatedFiles = files.map(file =>
-        file.id === activeFile.id 
+        file.id === activeFile.id
           ? { ...file, isModified: true }
           : file
       );
       setFiles(updatedFiles);
-      setActiveFile(prev => ({ ...prev, isModified: true }));
+
+      // Only update activeFile if it's not already marked as modified
+      if (!activeFile.isModified) {
+        setActiveFile(prev => ({ ...prev, isModified: true }));
+      }
     }
   }, [activeFile, files]);
 

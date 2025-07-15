@@ -385,9 +385,14 @@ function AdvancedCodeEditor({
   const renderLineNumbers = () => {
     const lines = content.split('\n');
     return (
-      <div className="line-numbers">
+      <div className="line-numbers" style={{
+        fontSize: `${fontSize}px`,
+        lineHeight: 1.5
+      }}>
         {lines.map((_, index) => (
-          <div key={index} className="line-number">
+          <div key={index} className="line-number" style={{
+            height: `${fontSize * 1.5}px`
+          }}>
             {index + 1}
           </div>
         ))}

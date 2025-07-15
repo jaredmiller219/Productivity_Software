@@ -134,28 +134,27 @@
   display: flex;
   flex: 1;
   overflow: hidden;
+  position: relative;
 }
 
 .line-numbers {
   background-color: #1e1e1e;
   color: #858585;
-  padding: 12px 8px;
+  padding: 12px 4px;
   font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-  font-size: 14px;
   line-height: 1.5;
   text-align: right;
   border-right: 1px solid #3c3c3c;
   user-select: none;
-  min-width: 50px;
+  min-width: 25px;
   overflow: hidden;
 }
 
 .line-number {
-  height: 21px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-right: 8px;
+  padding-right: 4px;
 }
 
 .code-textarea {
@@ -173,6 +172,13 @@
   overflow-wrap: normal;
   overflow-x: auto;
   tab-size: 2;
+  pointer-events: auto;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  position: relative;
+  z-index: 1;
 }
 
 .code-textarea::placeholder {

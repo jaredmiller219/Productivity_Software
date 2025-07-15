@@ -179,8 +179,15 @@ const CodeEditor = ({
     const lines = beforeCursor.split('\n');
     const line = lines.length;
     const column = lines[lines.length - 1].length + 1;
-    
+
     setCursorPosition({ line, column });
+  };
+
+  // Focus the textarea when the editor is clicked
+  const handleEditorClick = () => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
   };
 
   // Get syntax highlighting class
@@ -246,10 +253,15 @@ const CodeEditor = ({
         </div>
       </div>
 
-      <div className="editor-content">
-        <div className="line-numbers">
+      <div className="editor-content" onClick={handleEditorClick}>
+        <div className="line-numbers" style={{
+          fontSize: `${fontSize}px`,
+          lineHeight: 1.5
+        }}>
           {lineNumbers.map(num => (
-            <div key={num} className="line-number">
+            <div key={num} className="line-number" style={{
+              height: `${fontSize * 1.5}px`
+            }}>
               {num}
             </div>
           ))}
@@ -269,6 +281,9 @@ const CodeEditor = ({
           autoCorrect="off"
           autoCapitalize="off"
           placeholder={`Start typing your ${language} code...`}
+          readOnly={false}
+          disabled={false}
+          tabIndex={0}
         />
       </div>
 
