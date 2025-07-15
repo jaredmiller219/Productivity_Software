@@ -26,7 +26,7 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 0.2s ease;
+  transition: none !important;
 }
 
 .create-note-btn:hover {
@@ -294,6 +294,15 @@
   color: #495057;
 }
 
+.notes-container.theme-light .create-note-btn {
+  background-color: #268de2 !important;
+  color: #ffffff !important;
+}
+
+.notes-container.theme-light .create-note-btn:hover {
+  background-color: #4d9cdd !important;
+}
+
 .notes-container.theme-light .notes-controls {
   background-color: #fff;
   border-bottom: 1px solid #e9ecef;
@@ -369,6 +378,15 @@ div.notes-container.theme-light .notes-list-container .search-container .search-
   background-color: #21262d;
   border-bottom: 1px solid #30363d;
   color: #f0f6fc;
+}
+
+.notes-container.theme-dark .create-note-btn {
+  background-color: #238636 !important;
+  color: #ffffff !important;
+}
+
+.notes-container.theme-dark .create-note-btn:hover {
+  background-color: #2ea043 !important;
 }
 
 .notes-container.theme-dark .notes-controls {
