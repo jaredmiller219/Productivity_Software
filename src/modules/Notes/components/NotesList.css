@@ -68,7 +68,6 @@
 
 .notes-list-container .search-icon {
   position: absolute;
-  /* right: 12px; */
   left: 0px;
   top: 50%;
   transform: translateY(-50%) scaleX(-1);
