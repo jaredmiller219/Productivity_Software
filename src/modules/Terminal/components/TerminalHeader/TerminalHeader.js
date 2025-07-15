@@ -9,7 +9,8 @@ const TerminalHeader = ({
   theme = 'dark',
   onShowThemes,
   onShowSettings,
-  onShowHelp
+  onShowHelp,
+  onShowDebug
 }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showStats, setShowStats] = useState(false);
@@ -116,6 +117,17 @@ const TerminalHeader = ({
             >
               ❓
             </button>
+
+            {/* Debug button - only in development */}
+            {process.env.NODE_ENV === 'development' && (
+              <button
+                className="header-btn debug-btn"
+                onClick={onShowDebug}
+                title="Debug Information (Dev Only)"
+              >
+                🔧
+              </button>
+            )}
           </div>
 
           {/* Customization Group */}

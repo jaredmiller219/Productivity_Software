@@ -327,7 +327,7 @@
 
 .help-section code {
   background-color: #1e1e1e;
-  color: #00ff41;
+  color: #a78bfa;
   padding: 2px 6px;
   border-radius: 3px;
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
@@ -336,5 +336,209 @@
 
 .terminal-container.light .help-section code {
   background-color: #f5f5f5;
-  color: #d73a49;
+  color: #7c3aed;
+}
+
+/* Debug Section Styles */
+.debug-section {
+  margin-bottom: 20px;
+}
+
+.debug-section h4 {
+  margin: 0 0 12px 0;
+  color: #34d399;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.terminal-container.light .debug-section h4 {
+  color: #059669;
+}
+
+.debug-section p {
+  margin: 6px 0;
+  font-size: 13px;
+  color: #b0b0b0;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+.terminal-container.light .debug-section p {
+  color: #666;
+}
+
+.debug-section strong {
+  color: #06b6d4;
+}
+
+.terminal-container.light .debug-section strong {
+  color: #0891b2;
+}
+
+/* Draggable Debug Modal Styles */
+.debug-modal {
+  background-color: #2d2d2d;
+  border: 2px solid #4a9eff;
+  border-radius: 8px;
+  min-width: 300px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.terminal-container.light .debug-modal {
+  background-color: #f0f0f0;
+  border-color: #2563eb;
+  color: #333;
+}
+
+.debug-modal.minimized {
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none;
+  overflow: visible;
+}
+
+.debug-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #4a9eff;
+  background-color: #3e3e3e;
+  border-radius: 6px 6px 0 0;
+  user-select: none;
+}
+
+.terminal-container.light .debug-modal-header {
+  background-color: #e0e0e0;
+  border-bottom-color: #2563eb;
+}
+
+.debug-modal-header h3 {
+  margin: 0;
+  font-size: 14px;
+  color: #FFD700;
+  font-weight: 600;
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.6);
+}
+
+.terminal-container.light .debug-modal-header h3 {
+  color: #FFD700;
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.4);
+}
+
+.debug-header-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.debug-header-controls button {
+  background: none;
+  border: none;
+  color: #d4d4d4;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+.terminal-container.light .debug-header-controls button {
+  color: #333;
+}
+
+.debug-header-controls button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.debug-modal-content {
+  padding: 16px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Custom scrollbar for debug modal */
+.debug-modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.debug-modal-content::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 3px;
+}
+
+.debug-modal-content::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+
+.debug-modal-content::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+.terminal-container.light .debug-modal-content::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.terminal-container.light .debug-modal-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+}
+
+.terminal-container.light .debug-modal-content::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* Resize Handle */
+.debug-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  cursor: se-resize;
+  background: linear-gradient(
+    -45deg,
+    transparent 0%,
+    transparent 35%,
+    #6b7280 35%,
+    #6b7280 40%,
+    transparent 40%,
+    transparent 50%,
+    #6b7280 50%,
+    #6b7280 55%,
+    transparent 55%,
+    transparent 65%,
+    #6b7280 65%,
+    #6b7280 70%,
+    transparent 70%
+  );
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.debug-resize-handle:hover {
+  opacity: 1;
+}
+
+.terminal-container.light .debug-resize-handle {
+  background: linear-gradient(
+    -45deg,
+    transparent 0%,
+    transparent 40%,
+    #4b5563 40%,
+    #4b5563 45%,
+    transparent 45%,
+    transparent 55%,
+    #4b5563 55%,
+    #4b5563 60%,
+    transparent 60%,
+    transparent 70%,
+    #4b5563 70%,
+    #4b5563 75%,
+    transparent 75%
+  );
 }
