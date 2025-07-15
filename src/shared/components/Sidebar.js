@@ -3,14 +3,23 @@ import "./Sidebar.css";
 
 function Sidebar({ activeModule, setActiveModule, notesPosition, onNotesPositionChange, notesCount }) {
   const [showNotesMenu, setShowNotesMenu] = useState(false);
-  const modules = [
+  const baseModules = [
     { id: "notes", name: "Notes", icon: "📝" },
     { id: "terminal", name: "Terminal", icon: "⚡" },
-    { id: "debug-terminal", name: "Debug Terminal", icon: "🔧" },
     { id: "browser", name: "Browser", icon: "🌐" },
     { id: "ide", name: "IDE", icon: "💻" },
     { id: "modeling", name: "3D Modeling", icon: "🎨" },
   ];
+
+  // Add debug terminal only in development
+  const modules = process.env.NODE_ENV === 'development'
+    ? [
+        baseModules[0], // notes
+        baseModules[1], // terminal
+        { id: "debug-terminal", name: "Debug Terminal", icon: "🔧" }, // debug terminal
+        ...baseModules.slice(2) // browser, ide, modeling
+      ]
+    : baseModules;
 
   const handleModuleClick = (moduleId, event) => {
     if (moduleId === "notes" && event.button === 2) {
