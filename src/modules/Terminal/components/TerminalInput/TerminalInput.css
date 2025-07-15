@@ -32,8 +32,6 @@
   caret-color: #4ec9b0;
   /* Add smooth transitions for VSCode-like feel */
   transition: all 0.15s ease-out;
-  /* Add a subtle glow effect to simulate thicker cursor */
-  text-shadow: 0 0 1px #4ec9b0;
 }
 
 .terminal-input::placeholder {
@@ -150,7 +148,11 @@
 /* VSCode-style focus animation */
 .terminal-input:focus {
   animation: cursor-expand 0.15s ease-out;
-  text-shadow: 0 0 2px #4ec9b0;
+}
+
+/* Only apply glow to actual text, not placeholder */
+.terminal-input:not(:placeholder-shown) {
+  text-shadow: 0 0 1px #4ec9b0;
 }
 
 @keyframes cursor-expand {
