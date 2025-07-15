@@ -47,7 +47,7 @@
 
 .notes-list-container .search-container .search-input {
   width: 100%;
-  padding: 8px 12px 8px 36px;
+  padding: 8px 36px 8px 28px;
   background: #ffffff !important;
   background-color: #ffffff !important;
   color: #212529 !important;
@@ -68,7 +68,8 @@
 
 .notes-list-container .search-icon {
   position: absolute;
-  left: 12px;
+  /* right: 12px; */
+  left: 0px;
   top: 50%;
   transform: translateY(-50%);
   color: #6c757d;
@@ -249,7 +250,7 @@
 }
 
 .right-panel-mode .notes-list-container .search-container .search-input {
-  padding: 6px 10px 6px 28px;
+  padding: 6px 28px 6px 10px;
   font-size: 12px;
 }
 
