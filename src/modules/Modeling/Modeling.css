@@ -30,7 +30,7 @@
   overflow: hidden;
   position: relative;
   background: #2a2a2a;
-  border-left: 1px solid #3a3a3a;
+  /* Remove border-left since sidebar is now overlay */
 }
 
 .modeling-canvas canvas {
@@ -47,6 +47,116 @@
   .modeling-workspace {
     flex-direction: column;
   }
+}
+
+/* Collapsible Sidebar Styles */
+
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  background: #1e1e1e;
+  border-left: 1px solid #3a3a3a;
+  transition: all 0.3s ease;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  z-index: 1000;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-container.expanded {
+  width: 300px;
+  min-width: 300px;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #2a2a2a;
+  border-bottom: 1px solid #3a3a3a;
+  min-height: 32px;
+}
+
+.sidebar-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f0f6fc;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.collapse-button {
+  background: none;
+  border: none;
+  color: #8b949e;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 10px;
+  transition: all 0.2s ease;
+}
+
+.collapse-button:hover {
+  background: #3a3a3a;
+  color: #f0f6fc;
+}
+
+/* Floating Nub Overlay */
+.sidebar-nub-overlay {
+  position: absolute;
+  top: 95px;
+  right: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 80px;
+  cursor: pointer;
+  background: rgba(30, 30, 30, 0.95);
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  padding: 8px 4px;
+  z-index: 1001;
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-nub-overlay:hover {
+  background: rgba(42, 42, 42, 0.95);
+  border-color: #4a9eff;
+  transform: scale(1.05);
+}
+
+.nub-icon {
+  font-size: 16px;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+.nub-text {
+  font-size: 8px;
+  color: #8b949e;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.sidebar-nub-overlay:hover .nub-text {
+  color: #f0f6fc;
+}
+
+.sidebar-nub-overlay:hover .nub-icon {
+  opacity: 1;
 }
 
 @media (max-width: 768px) {

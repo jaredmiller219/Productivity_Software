@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import BlenderMenuBar from "./components/ui/BlenderMenuBar.js";
 import ModelingToolbar from "./components/ui/ModelingToolbar.js";
 import ModelingSidebar from "./components/ui/ModelingSidebar.js";
@@ -27,6 +27,9 @@ function Modeling() {
     toggleWireframe,
     toggleAnimation
   } = useModelingScene(containerRef);
+
+  // Sidebar collapse state
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // Menu bar action handlers
   const handleFileAction = (action, data) => {
@@ -209,20 +212,42 @@ function Modeling() {
       />
 
       <div className="modeling-workspace">
-        {/* Side Panel */}
-        <ModelingSidebar
-          activePanel={activePanel}
-          setActivePanel={setActivePanel}
-          objects={objects}
-          selectedObject={selectedObject}
-          lights={lights}
-          onSelectObject={selectObject}
-          onChangeMaterial={changeMaterial}
-          onToggleAnimation={toggleAnimation}
-        />
-
-        {/* Main Canvas */}
+        {/* Main Canvas - always full width */}
         <div className="modeling-canvas" ref={containerRef}></div>
+
+        {/* Collapsible Side Panel - overlay when collapsed */}
+        {!sidebarCollapsed && (
+          <div className="sidebar-container expanded">
+            <div className="sidebar-header">
+              <span className="sidebar-title">Properties</span>
+              <button
+                className="collapse-button"
+                onClick={() => setSidebarCollapsed(true)}
+                title="Collapse sidebar"
+              >
+                ✕
+              </button>
+            </div>
+            <ModelingSidebar
+              activePanel={activePanel}
+              setActivePanel={setActivePanel}
+              objects={objects}
+              selectedObject={selectedObject}
+              lights={lights}
+              onSelectObject={selectObject}
+              onChangeMaterial={changeMaterial}
+              onToggleAnimation={toggleAnimation}
+            />
+          </div>
+        )}
+
+        {/* Floating Nub - overlay when collapsed */}
+        {sidebarCollapsed && (
+          <div className="sidebar-nub-overlay" onClick={() => setSidebarCollapsed(false)}>
+            <div className="nub-icon">📋</div>
+            <div className="nub-text">Panels</div>
+          </div>
+        )}
       </div>
     </div>
   );
