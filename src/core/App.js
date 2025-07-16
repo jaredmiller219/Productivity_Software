@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../../shared/components/Sidebar.js";
-import Workspace from "../../shared/components/Workspace.js";
-import Notes from "../../modules/Notes/Notes.js";
-import { useGlobalStateManager, useGlobalState } from "../../shared/hooks/useGlobalState.js";
+import Sidebar from "../shared/components/Sidebar.js";
+import Workspace from "../shared/components/Workspace.js";
+import Notes from "../modules/Notes/Notes.js";
+import { useGlobalStateManager, useGlobalState } from "../shared/hooks/useGlobalState.js";
 import "./App.css";
 
 function App() {
