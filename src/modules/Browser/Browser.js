@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import BrowserToolbar from "./components/BrowserToolbar.js";
-import BrowserTabs from "./components/BrowserTabs.js";
-import BrowserContent from "./components/BrowserContent.js";
-import BookmarksPanel from "./components/BookmarksPanel.js";
+import BrowserToolbar from "./components/navigation/BrowserToolbar.js";
+import BrowserTabs from "./components/navigation/BrowserTabs.js";
+import BrowserContent from "./components/content/BrowserContent.js";
+import BookmarksPanel from "./components/bookmarks/BookmarksPanel.js";
+import BrowserSettings from "./components/settings/BrowserSettings.js";
+import BrowserThemes from "./components/themes/BrowserThemes.js";
 import { useBrowser } from "./hooks/useBrowser.js";
-import "./Browser.css";
+import "./styles/Browser.css";
 
 function Browser() {
   const [showBookmarks, setShowBookmarks] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showThemes, setShowThemes] = useState(false);
   
   const {
     url,
@@ -70,6 +74,8 @@ function Browser() {
           onStop={stop}
           onAddBookmark={addBookmark}
           onToggleBookmarks={handleToggleBookmarks}
+          onShowSettings={() => setShowSettings(true)}
+          onShowThemes={() => setShowThemes(true)}
         />
         
         <BookmarksPanel
@@ -88,6 +94,18 @@ function Browser() {
           onLoad={handleWebviewLoad}
           onError={handleWebviewError}
         />
+
+        {showSettings && (
+          <BrowserSettings
+            onClose={() => setShowSettings(false)}
+          />
+        )}
+
+        {showThemes && (
+          <BrowserThemes
+            onClose={() => setShowThemes(false)}
+          />
+        )}
       </div>
     </div>
   );

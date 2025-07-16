@@ -12,8 +12,11 @@ const BrowserToolbar = ({
   onBack,
   onForward,
   onRefresh,
+  onStop,
   onAddBookmark,
-  onToggleBookmarks
+  onToggleBookmarks,
+  onShowSettings,
+  onShowThemes
 }) => {
   const [isBookmarkDialogOpen, setIsBookmarkDialogOpen] = useState(false);
   const [bookmarkTitle, setBookmarkTitle] = useState('');
@@ -77,10 +80,17 @@ const BrowserToolbar = ({
         </button>
         <button
           className="nav-btn refresh-btn"
-          onClick={onRefresh}
-          title="Refresh page"
+          onClick={isLoading ? onStop : onRefresh}
+          title={isLoading ? "Stop loading" : "Refresh page"}
         >
           {isLoading ? '⏹' : '↻'}
+        </button>
+        <button
+          className="nav-btn home-btn"
+          onClick={() => onNavigate('https://www.google.com')}
+          title="Go to home page"
+        >
+          🏠
         </button>
       </div>
 
@@ -112,6 +122,27 @@ const BrowserToolbar = ({
           title="Show bookmarks"
         >
           📚
+        </button>
+        <button
+          className="action-btn settings-btn"
+          onClick={onShowSettings}
+          title="Browser settings"
+        >
+          ⚙️
+        </button>
+        <button
+          className="action-btn themes-btn"
+          onClick={onShowThemes}
+          title="Browser themes"
+        >
+          🎨
+        </button>
+        <button
+          className="action-btn menu-btn"
+          onClick={() => {/* TODO: Add menu functionality */}}
+          title="Browser menu"
+        >
+          ●●●
         </button>
       </div>
 

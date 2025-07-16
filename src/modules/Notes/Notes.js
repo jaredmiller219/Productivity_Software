@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import NotesList from './components/NotesList.js';
-import NoteEditor from './components/NoteEditor.js';
+import NotesList from './components/list/NotesList.js';
+import NoteEditor from './components/editor/NoteEditor.js';
 import { useNotes } from './hooks/useNotes.js';
 import { useNotesTheme } from './hooks/useNotesTheme.js';
-import './Notes.css';
+import './styles/Notes.css';
 
 function Notes({ isRightPanel = false, onNotesCountChange }) {
   const { theme, toggleTheme } = useNotesTheme();
