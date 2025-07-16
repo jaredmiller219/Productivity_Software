@@ -123,3 +123,24 @@
 }
 
 /* Legacy styles removed - now handled by individual components */
+
+/* Fullscreen toggle button styles moved to NoteEditor.css */
+
+.fullscreen-icon {
+  font-size: 14px;
+  color: #8b949e;
+  transition: color 0.2s ease;
+}
+
+.fullscreen-toggle:hover .fullscreen-icon {
+  color: #f0f6fc;
+}
+
+/* Light theme fullscreen icon */
+.notes-container.theme-light .fullscreen-icon {
+  color: #6a737d;
+}
+
+.notes-container.theme-light .fullscreen-toggle:hover .fullscreen-icon {
+  color: #24292e;
+}

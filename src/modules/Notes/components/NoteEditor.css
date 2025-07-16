@@ -183,7 +183,7 @@
 
 /* Fullscreen mode adjustments */
 .note-editor.fullscreen .editor-header {
-  padding: 20px 40px;
+  padding: 20px 20px;
 }
 
 .note-editor.fullscreen .editor-content {

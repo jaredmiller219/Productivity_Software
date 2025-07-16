@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './NoteEditor.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExpand, faCompress } from '@fortawesome/free-solid-svg-icons';
 
 const NoteEditor = ({ 
   currentNote, 
@@ -11,6 +13,7 @@ const NoteEditor = ({
   const [charCount, setCharCount] = useState(0);
   const [showStats, setShowStats] = useState(false);
   const textareaRef = useRef(null);
+
 
   // Update statistics when content changes
   useEffect(() => {
@@ -113,7 +116,8 @@ const NoteEditor = ({
     return (
       <div className="note-editor-empty">
         <div className="empty-state">
-          <div className="empty-icon">📝</div>
+          <div className="empty-icon">📝
+          </div>
           <h3>No note selected</h3>
           <p>Select a note from the list or create a new one to start writing.</p>
         </div>
@@ -145,7 +149,10 @@ const NoteEditor = ({
             onClick={() => setIsFullscreen(!isFullscreen)}
             title="Toggle fullscreen (F11)"
           >
-            {isFullscreen ? '🗗' : '🗖'}
+            <FontAwesomeIcon
+              icon={isFullscreen ? faCompress : faExpand}
+              className="fullscreen-icon"
+            />
           </button>
         </div>
       </div>
