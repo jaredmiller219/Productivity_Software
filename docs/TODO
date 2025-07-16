@@ -1,2 +1,41 @@
 TODO:
-Browser and Notes sections have to have files organized
+
+Browser:
+Organize files and folders
+try to find better styling and colors
+make the 3 dots button do something
+make the show bookmarks button do something
+
+Notes:
+Organize files and folders
+Fix fullscreen button
+
+3D Modeling:
+3D modeling sidebar make smaller not full height
+Dont open the sidebar on first load of tab
+Only show arrow on each button when you hover over it, rather than always showing
+Add different views (one of modeling, one of animation, one of rigging, one of materials, one of modifiers) instead of just buttons for it.
+
+IDE:
+Add a revert file button on right in bottom bar
+change fullscreen icon
+make the sidebar explorer actually horinzontally resizable, (currently the resize cursor shows but you cant actually resize it)
+Double click the file name in the button to rename it (also clicking the file name in the header allows to rename the file) also add a rename option in the context menu
+make actual file type syntax highlighting
+add more options to the topbar header
+dont highlight the searchbar when you click on it
+make the search bar the same color as the rest of the header and change to the current color it is now when you click on it to show its been clicked
+why does it show the file size in bytes and not like kb or mb?
+
+Terminal:
+add "cd" command
+add a space to the left of the terminal header name, the icon next to the word terminal is too close to the edge, just move it in a bit.
+use the terminal tab styling from the advanced terminal in the simple terminal
+make the + button the same style as from the advanced terminal
+Thought: dont name each terminal tab "terminal 1", "terminal 2", etc. instead name it "terminal" and when you make a new one itll be "terminal (1)" and so on
+Possibly make it so you can rename the terminal tab? or it takes the name of the current directory you are in?
+show the debug info panel in normal build if in the settings panel it is enabled.
+the settings pane in the terminal doesnt let you do anything currently it just has text.
+
+settings button:
+put the settings button where the dev state thing is, and make it have the same styling as the dev state thing has. same colors and everything.
