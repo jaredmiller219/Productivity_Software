@@ -15,7 +15,9 @@ This document outlines the comprehensive structure of the Dev Productivity Suite
 ├── scripts/                  # Build and utility scripts
 ├── package.json              # Dependencies and scripts
 ├── README.md                 # Project documentation
-└── PROJECT_STRUCTURE.md      # This file
+└── docs/                     # Documentation files
+    ├── project_structure.md  # This file
+    └── updates_changelog.md  # Feature updates and enhancements
 ```
 
 ## 📁 Source Code Architecture (`src/`)
@@ -25,21 +27,20 @@ This document outlines the comprehensive structure of the Dev Productivity Suite
 ```
 src/
 ├── core/                     # Core application infrastructure
-│   ├── components/           # Core UI components
-│   │   ├── App.js           # Main application component
-│   │   └── App.css          # Global application styles
-│   ├── utils/               # Core utility functions
-│   ├── hooks/               # Core React hooks
-│   └── constants/           # Global constants
+│   ├── App.js               # Main application component
+│   └── App.css              # Global application styles
 ├── shared/                   # Shared components and utilities
 │   ├── components/          # Reusable UI components
 │   │   ├── Sidebar.js       # Main navigation sidebar
 │   │   ├── Sidebar.css      # Sidebar styles
 │   │   ├── Workspace.js     # Main workspace container
 │   │   └── Workspace.css    # Workspace styles
+│   ├── hooks/               # Shared hooks
+│   │   └── useGlobalState.js # Global state management
 │   ├── utils/               # Shared utility functions
 │   ├── constants/           # Shared constants
 │   └── types/               # TypeScript type definitions
+├── index.js                 # Application entry point
 └── modules/                 # Feature modules (domain-specific)
 ```
 
@@ -64,29 +65,34 @@ modules/
 │   └── types/              # Module type definitions
 ```
 
-## 📝 Notes Module (Enhanced)
+## 📝 Notes Module
 
 ```
 modules/Notes/
 ├── Notes.js                 # Main notes interface with theme support
-├── Notes.css                # Notes module styles with dark/light themes
-├── components/              # Notes components
-│   ├── NotesList.js        # Notes list with search and sorting
-│   ├── NotesList.css       # Notes list styles with seamless theme transitions
-│   ├── NoteEditor.js       # Rich text note editor
-│   ├── NoteEditor.css      # Note editor styles
-│   ├── NotesSearch.js      # Advanced search component
-│   ├── NotesSearch.css     # Search component styles
-│   ├── RichTextEditor.js   # Rich text editing with markdown
-│   └── RichTextEditor.css  # Rich text editor styles
+├── components/              # Notes components organized by subdomain
+│   ├── editor/             # Note editing components
+│   │   ├── NoteEditor.js   # Rich text note editor
+│   │   ├── NoteEditor.css  # Note editor styles
+│   │   ├── RichTextEditor.js # Rich text editing with markdown
+│   │   └── RichTextEditor.css # Rich text editor styles
+│   ├── list/               # Note list and management components
+│   │   ├── NotesList.js    # Notes list with search and sorting
+│   │   └── NotesList.css   # Notes list styles with seamless theme transitions
+│   ├── search/             # Search functionality components
+│   │   ├── NotesSearch.js  # Advanced search component
+│   │   └── NotesSearch.css # Search component styles
+│   └── sticky/             # Sticky notes components
+│       ├── StickyNote.js   # Sticky note component
+│       └── StickyNote.css  # Sticky note styles
 ├── hooks/                  # Notes-specific hooks
 │   ├── useNotes.js         # Main notes management hook
 │   └── useNotesTheme.js    # Theme management hook
-├── utils/                  # Notes utilities
-└── constants/              # Notes constants
+└── styles/                 # Notes styling
+    └── Notes.css           # Main notes styles with dark/light themes
 ```
 
-## ⚡ Terminal Module (Enhanced)
+## ⚡ Terminal Module
 
 ```
 modules/Terminal/
@@ -94,27 +100,41 @@ modules/Terminal/
 ├── Terminal.css             # Terminal module styles with futuristic design
 ├── SimpleTerminal.js        # Simple terminal implementation
 ├── SimpleTerminal.css       # Simple terminal styles
+├── RealTerminal.js          # Real system terminal implementation
+├── TestTerminal.js          # Test terminal for development
 ├── components/              # Terminal components
+│   ├── TabSettings/        # Per-tab settings components
+│   │   ├── TabSettings.js  # Tab settings component
+│   │   └── TabSettings.css # Tab settings styles
+│   ├── TerminalAutocomplete/ # Command autocomplete functionality
+│   │   ├── TerminalAutocomplete.js # Autocomplete component
+│   │   └── TerminalAutocomplete.css # Autocomplete styles
 │   ├── TerminalDisplay/    # Terminal output display
-│   │   ├── TerminalDisplay.js    # Command output rendering
-│   │   └── TerminalDisplay.css   # Display styles (no animations)
-│   ├── TerminalInput/      # Command input handling
-│   │   ├── TerminalInput.js      # Input component
-│   │   └── TerminalInput.css     # Input styles
+│   │   ├── TerminalDisplay.js # Command output rendering
+│   │   └── TerminalDisplay.css # Display styles (no animations)
 │   ├── TerminalHeader/     # Terminal header with stats
-│   │   ├── TerminalHeader.js     # Header component
-│   │   └── TerminalHeader.css    # Header styles
-│   └── TerminalTabs/       # Multi-tab functionality
-│       ├── TerminalTabs.js       # Tab management component
-│       └── TerminalTabs.css      # Tab styles
-├── hooks/                  # Terminal-specific hooks
-│   └── useTerminal.js      # Terminal state management
-├── utils/                  # Terminal utilities
-│   └── commandProcessor.js # Command processing logic
-└── constants/              # Terminal constants
+│   │   ├── TerminalHeader.js # Header component
+│   │   └── TerminalHeader.css # Header styles
+│   ├── TerminalInput/      # Command input handling
+│   │   ├── TerminalInput.js # Input component
+│   │   └── TerminalInput.css # Input styles
+│   ├── TerminalSettings/   # Terminal configuration
+│   │   ├── TerminalSettings.js # Settings component
+│   │   └── TerminalSettings.css # Settings styles
+│   ├── TerminalSplitPane/  # Split pane functionality
+│   │   ├── TerminalSplitPane.js # Split pane component
+│   │   └── TerminalSplitPane.css # Split pane styles
+│   ├── TerminalThemes/     # Theme management components
+│   │   ├── TerminalThemes.js # Theme management component
+│   │   └── TerminalThemes.css # Theme styles
+│   └── ThemeSelector/      # Theme selection interface
+│       ├── ThemeSelector.js # Theme selector component
+│       └── ThemeSelector.css # Theme selector styles
+└── hooks/                  # Terminal-specific hooks
+    └── useTerminal.js      # Terminal state management
 ```
 
-## 🎨 3D Modeling Module (Advanced)
+## 🎨 3D Modeling Module
 
 ```
 modules/Modeling/
@@ -122,133 +142,95 @@ modules/Modeling/
 ├── Modeling.css             # Modeling module styles
 ├── components/              # Modeling components by domain
 │   ├── ui/                 # Core UI components
-│   │   ├── BlenderMenuBar.js        # Professional menu bar
-│   │   ├── ModelingToolbar.js       # Dropdown-based toolbar
-│   │   ├── ModelingSidebar.js       # Properties sidebar
-│   │   └── *.css                    # Component styles
+│   │   ├── BlenderMenuBar.js # Professional menu bar
+│   │   ├── BlenderMenuBar.css # Menu bar styles
+│   │   ├── ModelingSidebar.js # Properties sidebar
+│   │   ├── ModelingSidebar.css # Sidebar styles
+│   │   ├── ModelingToolbar.js # Dropdown-based toolbar
+│   │   └── ModelingToolbar.css # Toolbar styles
 │   ├── animation/          # Animation system components
-│   │   ├── AnimationTimeline.js     # Keyframe timeline
-│   │   ├── AnimationCurves.js       # Curve editor
-│   │   └── *.css
-│   ├── rigging/            # Rigging and armature components
-│   │   ├── RiggingSystem.js         # Bone and constraint system
-│   │   └── *.css
+│   │   ├── AnimationCurves.js # Curve editor
+│   │   ├── AnimationCurves.css # Curve editor styles
+│   │   ├── AnimationTimeline.js # Keyframe timeline
+│   │   └── AnimationTimeline.css # Timeline styles
 │   ├── materials/          # Material and shading components
-│   │   ├── MaterialEditor.js        # PBR material editor
-│   │   └── *.css
+│   │   ├── MaterialEditor.js # Basic material editor
+│   │   ├── MaterialEditor.css # Material editor styles
+│   │   ├── AdvancedMaterialEditor.js # Advanced PBR material editor
+│   │   └── AdvancedMaterialEditor.css # Advanced editor styles
 │   ├── modifiers/          # Modifier stack components
-│   │   ├── ModifierStack.js         # Non-destructive modifiers
-│   │   └── *.css
+│   │   ├── ModifierStack.js # Basic modifier stack
+│   │   ├── ModifierStack.css # Modifier stack styles
+│   │   ├── EnhancedModifierStack.js # Enhanced non-destructive modifiers
+│   │   └── EnhancedModifierStack.css # Enhanced modifier styles
+│   ├── rigging/            # Rigging and armature components
+│   │   ├── RiggingSystem.js # Bone and constraint system
+│   │   └── RiggingSystem.css # Rigging system styles
 │   └── viewport/           # 3D viewport components
+│       ├── ViewportControls.js # 3D viewport controls
+│       └── ViewportControls.css # Viewport control styles
 ├── hooks/                  # Modeling-specific hooks
 │   └── useModelingScene.js # Main 3D scene management
-├── utils/                  # Modeling utilities by domain
-│   ├── viewport/           # 3D rendering utilities
-│   │   └── threeUtils.js   # Three.js utilities
-│   ├── animation/          # Animation system utilities
-│   │   └── animationUtils.js # Keyframe and interpolation
-│   ├── rigging/            # Rigging system utilities
-│   │   └── riggingUtils.js # Armature and bone management
-│   └── materials/          # Material utilities
-├── constants/              # Modeling constants
-└── types/                  # Modeling type definitions
+└── utils/                  # Modeling utilities by domain
+    ├── animation/          # Animation system utilities
+    ├── rigging/            # Rigging system utilities
+    └── viewport/           # 3D rendering utilities
 ```
 
-## 💻 IDE Module (Enhanced)
+## 💻 IDE Module
 
 ```
 modules/IDE/
-├── IDE.js                  # Main IDE interface
-├── IDE.css                 # IDE styles with futuristic design
+├── IDE.js                  # Main IDE interface with resize functionality
+├── IDE.css                 # IDE styles with futuristic design and resize handles
 ├── components/             # IDE components
-│   ├── IDEToolbar/        # IDE toolbar with search
-│   │   ├── IDEToolbar.js  # Toolbar component with search functionality
-│   │   └── IDEToolbar.css # Toolbar styles
-│   ├── FileExplorer/      # File navigation system
-│   │   ├── FileExplorer.js    # File tree component
-│   │   └── FileExplorer.css   # Explorer styles
-│   ├── SearchPanel/       # Advanced search functionality
-│   │   ├── SearchPanel.js     # Search component
-│   │   └── SearchPanel.css    # Search styles
-│   ├── editor/            # Code editor components
-│   ├── syntax/            # Syntax highlighting
-│   ├── themes/            # Editor themes
-│   └── plugins/           # IDE plugins
-├── hooks/                 # IDE hooks
-├── utils/                 # IDE utilities
-├── constants/             # IDE constants
-└── types/                 # IDE types
+│   ├── AdvancedCodeEditor.js   # Advanced code editor implementation
+│   ├── AdvancedCodeEditor.css  # Advanced editor styles
+│   ├── DebugPanel.js          # Debug panel component
+│   ├── IDEToolbar/            # IDE toolbar with search
+│   │   ├── IDEToolbar.js      # Toolbar component with undo/redo buttons
+│   │   └── IDEToolbar.css     # Toolbar styles with button styling
+│   ├── FileExplorer/          # File navigation system with rename support
+│   │   ├── FileExplorer.js    # File tree with double-click rename and context menus
+│   │   └── FileExplorer.css   # Explorer styles with rename input styling
+│   ├── CodeEditor/            # Code editor components
+│   │   ├── CodeEditor.js      # Editor with undo/redo and header rename
+│   │   └── CodeEditor.css     # Editor styles with rename input styling
+│   └── SearchPanel/           # Advanced search functionality
+│       ├── SearchPanel.js     # Search component
+│       └── SearchPanel.css    # Search styles
+└── hooks/                     # IDE hooks
+    └── useIDE.js             # Enhanced with file rename functionality
 ```
 
-## 🌐 Browser Module (Enhanced)
+## 🌐 Browser Module
 
 ```
 modules/Browser/
 ├── Browser.js              # Main browser interface
-├── Browser.css             # Browser styles with futuristic design
-├── components/             # Browser components
-│   ├── BrowserToolbar.js   # Navigation toolbar with URL input
-│   ├── BrowserToolbar.css  # Toolbar styles
-│   ├── BrowserTabs.js      # Tab management system
-│   ├── BrowserTabs.css     # Tab styles
-│   ├── BrowserSettings.js  # Browser settings panel
-│   ├── BrowserSettings.css # Settings styles
-│   ├── BrowserThemes.js    # Theme customization system
-│   ├── BrowserThemes.css   # Theme editor styles
-│   └── WebView/           # Web content display
+├── components/             # Browser components organized by subdomain
+│   ├── bookmarks/         # Bookmark management components
+│   │   ├── BookmarksPanel.js # Bookmarks panel component
+│   │   └── BookmarksPanel.css # Bookmarks panel styles
+│   ├── content/           # Web content display components
+│   │   ├── BrowserContent.js # Web content display component
+│   │   └── BrowserContent.css # Content display styles
+│   ├── navigation/        # Navigation and toolbar components
+│   │   ├── BrowserTabs.js    # Tab management system
+│   │   ├── BrowserTabs.css   # Tab styles
+│   │   ├── BrowserToolbar.js # Navigation toolbar with URL input
+│   │   └── BrowserToolbar.css # Toolbar styles
+│   ├── settings/          # Browser settings components
+│   │   ├── BrowserSettings.js # Browser settings panel
+│   │   └── BrowserSettings.css # Settings styles
+│   └── themes/            # Theme customization components
+│       ├── BrowserThemes.js   # Theme customization system
+│       └── BrowserThemes.css  # Theme editor styles
 ├── hooks/                 # Browser hooks
-├── utils/                 # Browser utilities
-└── constants/             # Browser constants
+│   └── useBrowser.js      # Main browser state management
+└── styles/                # Browser styling
+    └── Browser.css        # Main browser styles with futuristic design
 ```
-
-## 🔧 Key Features by Module
-
-### Notes Module
-
-- **Advanced Search**: Multi-field search with filters, tags, categories, date ranges
-- **Rich Text Editor**: Markdown support, formatting toolbar, keyboard shortcuts
-- **Seamless Theme Support**: Light/dark mode toggle with instant transitions (no blinking)
-- **Flexible Layout**: Main area or right panel positioning with context menus
-- **Organization**: Search, sort, duplicate, and categorize notes
-- **Enhanced UI**: Rounded corners, proper spacing, theme-specific button colors
-
-### Terminal Module
-
-- **Multi-Tab Support**: Multiple terminal instances with tab management
-- **Clean Output**: No animations, customizable indentation
-- **Command History**: Persistent command history and statistics
-- **Header Stats**: Command count and uptime tracking
-- **Welcome Messages**: Indented initial messages for better UX
-- **Theme Controls**: Comprehensive theme customization with popup windows
-- **Per-Tab Settings**: Individual font size, family, and color settings
-
-### 3D Modeling Module
-
-- **Professional UI**: Blender-like interface with menu bar and dropdown toolbar
-- **Advanced Animation**: Keyframe timeline, curve editor, interpolation modes
-- **Rigging System**: Armatures, bones, IK constraints, weight painting
-- **Material System**: PBR materials, texture mapping, shader editor
-- **Modifier Stack**: 50+ non-destructive modifiers
-- **Viewport**: Multiple view modes, shading options, camera controls
-
-### IDE Module
-
-- **Code Editor**: Monaco-based editor with syntax highlighting
-- **Advanced Search**: File and content search with dropdown/sidebar toggle options
-- **Multi-language Support**: JavaScript, Python, C++, and more
-- **Project Management**: Enhanced file explorer with visual flair and proper spacing
-- **Debugging**: Integrated debugging tools
-- **Modern UI**: Centered search bars, thin top bars, and improved button styling
-- **Statistics Display**: Project stats in bottom status bar
-
-### Browser Module
-
-- **Web Browsing**: Full-featured web browser with modern interface
-- **Tab Management**: Multiple tabs with navigation and close functionality
-- **Theme System**: Comprehensive theme editor with predefined and custom themes
-- **Settings Panel**: Advanced browser configuration options
-- **Responsive Design**: Clean, futuristic UI with proper spacing
-- **Loading States**: Visual feedback with stop/reload button transformations
 
 ## 🛠️ Technology Stack
 
@@ -331,262 +313,8 @@ dist/
 5. **Hooks** encapsulate complex logic and side effects
 6. **Utils** provide pure functions and utilities
 
-## 🎨 UI/UX Features
+This architecture ensures maintainability, scalability, and professional-grade code organization suitable for a comprehensive productivity suite.
 
-- **Flexible Panel System**: Notes can be positioned in main area, right panel, or hidden
-- **Context Menus**: Right-click functionality for enhanced navigation
-- **Seamless Theme Transitions**: Instant theme switching without blinking or animations
-- **Rounded Corner Design**: Consistent 12px border radius across all modules and sidebar
-- **Perfect Alignment**: Sidebar and main content with matching spacing and margins
-- **Responsive Design**: Adaptive layouts for different screen sizes
-- **Professional Styling**: Clean, modern interface with consistent spacing
-- **Futuristic Aesthetics**: Terminal-inspired design language throughout
-- **Keyboard Shortcuts**: Comprehensive keyboard navigation support
-- **Visual Feedback**: Proper loading states, hover effects, and interactive elements
+---
 
-This architecture ensures maintainability, scalability, and professional-grade code organization suitable for a comprehensive productivity suite with advanced search, seamless theming, layout flexibility, and modern UI/UX design principles.
-
-## 🎯 Recent Enhancements
-
-### UI/UX Improvements
-
-- **Seamless Theme Transitions**: Eliminated blinking animations across all modules
-- **Rounded Corner Design**: Consistent 12px border radius for modern appearance
-- **Perfect Sidebar Alignment**: Matching margins and spacing with main content
-- **Enhanced Button Styling**: Theme-specific colors and instant transitions
-
-### Notes Module Enhancements
-
-- **Theme-Specific Button Colors**: Light blue for light mode, green for dark mode
-- **Search Bar Theming**: Proper white/dark background switching
-- **Transition Removal**: No more blinking during theme changes
-
-### Terminal Module Improvements
-
-- **Multi-Tab Functionality**: Full tab management system
-- **Theme Controls**: Comprehensive popup-based theme customization
-- **Per-Tab Settings**: Individual customization options
-
-### Browser Module Features
-
-- **Theme System**: Advanced theme editor with custom color schemes
-- **Loading States**: Dynamic button transformations during page loads
-- **Settings Panel**: Comprehensive browser configuration
-
-### IDE Module Enhancements
-
-- **Search Interface**: Toggle between dropdown and sidebar modes
-- **File Explorer**: Enhanced visual design with better spacing
-- **Status Bar**: Project statistics display
-
-### General Improvements
-
-- **Consistent Spacing**: 8px margins across all modules
-- **Futuristic Design**: Terminal-inspired aesthetic throughout
-- **Performance**: Optimized rendering and reduced animations
-
-## 🚀 Recent Major Enhancements (Latest Updates)
-
-### Global State Management System
-
-```
-shared/hooks/useGlobalState.js    # Advanced persistent state management
-```
-
-**Features:**
-
-- **Cross-Session Persistence**: All tab states preserved across app restarts
-- **Environment-Aware**: Production vs development mode handling
-- **Module State Tracking**: IDE files, Terminal history, Notes content, Browser tabs, 3D scenes
-- **Smart State Recovery**: Automatic restoration of previous work sessions
-- **Debug Controls**: Development-only state management tools
-
-### Enhanced Core Application
-
-```
-core/components/
-├── App.js                       # Updated with global state integration
-└── App.css                      # State management dialog styling
-```
-
-**New Features:**
-
-- **State Persistence Dialog**: Beautiful option-box confirmation system
-- **Keyboard Shortcut Management**: Cmd+R prevention in production
-- **Environment Detection**: Automatic production/development behavior
-- **Progressive Dialog Styling**: Gradient-based confirmation dialogs
-
-### Sidebar Enhancements
-
-```
-shared/components/
-├── Sidebar.js                   # Enhanced with status controls
-└── Sidebar.css                  # Status button styling
-```
-
-**Improvements:**
-
-- **Status Toggle Button**: Sideways state persistence control at bottom
-- **Development Module**: Debug terminal (dev-only)
-- **Context Menu System**: Notes positioning controls
-- **Visual Hierarchy**: Improved spacing and module organization
-
-### IDE Module Major Updates
-
-```
-modules/IDE/
-├── IDE.js                       # Keyboard shortcuts and persistence
-├── components/
-│   ├── FileExplorer/
-│   │   ├── FileExplorer.js     # Smart context menus
-│   │   └── FileExplorer.css    # Context menu positioning
-│   └── CodeEditor/
-│       └── CodeEditor.js       # File persistence and stats
-└── hooks/
-    └── useIDE.js               # localStorage integration
-```
-
-**New Capabilities:**
-
-- **File Persistence**: All saved files preserved across sessions via localStorage
-- **Smart Context Menus**: File-aligned dropdown menus with instant positioning
-- **Keyboard Shortcuts**: Cmd+S/Ctrl+S save support across platforms
-- **Sequential Right-Click**: Switch between file menus seamlessly without clicking away
-- **Project Statistics**: Comprehensive file and project metrics
-- **Instant Menu Switching**: Context menus appear immediately without animations
-- **Global Context Menu Prevention**: Browser right-click menus disabled app-wide
-
-### Terminal Module Enhancements
-
-```
-modules/Terminal/components/
-└── TerminalInput/
-    ├── TerminalInput.js        # Enhanced input handling
-    └── TerminalInput.css       # VSCode-style cursor effects
-```
-
-**Improvements:**
-
-- **Enhanced Cursor**: 2px width with VSCode-style expand animation
-- **Clean Focus States**: No border selection, cursor-only focus
-- **Smooth Transitions**: 0.15s ease-out animations
-- **Placeholder Handling**: Glow effects only on actual text
-
-### Notes Module Updates
-
-```
-modules/Notes/components/
-└── NotesList.css               # Search icon positioning
-```
-
-**Features:**
-
-- **Search Icon Positioning**: Right-side internal positioning
-- **Horizontal Text Flip**: 180-degree rotated search elements
-- **Responsive Design**: Proper scaling across different panel sizes
-
-### Cross-Platform Compatibility
-
-- **Mac Support**: Cmd+S keyboard shortcuts
-- **Windows/Linux**: Ctrl+S keyboard shortcuts
-- **Environment Detection**: Automatic platform-specific behavior
-- **Production Safety**: State persistence always enabled in builds
-
-### Development vs Production Modes
-
-**Development Mode:**
-
-- Debug terminal module available
-- State persistence toggleable
-- Cmd+R refresh allowed
-- Full debug controls accessible
-
-**Production Mode:**
-
-- State persistence always enabled
-- Cmd+R refresh prevented (menu-only refresh)
-- Debug features hidden
-- Optimized for end-user experience
-
-## 🎨 Latest UI/UX Enhancements
-
-### Context Menu System Improvements
-
-**Smart Positioning:**
-
-- Context menus appear directly below clicked files
-- Same width as the file element for perfect alignment
-- Intelligent viewport boundary detection
-- Above-file positioning when near screen bottom
-
-**Instant Interactions:**
-
-- Zero animation delays for immediate response
-- Sequential right-clicking without clicking away first
-- Global browser context menu prevention
-- Seamless menu switching between files
-
-**Technical Implementation:**
-
-```
-FileExplorer.js:
-- Event capture before setTimeout to prevent stale references
-- Pointer-events: none on overlay for click-through behavior
-- Document click listeners for smart menu closing
-- File-relative positioning calculations
-
-FileExplorer.css:
-- transition: none !important for instant positioning
-- transform: none !important to prevent sliding
-- Removed all context menu animations
-```
-
-### Terminal Input Enhancements
-
-**VSCode-Style Cursor:**
-
-- 2px width cursor simulation via text-shadow effects
-- Expand animation on focus (0.15s ease-out)
-- Clean focus states without border selection
-- Glow effects only on actual text, not placeholders
-
-**Cross-Platform Behavior:**
-
-- Cmd+S save support for Mac users
-- Ctrl+S save support for Windows/Linux users
-- Environment-specific keyboard shortcut handling
-
-### Search Interface Improvements
-
-**Notes Module:**
-
-- Search icon repositioned to right side of input
-- Horizontal text rotation (180 degrees) for visual variety
-- Proper scaling across different panel sizes
-
-### Sidebar Status Controls
-
-**Development vs Production:**
-
-- Status toggle button at bottom with sideways text
-- Icon at top, rotated text below in vertical layout
-- Larger, more readable text (11px label, 13px value)
-- Environment-aware visibility (dev-only features)
-
-### Global State Management
-
-**Persistence Strategy:**
-
-- localStorage integration for file content preservation
-- Cross-session state recovery for all modules
-- Environment-specific behavior (always-on in production)
-- Smart state initialization with fallback to defaults
-
-### Performance Optimizations
-
-**Animation Removal:**
-
-- Eliminated unnecessary transitions for snappier feel
-- Instant hover effects on interactive elements
-- Immediate visual feedback for all user actions
-- Reduced CPU usage from constant animations
+For detailed feature updates, enhancements, and implementation details, see [updates_changelog.md](./updates_changelog.md).
