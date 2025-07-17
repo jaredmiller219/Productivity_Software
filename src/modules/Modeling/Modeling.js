@@ -29,7 +29,7 @@ function Modeling() {
   } = useModelingScene(containerRef);
 
   // Sidebar collapse state
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
   // Menu bar action handlers
   const handleFileAction = (action, data) => {
