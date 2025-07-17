@@ -13,7 +13,7 @@ function SimpleTerminal() {
     return {
       history: [
         { type: "output", content: "Welcome to Dev Suite Terminal", timestamp: Date.now() },
-        { type: "output", content: "Type 'help' for available commands", timestamp: Date.now() }
+        { type: "output", content: "Type 'help' for available commands.", timestamp: Date.now() }
       ],
       input: "",
       historyIndex: -1,

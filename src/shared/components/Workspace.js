@@ -14,8 +14,6 @@ function Workspace({ activeModule, showNotes, onNotesCountChange }) {
         return showNotes ? <Notes onNotesCountChange={onNotesCountChange} /> : <Modeling />;
       case 'terminal':
         return <SimpleTerminal />;
-      case 'debug-terminal':
-        return <Terminal />;
       case 'browser':
         return <Browser />;
       case 'ide':
