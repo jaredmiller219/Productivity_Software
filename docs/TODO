@@ -7,9 +7,7 @@ Browser:
 
 3D Modeling:
 
-1. Dont open the sidebar on first load of tab
-2. Only show arrow on each button when you hover over it, rather than always showing
-3. Add different views (one of modeling, one of animation, one of rigging, one of materials, one of modifiers) instead of just buttons for it.
+1. Add different views (one of modeling, one of animation, one of rigging, one of materials, one of modifiers) instead of just buttons for it.
 
 IDE:
 
