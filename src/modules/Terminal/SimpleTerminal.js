@@ -3,7 +3,9 @@ import { useGlobalState } from '../../shared/hooks/useGlobalState.js';
 import TerminalHeader from "./components/TerminalHeader/TerminalHeader.js";
 import TerminalDisplay from "./components/TerminalDisplay/TerminalDisplay.js";
 import TerminalInput from "./components/TerminalInput/TerminalInput.js";
+import TerminalSettings, { DEFAULT_SETTINGS } from "./components/TerminalSettings/TerminalSettings.js";
 import "./SimpleTerminal.css";
+import "./Terminal.css"; // Import advanced terminal styles for the add button
 
 function SimpleTerminal() {
   // Create a separate terminal state for each tab
@@ -11,7 +13,6 @@ function SimpleTerminal() {
     return {
       history: [
         { type: "output", content: "Welcome to Dev Suite Terminal", timestamp: Date.now() },
-        { type: "output", content: "This is a simulated terminal environment.", timestamp: Date.now() },
         { type: "output", content: "Type 'help' for available commands", timestamp: Date.now() }
       ],
       input: "",
@@ -24,7 +25,7 @@ function SimpleTerminal() {
   // Use global state management for terminal
   const { state, updateState } = useGlobalState('terminal', {
     theme: 'dark',
-    tabs: [{ id: 1, name: "Terminal 1" }],
+    tabs: [{ id: 1, name: "Terminal", isRenamed: false }],
     activeTab: 1,
     showThemes: false,
     showSettings: false,
@@ -33,13 +34,14 @@ function SimpleTerminal() {
     debugPosition: { x: 50, y: 50 },
     debugSize: { width: 400, height: 500 },
     debugMinimized: false,
+    settings: DEFAULT_SETTINGS,
     tabStates: {
       1: createNewTerminalState()
     }
   });
 
   // Extract state values
-  const { theme, tabs, activeTab, showThemes, showSettings, showHelp, showDebug, debugPosition, debugSize, debugMinimized, tabStates } = state;
+  const { theme, tabs, activeTab, showThemes, showSettings, showHelp, showDebug, debugPosition, debugSize, debugMinimized, settings, tabStates } = state;
 
   // State setter wrappers for global state
   const setTheme = (value) => updateState({ theme: typeof value === 'function' ? value(theme) : value });
@@ -52,6 +54,7 @@ function SimpleTerminal() {
   const setDebugPosition = (value) => updateState({ debugPosition: value });
   const setDebugSize = (value) => updateState({ debugSize: value });
   const setDebugMinimized = (value) => updateState({ debugMinimized: value });
+  const setSettings = (value) => updateState({ settings: typeof value === 'function' ? value(settings) : value });
   const setTabStates = (value) => updateState({ tabStates: typeof value === 'function' ? value(tabStates) : value });
 
   // Ensure existing tab states have currentDirectory
@@ -90,6 +93,10 @@ function SimpleTerminal() {
 
   // Real terminal connection state
   const [isRealTerminalConnected, setIsRealTerminalConnected] = useState(false);
+
+  // Tab renaming state
+  const [renamingTab, setRenamingTab] = useState(null);
+  const [tempTabName, setTempTabName] = useState('');
 
   // Ensure the current tab state exists in global state
   React.useEffect(() => {
@@ -298,7 +305,6 @@ function SimpleTerminal() {
         ...prev[activeTab],
         history: [
           { type: "output", content: "Welcome to Dev Suite Terminal", timestamp: Date.now() },
-          { type: "output", content: "This is a simulated terminal environment.", timestamp: Date.now() },
           { type: "output", content: 'Type "help" for available commands.', timestamp: Date.now() },
         ],
         commandCount: 0
@@ -457,7 +463,13 @@ function SimpleTerminal() {
 
   const addTab = () => {
     const newId = tabs.length > 0 ? Math.max(...tabs.map(tab => tab.id)) + 1 : 1;
-    const newTab = { id: newId, name: `Terminal ${newId}` };
+    const terminalCount = tabs.length;
+    const newTabName = terminalCount === 0 ? "Terminal" : `Terminal (${terminalCount})`;
+    const newTab = {
+      id: newId,
+      name: newTabName,
+      isRenamed: false // Track if user has manually renamed this tab
+    };
     setTabs(prev => [...prev, newTab]);
 
     // Create new terminal state for the new tab
@@ -467,6 +479,29 @@ function SimpleTerminal() {
     }));
 
     setActiveTab(newId);
+  };
+
+  // Tab renaming functions
+  const startRenaming = (tabId, currentName) => {
+    setRenamingTab(tabId);
+    setTempTabName(currentName);
+  };
+
+  const finishRenaming = () => {
+    if (renamingTab && tempTabName.trim()) {
+      setTabs(prev => prev.map(tab =>
+        tab.id === renamingTab
+          ? { ...tab, name: tempTabName.trim(), isRenamed: true }
+          : tab
+      ));
+    }
+    setRenamingTab(null);
+    setTempTabName('');
+  };
+
+  const cancelRenaming = () => {
+    setRenamingTab(null);
+    setTempTabName('');
   };
 
   const closeTab = (tabId, event) => {
@@ -549,6 +584,7 @@ function SimpleTerminal() {
         onShowSettings={() => setShowSettings(true)}
         onShowHelp={() => setShowHelp(true)}
         onShowDebug={() => setShowDebug(true)}
+        showDebugButton={settings.showDebugPanel}
         isRealTerminal={isRealTerminalConnected}
       />
 
@@ -561,7 +597,28 @@ function SimpleTerminal() {
               className={`simple-tab ${activeTab === tab.id ? "active" : ""}`}
               onClick={() => setActiveTab(tab.id)}
             >
-              <span className="simple-tab-name">{tab.name}</span>
+              {renamingTab === tab.id ? (
+                <input
+                  type="text"
+                  value={tempTabName}
+                  onChange={(e) => setTempTabName(e.target.value)}
+                  onBlur={finishRenaming}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') finishRenaming();
+                    if (e.key === 'Escape') cancelRenaming();
+                  }}
+                  className="tab-rename-input"
+                  autoFocus
+                />
+              ) : (
+                <span
+                  className="simple-tab-name"
+                  onDoubleClick={() => startRenaming(tab.id, tab.name)}
+                  title="Double-click to rename"
+                >
+                  {tab.name}
+                </span>
+              )}
               {tabs.length > 1 && (
                 <button
                   className="simple-close-btn"
@@ -574,11 +631,11 @@ function SimpleTerminal() {
           ))}
         </div>
         <button
-          className="simple-add-tab-btn"
+          className="internal-add-tab-btn"
           onClick={addTab}
           title="Add new terminal tab"
         >
-          +
+          <span className="add-icon">+</span>
         </button>
       </div>
 
@@ -622,29 +679,12 @@ function SimpleTerminal() {
       )}
 
       {/* Settings Modal */}
-      {showSettings && (
-        <div className="simple-modal-overlay" onClick={() => setShowSettings(false)}>
-          <div className="simple-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="simple-modal-header">
-              <h3>⚙️ Terminal Settings</h3>
-              <button onClick={() => setShowSettings(false)}>✕</button>
-            </div>
-            <div className="simple-modal-content">
-              <div className="settings-section">
-                <h4>Display</h4>
-                <p>Theme: {theme === 'dark' ? 'Dark' : 'Light'}</p>
-                <p>Font: Consolas, Monaco, Courier New</p>
-              </div>
-              <div className="settings-section">
-                <h4>Behavior</h4>
-                <p>Tab Management: Enabled</p>
-                <p>Command History: Enabled</p>
-                <p>Export Format: JSON</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <TerminalSettings
+        isVisible={showSettings}
+        onClose={() => setShowSettings(false)}
+        settings={settings}
+        onSettingsChange={setSettings}
+      />
 
       {/* Help Modal */}
       {showHelp && (
@@ -673,6 +713,7 @@ function SimpleTerminal() {
                   <li>Click <strong>+</strong> to add new tab</li>
                   <li>Click <strong>×</strong> to close tab</li>
                   <li>Click tab name to switch tabs</li>
+                  <li><strong>Double-click</strong> tab name to rename</li>
                   <li>Each tab has independent history</li>
                 </ul>
               </div>
@@ -689,8 +730,8 @@ function SimpleTerminal() {
         </div>
       )}
 
-      {/* Debug Modal - Development Only */}
-      {showDebug && process.env.NODE_ENV === 'development' && (
+      {/* Debug Modal - When enabled in settings */}
+      {showDebug && settings.showDebugPanel && (
         <div
           className={`debug-modal ${debugMinimized ? 'minimized' : ''}`}
           style={{
@@ -740,6 +781,14 @@ function SimpleTerminal() {
                   <h4>Environment</h4>
                   <p><strong>Node ENV:</strong> {process.env.NODE_ENV}</p>
                   <p><strong>React Version:</strong> {React.version || 'Unknown'}</p>
+                  <p><strong>Real Terminal:</strong> {isRealTerminalConnected ? 'Connected' : 'Disconnected'}</p>
+                </div>
+                <div className="debug-section">
+                  <h4>Settings</h4>
+                  <p><strong>Font Size:</strong> {settings.fontSize}px</p>
+                  <p><strong>Font Family:</strong> {settings.fontFamily}</p>
+                  <p><strong>Debug Panel:</strong> {settings.showDebugPanel ? 'Enabled' : 'Disabled'}</p>
+                  <p><strong>Cursor Style:</strong> {settings.cursorStyle}</p>
                 </div>
                 <div className="debug-section" ref={tabStatesRef}>
                   <h4>Tab States</h4>

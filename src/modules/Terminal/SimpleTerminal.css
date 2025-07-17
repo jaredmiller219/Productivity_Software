@@ -157,6 +157,34 @@
   background-color: #d0d0d0;
 }
 
+/* Tab rename input */
+.tab-rename-input {
+  background: transparent;
+  border: 1px solid #00ff41;
+  color: inherit;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  outline: none;
+  width: 80px;
+  font-family: inherit;
+}
+
+.tab-rename-input:focus {
+  border-color: #00ff41;
+  box-shadow: 0 0 0 1px rgba(0, 255, 65, 0.3);
+}
+
+.terminal-container.light .tab-rename-input {
+  border-color: #007acc;
+  color: #333;
+}
+
+.terminal-container.light .tab-rename-input:focus {
+  border-color: #007acc;
+  box-shadow: 0 0 0 1px rgba(0, 122, 204, 0.3);
+}
+
 /* Simple Modal Styles */
 .simple-modal-overlay {
   position: fixed;

@@ -20,16 +20,5 @@ IDE:
 7. make the search bar the same color as the rest of the header and change to the current color it is now when you click on it to show its been clicked
 8. why does it show the file size in bytes and not like kb or mb?
 
-Terminal:
-
-1. add "cd" command
-2. add a space to the left of the terminal header name, the icon next to the word terminal is too close to the edge, just move it in a bit.
-3. use the terminal tab styling from the advanced terminal in the simple terminal
-4. make the + button the same style as from the advanced terminal
-   Thought: dont name each terminal tab "terminal 1", "terminal 2", etc. instead name it "terminal" and when you make a new one itll be "terminal (1)" and so on
-   Possibly make it so you can rename the terminal tab? or it takes the name of the current directory you are in?
-5. show the debug info panel in normal build if in the settings panel it is enabled.
-6. the settings pane in the terminal doesnt let you do anything currently it just has text.
-
 settings button:
 1.put the settings button where the dev state thing is, and make it have the same styling as the dev state thing has. same colors and everything.
