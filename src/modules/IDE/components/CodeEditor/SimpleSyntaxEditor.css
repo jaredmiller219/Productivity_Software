@@ -68,61 +68,408 @@
   outline: none;
 }
 
-/* Override Prism styles for dark theme */
-.highlight-background .token.comment,
-.highlight-background .token.prolog,
-.highlight-background .token.doctype,
-.highlight-background .token.cdata {
+/* JavaScript Syntax Highlighting */
+.highlight-background .language-javascript .token.comment {
   color: #6a9955;
   font-style: italic;
 }
 
-.highlight-background .token.punctuation {
-  color: #d4d4d4;
+.highlight-background .language-javascript .token.keyword {
+  color: #569cd6; /* Blue for keywords: const, let, var, function, if, else */
 }
 
-.highlight-background .token.property,
-.highlight-background .token.tag,
-.highlight-background .token.boolean,
-.highlight-background .token.number,
-.highlight-background .token.constant,
-.highlight-background .token.symbol,
-.highlight-background .token.deleted {
-  color: #b5cea8;
+.highlight-background .language-javascript .token.string {
+  color: #ce9178; /* Orange for strings */
 }
 
-.highlight-background .token.selector,
-.highlight-background .token.attr-name,
-.highlight-background .token.string,
-.highlight-background .token.char,
-.highlight-background .token.builtin,
-.highlight-background .token.inserted {
-  color: #ce9178;
+.highlight-background .language-javascript .token.number {
+  color: #b5cea8; /* Light green for numbers */
 }
 
-.highlight-background .token.operator,
-.highlight-background .token.entity,
-.highlight-background .token.url,
+.highlight-background .language-javascript .token.function {
+  color: #dcdcaa; /* Yellow for function names */
+}
+
+.highlight-background .language-javascript .token.operator {
+  color: #d4d4d4; /* White for operators */
+}
+
+.highlight-background .language-javascript .token.punctuation {
+  color: #d4d4d4; /* White for punctuation */
+}
+
+.highlight-background .language-javascript .token.boolean {
+  color: #569cd6; /* Blue for true/false */
+}
+
+.highlight-background .language-javascript .token.null {
+  color: #569cd6; /* Blue for null/undefined */
+}
+
+/* HTML/Markup Syntax Highlighting */
+.highlight-background .language-markup .token.tag {
+  color: #569cd6; /* Blue for HTML tags */
+}
+
+.highlight-background .language-markup .token.attr-name {
+  color: #9cdcfe; /* Light blue for attribute names */
+}
+
+.highlight-background .language-markup .token.attr-value {
+  color: #ce9178; /* Orange for attribute values */
+}
+
+.highlight-background .language-markup .token.punctuation {
+  color: #808080; /* Gray for < > / = */
+}
+
+.highlight-background .language-markup .token.comment {
+  color: #6a9955; /* Green for HTML comments */
+  font-style: italic;
+}
+
+/* CSS Syntax Highlighting */
+.highlight-background .language-css .token.selector {
+  color: #d7ba7d; /* Gold for CSS selectors */
+}
+
+.highlight-background .language-css .token.property {
+  color: #9cdcfe; /* Light blue for CSS properties */
+}
+
 .highlight-background .language-css .token.string,
-.highlight-background .style .token.string {
-  color: #d4d4d4;
+.highlight-background .language-css .token.url {
+  color: #ce9178; /* Orange for CSS values */
 }
 
-.highlight-background .token.atrule,
-.highlight-background .token.attr-value,
-.highlight-background .token.keyword {
-  color: #569cd6;
+.highlight-background .language-css .token.number {
+  color: #b5cea8; /* Light green for CSS numbers */
 }
 
-.highlight-background .token.function,
-.highlight-background .token.class-name {
-  color: #dcdcaa;
+.highlight-background .language-css .token.function {
+  color: #dcdcaa; /* Yellow for CSS functions */
 }
 
-.highlight-background .token.regex,
-.highlight-background .token.important,
-.highlight-background .token.variable {
-  color: #9cdcfe;
+.highlight-background .language-css .token.comment {
+  color: #6a9955; /* Green for CSS comments */
+  font-style: italic;
+}
+
+/* Python Syntax Highlighting */
+.highlight-background .language-python .token.comment {
+  color: #6a9955; /* Green for comments */
+  font-style: italic;
+}
+
+.highlight-background .language-python .token.keyword {
+  color: #ff7b72; /* Red/pink for Python keywords: def, class, if, for, import */
+}
+
+.highlight-background .language-python .token.string {
+  color: #a5d6ff; /* Light blue for strings */
+}
+
+.highlight-background .language-python .token.number {
+  color: #79c0ff; /* Blue for numbers */
+}
+
+.highlight-background .language-python .token.function {
+  color: #d2a8ff; /* Purple for function names */
+}
+
+.highlight-background .language-python .token.class-name {
+  color: #ffa657; /* Orange for class names */
+}
+
+.highlight-background .language-python .token.decorator {
+  color: #ffa657; /* Orange for decorators @property */
+}
+
+.highlight-background .language-python .token.builtin {
+  color: #79c0ff; /* Blue for built-ins: print, len, range */
+}
+
+.highlight-background .language-python .token.boolean {
+  color: #ff7b72; /* Red for True/False */
+}
+
+.highlight-background .language-python .token.operator {
+  color: #ff7b72; /* Red for operators */
+}
+
+/* Java Syntax Highlighting */
+.highlight-background .language-java .token.comment {
+  color: #6a9955; /* Green for comments */
+  font-style: italic;
+}
+
+.highlight-background .language-java .token.keyword {
+  color: #cc7832; /* Orange for Java keywords: public, private, static, void */
+}
+
+.highlight-background .language-java .token.string {
+  color: #6a8759; /* Green for strings */
+}
+
+.highlight-background .language-java .token.number {
+  color: #6897bb; /* Blue for numbers */
+}
+
+.highlight-background .language-java .token.function {
+  color: #ffc66d; /* Yellow for method names */
+}
+
+.highlight-background .language-java .token.class-name {
+  color: #a9b7c6; /* Light gray for class names */
+}
+
+.highlight-background .language-java .token.annotation {
+  color: #bbb529; /* Yellow-green for annotations @Override */
+}
+
+.highlight-background .language-java .token.generics {
+  color: #cc7832; /* Orange for generics <T> */
+}
+
+.highlight-background .language-java .token.operator {
+  color: #a9b7c6; /* Light gray for operators */
+}
+
+/* C Syntax Highlighting */
+.highlight-background .language-c .token.comment {
+  color: #6a9955; /* Green for comments */
+  font-style: italic;
+}
+
+.highlight-background .language-c .token.keyword {
+  color: #569cd6; /* Blue for C keywords: int, char, void, if, for */
+}
+
+.highlight-background .language-c .token.string {
+  color: #ce9178; /* Orange for strings */
+}
+
+.highlight-background .language-c .token.number {
+  color: #b5cea8; /* Light green for numbers */
+}
+
+.highlight-background .language-c .token.function {
+  color: #dcdcaa; /* Yellow for function names */
+}
+
+.highlight-background .language-c .token.directive {
+  color: #c586c0; /* Purple for preprocessor directives #include */
+}
+
+.highlight-background .language-c .token.macro {
+  color: #4fc1ff; /* Light blue for macros */
+}
+
+.highlight-background .language-c .token.operator {
+  color: #d4d4d4; /* White for operators */
+}
+
+/* C++ Syntax Highlighting */
+.highlight-background .language-cpp .token.comment {
+  color: #6a9955; /* Green for comments */
+  font-style: italic;
+}
+
+.highlight-background .language-cpp .token.keyword {
+  color: #569cd6; /* Blue for C++ keywords: class, namespace, template */
+}
+
+.highlight-background .language-cpp .token.string {
+  color: #ce9178; /* Orange for strings */
+}
+
+.highlight-background .language-cpp .token.number {
+  color: #b5cea8; /* Light green for numbers */
+}
+
+.highlight-background .language-cpp .token.function {
+  color: #dcdcaa; /* Yellow for function names */
+}
+
+.highlight-background .language-cpp .token.class-name {
+  color: #4ec9b0; /* Teal for class names */
+}
+
+.highlight-background .language-cpp .token.directive {
+  color: #c586c0; /* Purple for preprocessor directives */
+}
+
+.highlight-background .language-cpp .token.operator {
+  color: #d4d4d4; /* White for operators */
+}
+
+/* C# Syntax Highlighting */
+.highlight-background .language-csharp .token.comment {
+  color: #6a9955; /* Green for comments */
+  font-style: italic;
+}
+
+.highlight-background .language-csharp .token.keyword {
+  color: #569cd6; /* Blue for C# keywords: public, class, using, namespace */
+}
+
+.highlight-background .language-csharp .token.string {
+  color: #d69d85; /* Light orange for strings */
+}
+
+.highlight-background .language-csharp .token.number {
+  color: #b5cea8; /* Light green for numbers */
+}
+
+.highlight-background .language-csharp .token.function {
+  color: #dcdcaa; /* Yellow for method names */
+}
+
+.highlight-background .language-csharp .token.class-name {
+  color: #4ec9b0; /* Teal for class names */
+}
+
+.highlight-background .language-csharp .token.attribute {
+  color: #4ec9b0; /* Teal for attributes [Serializable] */
+}
+
+.highlight-background .language-csharp .token.generic {
+  color: #4ec9b0; /* Teal for generics List<T> */
+}
+
+.highlight-background .language-csharp .token.operator {
+  color: #d4d4d4; /* White for operators */
+}
+
+.highlight-background .language-csharp .token.property {
+  color: #9cdcfe; /* Light blue for properties */
+}
+
+/* Ruby Syntax Highlighting */
+.highlight-background .language-ruby .token.comment {
+  color: #6a9955; /* Green for comments */
+  font-style: italic;
+}
+
+.highlight-background .language-ruby .token.keyword {
+  color: #ff7b72; /* Red for Ruby keywords: def, class, end, if */
+}
+
+.highlight-background .language-ruby .token.string {
+  color: #a5d6ff; /* Light blue for strings */
+}
+
+.highlight-background .language-ruby .token.number {
+  color: #79c0ff; /* Blue for numbers */
+}
+
+.highlight-background .language-ruby .token.function {
+  color: #d2a8ff; /* Purple for method names */
+}
+
+.highlight-background .language-ruby .token.symbol {
+  color: #79c0ff; /* Blue for symbols :symbol */
+}
+
+.highlight-background .language-ruby .token.instance-variable {
+  color: #ffa657; /* Orange for instance variables @var */
+}
+
+.highlight-background .language-ruby .token.constant {
+  color: #79c0ff; /* Blue for constants */
+}
+
+/* Go Syntax Highlighting */
+.highlight-background .language-go .token.comment {
+  color: #6a9955; /* Green for comments */
+  font-style: italic;
+}
+
+.highlight-background .language-go .token.keyword {
+  color: #ff7b72; /* Red for Go keywords: func, var, type, package */
+}
+
+.highlight-background .language-go .token.string {
+  color: #a5d6ff; /* Light blue for strings */
+}
+
+.highlight-background .language-go .token.number {
+  color: #79c0ff; /* Blue for numbers */
+}
+
+.highlight-background .language-go .token.function {
+  color: #d2a8ff; /* Purple for function names */
+}
+
+.highlight-background .language-go .token.builtin {
+  color: #79c0ff; /* Blue for built-in types: int, string, bool */
+}
+
+.highlight-background .language-go .token.operator {
+  color: #ff7b72; /* Red for operators */
+}
+
+/* Swift Syntax Highlighting */
+.highlight-background .language-swift .token.comment {
+  color: #6a9955; /* Green for comments */
+  font-style: italic;
+}
+
+.highlight-background .language-swift .token.keyword {
+  color: #ff7b72; /* Red for Swift keywords: func, var, let, class */
+}
+
+.highlight-background .language-swift .token.string {
+  color: #a5d6ff; /* Light blue for strings */
+}
+
+.highlight-background .language-swift .token.number {
+  color: #79c0ff; /* Blue for numbers */
+}
+
+.highlight-background .language-swift .token.function {
+  color: #d2a8ff; /* Purple for function names */
+}
+
+.highlight-background .language-swift .token.class-name {
+  color: #ffa657; /* Orange for class names */
+}
+
+.highlight-background .language-swift .token.attribute {
+  color: #ffa657; /* Orange for attributes @objc */
+}
+
+.highlight-background .language-swift .token.builtin-type {
+  color: #79c0ff; /* Blue for built-in types: String, Int, Bool */
+}
+
+.highlight-background .language-swift .token.operator {
+  color: #ff7b72; /* Red for operators */
+}
+
+/* JSON Syntax Highlighting */
+.highlight-background .language-json .token.property {
+  color: #9cdcfe; /* Light blue for property names */
+}
+
+.highlight-background .language-json .token.string {
+  color: #ce9178; /* Orange for string values */
+}
+
+.highlight-background .language-json .token.number {
+  color: #b5cea8; /* Light green for numbers */
+}
+
+.highlight-background .language-json .token.boolean {
+  color: #569cd6; /* Blue for true/false */
+}
+
+.highlight-background .language-json .token.null {
+  color: #569cd6; /* Blue for null */
+}
+
+.highlight-background .language-json .token.punctuation {
+  color: #d4d4d4; /* White for brackets and commas */
 }
 
 /* Scrollbar styling */

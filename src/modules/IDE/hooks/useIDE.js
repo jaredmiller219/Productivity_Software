@@ -160,54 +160,50 @@ document.addEventListener('DOMContentLoaded', function() {
   // Get file language for syntax highlighting
   const getFileLanguage = useCallback((type) => {
     const languages = {
+      // JavaScript
+      js: 'javascript',
+      jsx: 'javascript',
+      ts: 'javascript', // Use javascript for TypeScript for now
+      tsx: 'javascript',
+
       // Web technologies
       html: 'html',
       htm: 'html',
       css: 'css',
-      scss: 'scss',
-      sass: 'sass',
-      less: 'less',
-      js: 'javascript',
-      jsx: 'jsx',
-      ts: 'typescript',
-      tsx: 'tsx',
-      vue: 'vue',
+      scss: 'css',
+      sass: 'css',
+      less: 'css',
 
       // Data formats
       json: 'json',
-      xml: 'xml',
-      yml: 'yaml',
-      yaml: 'yaml',
+      xml: 'html',
+      yml: 'text',
+      yaml: 'text',
 
       // Programming languages
       py: 'python',
+      python: 'python',
       java: 'java',
       cpp: 'cpp',
       cxx: 'cpp',
       cc: 'cpp',
+      h: 'c',
+      hpp: 'cpp',
       c: 'c',
       cs: 'csharp',
-      php: 'php',
+      csharp: 'csharp',
       rb: 'ruby',
+      ruby: 'ruby',
       go: 'go',
-      rs: 'rust',
+      swift: 'swift',
 
-      // Shell and config
-      sh: 'bash',
-      bash: 'bash',
-      ps1: 'powershell',
-      dockerfile: 'docker',
-
-      // Documentation
-      md: 'markdown',
+      // Documentation and text
+      md: 'text',
+      markdown: 'text',
       txt: 'text',
 
-      // Database
-      sql: 'sql',
-
-      // Version control
-      gitignore: 'git',
-      gitattributes: 'git'
+      // Default fallback
+      text: 'text'
     };
     return languages[type.toLowerCase()] || 'text';
   }, []);

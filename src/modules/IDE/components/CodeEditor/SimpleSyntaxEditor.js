@@ -4,11 +4,19 @@ import Prism from 'prismjs';
 // Import core Prism CSS
 import 'prismjs/themes/prism-tomorrow.css';
 
-// Import basic languages
-import 'prismjs/components/prism-markup.js';
+// Import language support
+import 'prismjs/components/prism-markup.js'; // HTML/XML base
 import 'prismjs/components/prism-css.js';
 import 'prismjs/components/prism-javascript.js';
 import 'prismjs/components/prism-json.js';
+import 'prismjs/components/prism-python.js';
+import 'prismjs/components/prism-java.js';
+import 'prismjs/components/prism-c.js';
+import 'prismjs/components/prism-cpp.js';
+import 'prismjs/components/prism-csharp.js';
+import 'prismjs/components/prism-ruby.js';
+import 'prismjs/components/prism-go.js';
+import 'prismjs/components/prism-swift.js';
 
 import './SimpleSyntaxEditor.css';
 
@@ -31,11 +39,43 @@ const SimpleSyntaxEditor = React.forwardRef(({
   // Map language to Prism language
   const getPrismLanguage = (lang) => {
     const map = {
+      // JavaScript
       'javascript': 'javascript',
       'js': 'javascript',
+      'jsx': 'javascript',
+
+      // Web languages
       'html': 'markup',
+      'htm': 'markup',
+      'xml': 'markup',
       'css': 'css',
-      'json': 'json'
+      'scss': 'css',
+      'sass': 'css',
+      'less': 'css',
+
+      // Data formats
+      'json': 'json',
+
+      // Programming languages
+      'python': 'python',
+      'py': 'python',
+      'java': 'java',
+      'c': 'c',
+      'cpp': 'cpp',
+      'cxx': 'cpp',
+      'cc': 'cpp',
+      'h': 'c',
+      'hpp': 'cpp',
+      'csharp': 'csharp',
+      'cs': 'csharp',
+      'ruby': 'ruby',
+      'rb': 'ruby',
+      'go': 'go',
+      'swift': 'swift',
+
+      // Default fallback
+      'text': 'text',
+      'txt': 'text'
     };
     return map[lang.toLowerCase()] || 'javascript';
   };
