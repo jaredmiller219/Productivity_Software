@@ -69,7 +69,7 @@ modules/
 
 ```
 modules/Notes/
-├── Notes.js                 # Main notes interface with theme support
+├── Notes.js                 # Main notes interface with theme support and menu bar
 ├── components/              # Notes components organized by subdomain
 │   ├── editor/             # Note editing components
 │   │   ├── NoteEditor.js   # Rich text note editor
@@ -82,12 +82,19 @@ modules/Notes/
 │   ├── search/             # Search functionality components
 │   │   ├── NotesSearch.js  # Advanced search component
 │   │   └── NotesSearch.css # Search component styles
-│   └── sticky/             # Sticky notes components
-│       ├── StickyNote.js   # Sticky note component
-│       └── StickyNote.css  # Sticky note styles
+│   ├── sticky/             # Sticky notes components
+│   │   ├── StickyNote.js   # Sticky note component
+│   │   └── StickyNote.css  # Sticky note styles
+│   └── ui/                 # UI components
+│       ├── NotesMenuBar.js # Professional menu bar with File, Edit, View, Help
+│       ├── NotesMenuBar.css # Menu bar styles with viewport-aware dropdowns
+│       ├── NotesSettings.js # Comprehensive settings panel
+│       └── NotesSettings.css # Settings panel styles
 ├── hooks/                  # Notes-specific hooks
-│   ├── useNotes.js         # Main notes management hook
+│   ├── useNotes.js         # Main notes management hook with import functionality
 │   └── useNotesTheme.js    # Theme management hook
+├── utils/                  # Notes utilities
+│   └── exportImport.js     # Export/import functionality for multiple formats
 └── styles/                 # Notes styling
     └── Notes.css           # Main notes styles with dark/light themes
 ```
@@ -187,15 +194,25 @@ modules/IDE/
 │   ├── AdvancedCodeEditor.js   # Advanced code editor implementation
 │   ├── AdvancedCodeEditor.css  # Advanced editor styles
 │   ├── DebugPanel.js          # Debug panel component
+│   ├── IDESettings/           # IDE settings panel
+│   │   ├── IDESettings.js     # Settings component with cursor color customization
+│   │   └── IDESettings.css    # Settings panel styles
 │   ├── IDEToolbar/            # IDE toolbar with search
-│   │   ├── IDEToolbar.js      # Toolbar component with undo/redo buttons
+│   │   ├── IDEToolbar.js      # Toolbar component with undo/redo and settings buttons
 │   │   └── IDEToolbar.css     # Toolbar styles with button styling
 │   ├── FileExplorer/          # File navigation system with rename support
 │   │   ├── FileExplorer.js    # File tree with double-click rename and context menus
 │   │   └── FileExplorer.css   # Explorer styles with rename input styling
 │   ├── CodeEditor/            # Code editor components
 │   │   ├── CodeEditor.js      # Editor with undo/redo and header rename
-│   │   └── CodeEditor.css     # Editor styles with rename input styling
+│   │   ├── CodeEditor.css     # Editor styles with cursor customization
+│   │   ├── SyntaxHighlightedEditor.js # Advanced syntax highlighting editor
+│   │   ├── SyntaxHighlightedEditor.css # Syntax editor styles
+│   │   ├── SimpleSyntaxEditor.js # Simplified syntax highlighting implementation
+│   │   └── SimpleSyntaxEditor.css # Simple syntax editor styles
+│   ├── SyntaxHighlighter/     # Syntax highlighting system
+│   │   ├── SyntaxHighlighter.js # Multi-language syntax highlighting engine
+│   │   └── SyntaxHighlighter.css # Language-specific syntax styles
 │   └── SearchPanel/           # Advanced search functionality
 │       ├── SearchPanel.js     # Search component
 │       └── SearchPanel.css    # Search styles

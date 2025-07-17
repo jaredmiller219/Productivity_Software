@@ -2,16 +2,54 @@
 
 This document tracks all feature updates, enhancements, and improvements made to the Dev Productivity Suite.
 
+## 🆕 Latest Updates (July 2025)
+
+### IDE Module - Enhanced Syntax Highlighting & Settings
+
+- **Comprehensive Language Support**: Added syntax highlighting for JavaScript, CSS, HTML, Swift, Python, C#, C++, C, Ruby, Go, Java, and JSON
+- **Authentic Language Colors**: Each language uses its authentic syntax highlighting colors (VS Code style for JS/CSS/HTML, GitHub Dark for Python/Ruby/Go/Swift, IntelliJ for Java, Visual Studio for C#)
+- **IDE Settings Panel**: Complete settings interface with cursor color customization, font preferences, theme options, and editor behavior settings
+- **Cursor Color Customization**: Real-time cursor color changes with color picker and hex input
+- **Improved Toolbar**: Added settings button with gear icon and smooth rotation animation
+- **Reliable Syntax Engine**: Simplified Prism.js implementation with proper error handling and language validation
+
+### Notes Module - Professional Menu Bar & Export System
+
+- **Complete Menu Bar**: Professional menu system with File, Edit, View, and Help menus
+- **Comprehensive Settings**: Dedicated settings panel with theme toggle, editor preferences, appearance options, and export settings
+- **Advanced Export/Import**: Support for Markdown, HTML, JSON, and plain text formats with metadata inclusion
+- **Keyboard Shortcuts**: Full keyboard shortcut support (Ctrl+N, Ctrl+S, Ctrl+E, F11, etc.)
+- **Grammar Fixes**: Proper singular/plural handling ("1 note" vs "2 notes")
+- **Theme Integration**: Moved theme toggle to settings panel for cleaner interface
+- **Click-Away Behavior**: Dropdown menus close when clicking outside for better UX
+- **Viewport-Aware Dropdowns**: Menu dropdowns stay within screen bounds with smart positioning
+
+### Modeling Module - Enhanced UX & Interaction
+
+- **Click-Away Functionality**: All dropdown menus (BlenderMenuBar, ModifierStack) now close when clicking outside
+- **Consistent Behavior**: Unified dropdown interaction patterns across all modeling components
+- **Professional UX**: Desktop application-style menu behavior with proper event handling
+
+### Cross-Module Improvements
+
+- **Consistent UI Patterns**: Standardized dropdown behavior and click-away functionality across all modules
+- **Professional Polish**: Enhanced user experience with intuitive interaction patterns
+- **Performance Optimizations**: Improved event handling and memory management
+
 ## 🔧 Key Features by Module
 
 ### Notes Module
 
+- **Professional Menu Bar**: Complete File, Edit, View, Help menus with keyboard shortcuts
+- **Advanced Export/Import**: Markdown, HTML, JSON, plain text with metadata support
+- **Comprehensive Settings**: Theme toggle, editor preferences, export options in dedicated panel
 - **Advanced Search**: Multi-field search with filters, tags, categories, date ranges
 - **Rich Text Editor**: Markdown support, formatting toolbar, keyboard shortcuts
 - **Seamless Theme Support**: Light/dark mode toggle with instant transitions (no blinking)
 - **Flexible Layout**: Main area or right panel positioning with context menus
 - **Organization**: Search, sort, duplicate, and categorize notes
 - **Enhanced UI**: Rounded corners, proper spacing, theme-specific button colors
+- **Smart Dropdowns**: Viewport-aware positioning with click-away behavior
 
 ### Terminal Module
 
@@ -26,19 +64,23 @@ This document tracks all feature updates, enhancements, and improvements made to
 ### 3D Modeling Module
 
 - **Professional UI**: Blender-like interface with menu bar and dropdown toolbar
+- **Enhanced UX**: Click-away dropdown behavior for professional desktop app experience
 - **Advanced Animation**: Keyframe timeline, curve editor, interpolation modes
 - **Rigging System**: Armatures, bones, IK constraints, weight painting
 - **Material System**: PBR materials, texture mapping, shader editor
-- **Modifier Stack**: 50+ non-destructive modifiers
+- **Modifier Stack**: 50+ non-destructive modifiers with intuitive dropdown menus
 - **Viewport**: Multiple view modes, shading options, camera controls
 
 ### IDE Module
 
-- **Code Editor**: Advanced editor with undo/redo functionality and syntax highlighting
+- **Advanced Syntax Highlighting**: 12+ languages with authentic color schemes (JS, Python, Java, C#, C++, C, Ruby, Go, Swift, HTML, CSS, JSON)
+- **IDE Settings Panel**: Comprehensive settings with cursor color customization, font preferences, and editor behavior
+- **Cursor Customization**: Real-time cursor color changes with color picker and hex input
+- **Code Editor**: Advanced editor with undo/redo functionality and professional syntax highlighting
 - **File Management**: Complete file operations with rename, duplicate, delete, and create
 - **File Renaming**: Double-click files or click header names to rename with inline editing
 - **Advanced Search**: File and content search with clean, borderless interface
-- **Multi-language Support**: JavaScript, Python, C++, and more with auto-detection
+- **Multi-language Support**: Auto-detection with language-specific highlighting and features
 - **Project Management**: Enhanced file explorer with context menus and visual flair
 - **Resizable Panels**: Smooth file explorer resizing with CSS variable optimization
 - **Debugging**: Integrated debugging tools with revert functionality
