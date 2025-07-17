@@ -74,6 +74,18 @@ const ModifierStack = ({ selectedObject, onModifierAdd, onModifierRemove, onModi
     }
   };
 
+  // Close add menu when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = () => {
+      if (showAddMenu) {
+        setShowAddMenu(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showAddMenu]);
+
   const removeModifier = (id) => {
     setModifiers(modifiers.filter(m => m.id !== id));
     if (onModifierRemove) {
@@ -299,13 +311,16 @@ const ModifierStack = ({ selectedObject, onModifierAdd, onModifierRemove, onModi
           <div className="modifier-add-section">
             <button
               className="add-modifier-btn"
-              onClick={() => setShowAddMenu(!showAddMenu)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowAddMenu(!showAddMenu);
+              }}
             >
               ➕ Add Modifier
             </button>
 
             {showAddMenu && (
-              <div className="add-modifier-menu">
+              <div className="add-modifier-menu" onClick={(e) => e.stopPropagation()}>
                 {Object.entries(modifierTypes).map(([category, types]) => (
                   <div key={category} className="modifier-category">
                     <h4>{category.charAt(0).toUpperCase() + category.slice(1)}</h4>
