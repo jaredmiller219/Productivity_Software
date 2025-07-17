@@ -1,9 +1,16 @@
 .notes-container {
   display: flex;
+  flex-direction: column;
   height: 100%;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
+}
+
+.notes-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
 }
 
 /* Theme styles */
@@ -89,7 +96,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.notes-container.right-panel-mode {
+.notes-container.right-panel-mode .notes-content {
   flex-direction: column;
 }
 

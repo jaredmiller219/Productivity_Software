@@ -118,6 +118,22 @@ export const useNotes = () => {
     );
   }, [notes]);
 
+  // Import notes
+  const importNotesData = useCallback((importedNotes) => {
+    if (!Array.isArray(importedNotes) || importedNotes.length === 0) {
+      return;
+    }
+
+    // Merge imported notes with existing notes
+    const mergedNotes = [...importedNotes, ...notes];
+    saveNotes(mergedNotes);
+
+    // Select the first imported note
+    if (importedNotes.length > 0) {
+      updateState({ currentNote: importedNotes[0] });
+    }
+  }, [notes, saveNotes, updateState]);
+
   // Get notes statistics
   const getNotesStats = useCallback(() => {
     return {
@@ -135,7 +151,7 @@ export const useNotes = () => {
     // State
     notes,
     currentNote,
-    
+
     // Actions
     createNewNote,
     updateCurrentNote,
@@ -143,7 +159,8 @@ export const useNotes = () => {
     selectNote,
     duplicateNote,
     searchNotes,
-    
+    importNotesData,
+
     // Utilities
     getNotesStats
   };

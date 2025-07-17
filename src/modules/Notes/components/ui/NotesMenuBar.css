@@ -1,0 +1,233 @@
+.notes-menu-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--notes-menu-bg, #f8f9fa);
+  border-bottom: 1px solid var(--notes-menu-border, #e9ecef);
+  font-size: 14px;
+  position: relative;
+  z-index: 100;
+  user-select: none;
+}
+
+/* Dark theme */
+.theme-dark .notes-menu-bar {
+  --notes-menu-bg: #2d3748;
+  --notes-menu-border: #4a5568;
+  --notes-menu-text: #e2e8f0;
+  --notes-menu-hover: #4a5568;
+  --notes-menu-active: #2b6cb0;
+  --notes-dropdown-bg: #1a202c;
+  --notes-dropdown-border: #4a5568;
+  --notes-dropdown-hover: #2d3748;
+  --notes-separator: #4a5568;
+}
+
+/* Light theme */
+.theme-light .notes-menu-bar {
+  --notes-menu-bg: #ffffff;
+  --notes-menu-border: #e2e8f0;
+  --notes-menu-text: #2d3748;
+  --notes-menu-hover: #f7fafc;
+  --notes-menu-active: #3182ce;
+  --notes-dropdown-bg: #ffffff;
+  --notes-dropdown-border: #e2e8f0;
+  --notes-dropdown-hover: #f7fafc;
+  --notes-separator: #e2e8f0;
+}
+
+.menu-items {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.menu-item {
+  position: relative;
+}
+
+.menu-button {
+  padding: 6px 12px;
+  background: none;
+  border: none;
+  color: var(--notes-menu-text, #2d3748);
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.menu-button:hover {
+  background: var(--notes-menu-hover, #f7fafc);
+}
+
+.menu-button.active {
+  background: var(--notes-menu-active, #3182ce);
+  color: white;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  background: var(--notes-dropdown-bg, #ffffff);
+  border: 1px solid var(--notes-dropdown-border, #e2e8f0);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 4px 0;
+  z-index: 1000;
+  animation: dropdownFadeIn 0.15s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: var(--notes-menu-text, #2d3748);
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  transition: background-color 0.15s ease;
+  gap: 8px;
+}
+
+.dropdown-item:hover:not(.disabled) {
+  background: var(--notes-dropdown-hover, #f7fafc);
+}
+
+.dropdown-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dropdown-item.danger {
+  color: #e53e3e;
+}
+
+.dropdown-item.danger:hover:not(.disabled) {
+  background: rgba(229, 62, 62, 0.1);
+}
+
+.item-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.item-label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.item-shortcut {
+  font-size: 12px;
+  opacity: 0.7;
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: auto;
+}
+
+.theme-dark .item-shortcut {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-separator {
+  height: 1px;
+  background: var(--notes-separator, #e2e8f0);
+  margin: 4px 0;
+}
+
+.menu-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--notes-menu-text, #2d3748);
+  opacity: 0.8;
+}
+
+.notes-count {
+  font-weight: 500;
+}
+
+.theme-indicator {
+  font-size: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .notes-menu-bar {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  .menu-button {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+  
+  .dropdown-menu {
+    min-width: 200px;
+  }
+  
+  .menu-info {
+    gap: 8px;
+    font-size: 12px;
+  }
+  
+  .item-shortcut {
+    display: none; /* Hide shortcuts on mobile */
+  }
+}
+
+/* Focus styles for accessibility */
+.menu-button:focus,
+.dropdown-item:focus {
+  outline: 2px solid var(--notes-menu-active, #3182ce);
+  outline-offset: 2px;
+}
+
+/* Animation for menu transitions */
+.menu-button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-item {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover effects */
+.menu-button:hover {
+  transform: translateY(-1px);
+}
+
+.dropdown-item:hover:not(.disabled) {
+  transform: translateX(2px);
+}
+
+/* Active state animations */
+.menu-button.active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

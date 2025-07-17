@@ -81,7 +81,7 @@ const NotesList = ({
   return (
     <div className="notes-list-container">
       <div className="notes-header">
-        <h3>My Notes ({notes.length})</h3>
+        <h3>My Notes ({notes.length === 1 ? '1 note' : `${notes.length} notes`})</h3>
         <button className="create-note-btn" onClick={onCreateNote} title="Create new note">
           📝 New
         </button>
