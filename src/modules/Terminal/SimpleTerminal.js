@@ -32,7 +32,7 @@ function SimpleTerminal() {
     showHelp: false,
     showDebug: false,
     debugPosition: { x: 50, y: 50 },
-    debugSize: { width: 500, height: 500 },
+    debugSize: { width: 500, height: 350 },
     debugMinimized: false,
     settings: DEFAULT_SETTINGS,
     tabStates: {
@@ -366,22 +366,7 @@ function SimpleTerminal() {
     };
   }, [activeTab, isRealTerminalConnected]);
 
-  // Calculate max height up to end of Tab States section
-  const getContentMaxHeight = () => {
-    if (!tabStatesRef.current) return 600; // Fallback
 
-    const headerHeight = 50; // Header height
-    const modalRect = debugContentRef.current?.getBoundingClientRect();
-    const tabStatesRect = tabStatesRef.current.getBoundingClientRect();
-
-    if (modalRect && tabStatesRect) {
-      // Calculate height from modal top to end of Tab States section
-      const contentHeight = (tabStatesRect.bottom - modalRect.top) + 20; // 20px padding
-      return headerHeight + contentHeight;
-    }
-
-    return 600; // Fallback
-  };
 
   // Debug modal drag handlers
   const handleDragStart = (e) => {
@@ -418,9 +403,10 @@ function SimpleTerminal() {
         const deltaX = e.clientX - resizeStart.x;
         const deltaY = e.clientY - resizeStart.y;
         const minWidth = 500; // Minimum 500px width
-        const minHeight = 86; // Height of header
-        const maxHeight = getContentMaxHeight(); // Content-based max height
-        const newWidth = Math.max(minWidth, resizeStart.width + deltaX);
+        const maxWidth = 950; // Maximum 950px width
+        const minHeight = 86;
+        const maxHeight = 650; // Fixed max height
+        const newWidth = Math.max(minWidth, Math.min(resizeStart.width + deltaX, maxWidth));
         const newHeight = Math.max(minHeight, Math.min(resizeStart.height + deltaY, maxHeight));
 
         console.log('Resizing:', {

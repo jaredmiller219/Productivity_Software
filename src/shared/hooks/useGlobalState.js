@@ -10,17 +10,49 @@ class GlobalStateManager {
     this.listeners = new Set();
     // Always enabled in production, controllable in development
     this.persistentMode = process.env.NODE_ENV === 'production' ? true : true; // Always true in production, default true in dev
+    this.storageKey = 'dev-suite-global-state';
+
+    // Load states from localStorage on initialization
+    this.loadFromStorage();
+  }
+
+  // Load states from localStorage
+  loadFromStorage() {
+    try {
+      const stored = localStorage.getItem(this.storageKey);
+      if (stored) {
+        const parsedStates = JSON.parse(stored);
+        Object.entries(parsedStates).forEach(([moduleId, state]) => {
+          this.states.set(moduleId, state);
+        });
+      }
+    } catch (error) {
+      console.warn('Failed to load state from localStorage:', error);
+    }
+  }
+
+  // Save states to localStorage
+  saveToStorage() {
+    try {
+      const statesToSave = Object.fromEntries(this.states);
+      localStorage.setItem(this.storageKey, JSON.stringify(statesToSave));
+    } catch (error) {
+      console.warn('Failed to save state to localStorage:', error);
+    }
   }
 
   // Set state for a specific module/tab
   setState(moduleId, state) {
     if (!this.persistentMode) return;
-    
+
     this.states.set(moduleId, {
       ...state,
       lastUpdated: Date.now()
     });
-    
+
+    // Save to localStorage
+    this.saveToStorage();
+
     // Notify listeners
     this.listeners.forEach(listener => listener(moduleId, state));
   }
@@ -39,6 +71,7 @@ class GlobalStateManager {
   // Clear state for a specific module
   clearState(moduleId) {
     this.states.delete(moduleId);
+    this.saveToStorage();
     this.listeners.forEach(listener => listener(moduleId, null));
   }
 
@@ -51,6 +84,7 @@ class GlobalStateManager {
     }
 
     this.states.clear();
+    this.saveToStorage();
     this.listeners.forEach(listener => listener('*', null));
   }
 
