@@ -9,6 +9,7 @@ const CodeEditor = ({
   isModified,
   onSave,
   onRevert,
+  onRename,
   projectStats
 }) => {
   const textareaRef = useRef(null);
@@ -18,6 +19,8 @@ const CodeEditor = ({
   const [fontSize, setFontSize] = useState(14);
   const [showStats, setShowStats] = useState(false);
   const statsRef = useRef(null);
+  const [isRenamingHeader, setIsRenamingHeader] = useState(false);
+  const [headerRenameValue, setHeaderRenameValue] = useState(fileName);
 
   // Undo/Redo functionality
   const [history, setHistory] = useState([content]);
@@ -214,6 +217,34 @@ const CodeEditor = ({
     }
   };
 
+  // Handle header file name rename
+  const handleHeaderRename = () => {
+    setIsRenamingHeader(true);
+    setHeaderRenameValue(fileName);
+  };
+
+  const handleHeaderRenameSubmit = () => {
+    if (headerRenameValue.trim() && onRename) {
+      onRename(headerRenameValue.trim());
+    }
+    setIsRenamingHeader(false);
+  };
+
+  const handleHeaderRenameCancel = () => {
+    setIsRenamingHeader(false);
+    setHeaderRenameValue(fileName);
+  };
+
+  const handleHeaderRenameKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleHeaderRenameSubmit();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      handleHeaderRenameCancel();
+    }
+  };
+
   // Update cursor position
   const handleSelectionChange = () => {
     const textarea = textareaRef.current;
@@ -251,10 +282,29 @@ const CodeEditor = ({
     <div className={`code-editor ${isFullscreen ? 'fullscreen' : ''}`}>
       <div className="editor-header">
         <div className="editor-title">
-          <span className="file-name">
-            {fileName}
-            {isModified && <span className="modified-indicator">●</span>}
-          </span>
+          {isRenamingHeader ? (
+            <div className="file-name-container">
+              <input
+                type="text"
+                className="header-rename-input"
+                value={headerRenameValue}
+                onChange={(e) => setHeaderRenameValue(e.target.value)}
+                onBlur={handleHeaderRenameSubmit}
+                onKeyDown={handleHeaderRenameKeyDown}
+                autoFocus
+              />
+              {isModified && <span className="modified-indicator">●</span>}
+            </div>
+          ) : (
+            <span
+              className="file-name clickable"
+              onClick={handleHeaderRename}
+              title="Click to rename file"
+            >
+              {fileName}
+              {isModified && <span className="modified-indicator">●</span>}
+            </span>
+          )}
           <span className="file-info">
             {language.toUpperCase()} • {getFileSize()}
           </span>

@@ -529,6 +529,27 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
+.rename-input {
+  width: 80px;
+  max-width: 100px;
+  background: #2d2d30;
+  border: 2px solid #007acc !important;
+  color: #e1e4e8;
+  font-size: 13px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  outline: none !important;
+  font-family: inherit;
+  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.3) !important;
+  transition: all 0.2s ease;
+}
+
+.rename-input:focus {
+  border: 2px solid #58a6ff !important;
+  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.5) !important;
+  background: #1e1e1e !important;
+}
+
 .file-item:hover .file-name {
   color: #f0f6fc;
 }

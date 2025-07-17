@@ -35,6 +35,7 @@ function IDE() {
     createNewFile,
     deleteFile,
     duplicateFile,
+    renameFile,
     revertFile,
     getFileIcon,
     getFileLanguage,
@@ -136,6 +137,7 @@ function IDE() {
             onFileCreate={createNewFile}
             onFileDelete={deleteFile}
             onFileDuplicate={duplicateFile}
+            onFileRename={renameFile}
             getFileIcon={getFileIcon}
             onSave={handleSave}
           />
@@ -156,6 +158,7 @@ function IDE() {
               isModified={activeFile.isModified}
               onSave={handleSave}
               onRevert={revertFile}
+              onRename={(newName) => renameFile(activeFile.id, newName)}
               projectStats={getProjectStats()}
             />
           ) : (

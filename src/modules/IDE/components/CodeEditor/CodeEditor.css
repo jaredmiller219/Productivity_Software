@@ -51,6 +51,45 @@
   gap: 4px;
 }
 
+.file-name.clickable {
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+.file-name.clickable:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.file-name-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-rename-input {
+  width: 120px;
+  max-width: 120px;
+  background: #2d2d30;
+  border: 2px solid #007acc !important;
+  color: #cccccc;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 3px;
+  outline: none !important;
+  font-family: inherit;
+  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.3) !important;
+  transition: all 0.2s ease;
+}
+
+.header-rename-input:focus {
+  border: 2px solid #58a6ff !important;
+  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.5) !important;
+  background: #1e1e1e !important;
+}
+
 .modified-indicator {
   color: #ffc107;
   font-size: 12px;

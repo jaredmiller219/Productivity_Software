@@ -12,12 +12,15 @@ Browser:
 
 IDE:
 
-1. Double click the file name in the button to rename it (also clicking the file name in the header allows to rename the file)
-   also add a rename option in the context menu
-2. make actual file type syntax highlighting
-3. add more options to the topbar header
-4. dont highlight the searchbar when you click on it
-5. make the search bar the same color as the rest of the header and change to the current color it is now when you click on it to show its been clicked
+1. make actual file type syntax highlighting
+2. add more options to the topbar header
+3. dont highlight the searchbar when you click on it
+4. add a menu bar
 
-settings button:
-1.put the settings button where the dev state thing is, and make it have the same styling as the dev state thing has. same colors and everything.
+Notes:
+
+1. add a menu bar
+
+Settings button:
+
+1. put the settings button where the dev state thing is, and make it have the same styling as the dev state thing has. same colors and everything.

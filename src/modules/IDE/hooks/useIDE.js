@@ -303,13 +303,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!fileToDuplicate) return null;
 
     const baseName = fileToDuplicate.name.split('.')[0];
-    const extension = fileToDuplicate.name.includes('.') 
-      ? '.' + fileToDuplicate.name.split('.').pop() 
+    const extension = fileToDuplicate.name.includes('.')
+      ? '.' + fileToDuplicate.name.split('.').pop()
       : '';
-    
+
     let copyNumber = 1;
     let newName = `${baseName}_copy${extension}`;
-    
+
     // Find unique name
     while (files.some(file => file.name === newName)) {
       copyNumber++;
@@ -318,6 +318,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
     return createNewFile(newName, fileToDuplicate.content);
   }, [files, createNewFile]);
+
+  // Rename file
+  const renameFile = useCallback((fileId, newName) => {
+    if (!newName || !newName.trim()) return false;
+
+    const trimmedName = newName.trim();
+
+    // Check if name already exists
+    if (files.some(file => file.id !== fileId && file.name === trimmedName)) {
+      alert('A file with this name already exists');
+      return false;
+    }
+
+    // Determine file type from extension
+    let fileType = 'txt';
+    if (trimmedName.includes('.')) {
+      const extension = trimmedName.split('.').pop().toLowerCase();
+      fileType = extension;
+    }
+
+    const updatedFiles = files.map(file =>
+      file.id === fileId
+        ? { ...file, name: trimmedName, type: fileType }
+        : file
+    );
+
+    const updatedActiveFile = activeFile && activeFile.id === fileId
+      ? { ...activeFile, name: trimmedName, type: fileType }
+      : activeFile;
+
+    updateState({
+      files: updatedFiles,
+      activeFile: updatedActiveFile
+    });
+
+    return true;
+  }, [files, activeFile, updateState]);
 
   // Revert file to last saved state
   const revertFile = useCallback(() => {
@@ -420,7 +457,7 @@ document.addEventListener('DOMContentLoaded', function() {
     editorContent,
     searchQuery,
     isSearchVisible,
-    
+
     // Actions
     setSearchQuery,
     setIsSearchVisible,
@@ -430,8 +467,9 @@ document.addEventListener('DOMContentLoaded', function() {
     createNewFile,
     deleteFile,
     duplicateFile,
+    renameFile,
     revertFile,
-    
+
     // Utilities
     getFileIcon,
     getFileLanguage,

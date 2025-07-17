@@ -8,6 +8,7 @@ const FileExplorer = ({
   onFileCreate,
   onFileDelete,
   onFileDuplicate,
+  onFileRename,
   getFileIcon,
   onSave
 }) => {
@@ -16,6 +17,8 @@ const FileExplorer = ({
   const [newFileName, setNewFileName] = useState('');
   const [contextMenu, setContextMenu] = useState(null);
   const [showFileActions, setShowFileActions] = useState(false);
+  const [renamingFile, setRenamingFile] = useState(null);
+  const [renameValue, setRenameValue] = useState('');
 
   const fileTemplates = [
     {
@@ -183,6 +186,41 @@ export default MyComponent;`
     handleCloseContextMenu();
   };
 
+  const handleRenameFile = (file) => {
+    setRenamingFile(file);
+    setRenameValue(file.name);
+    handleCloseContextMenu();
+  };
+
+  const handleRenameSubmit = () => {
+    if (renamingFile && renameValue.trim()) {
+      const success = onFileRename(renamingFile.id, renameValue.trim());
+      if (success) {
+        setRenamingFile(null);
+        setRenameValue('');
+      }
+    }
+  };
+
+  const handleRenameCancel = () => {
+    setRenamingFile(null);
+    setRenameValue('');
+  };
+
+  const handleRenameKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleRenameSubmit();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      handleRenameCancel();
+    }
+  };
+
+  const handleFileDoubleClick = (file) => {
+    handleRenameFile(file);
+  };
+
   const handleTemplateSelect = (template) => {
     const fileName = prompt(`Enter file name for ${template.name}:`, `new-file.${template.extension}`);
     if (fileName) {
@@ -275,11 +313,25 @@ export default MyComponent;`
               key={file.id}
               className={`file-item ${activeFile?.id === file.id ? 'active' : ''}`}
               onClick={() => onFileSelect(file)}
+              onDoubleClick={() => handleFileDoubleClick(file)}
               onContextMenu={(e) => handleContextMenu(e, file)}
               data-has-context-menu="true"
             >
               <span className="file-icon">{getFileIcon(file.type)}</span>
-              <span className="file-name">{file.name}</span>
+              {renamingFile && renamingFile.id === file.id ? (
+                <input
+                  type="text"
+                  className="rename-input"
+                  value={renameValue}
+                  onChange={(e) => setRenameValue(e.target.value)}
+                  onBlur={handleRenameSubmit}
+                  onKeyDown={handleRenameKeyDown}
+                  autoFocus
+                  onClick={(e) => e.stopPropagation()}
+                />
+              ) : (
+                <span className="file-name">{file.name}</span>
+              )}
               {file.isModified && <span className="modified-indicator">●</span>}
             </div>
           ))
@@ -297,10 +349,13 @@ export default MyComponent;`
               width: contextMenu.width
             }}
           >
+            <button onClick={() => handleRenameFile(contextMenu.file)}>
+              ✏️ Rename
+            </button>
             <button onClick={() => handleDuplicateFile(contextMenu.file)}>
               📋 Duplicate
             </button>
-            <button 
+            <button
               onClick={() => handleDeleteFile(contextMenu.file)}
               className="delete-option"
             >
