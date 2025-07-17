@@ -13,9 +13,8 @@ Browser:
 IDE:
 
 1. make actual file type syntax highlighting
-2. add more options to the topbar header
-3. dont highlight the searchbar when you click on it
-4. add a menu bar
+2. dont highlight the searchbar when you click on it
+3. add a menu bar
 
 Notes:
 
