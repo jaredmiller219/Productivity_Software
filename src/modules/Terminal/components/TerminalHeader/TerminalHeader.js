@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './TerminalHeader.css';
 
 const TerminalHeader = ({
@@ -15,6 +15,8 @@ const TerminalHeader = ({
 }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showStats, setShowStats] = useState(false);
+  const statsRef = useRef(null);
+  const statsButtonRef = useRef(null);
 
   // Update time every second
   useEffect(() => {
@@ -23,6 +25,21 @@ const TerminalHeader = ({
     }, 1000);
 
     return () => clearInterval(timer);
+  }, []);
+
+  // Handle click outside to close stats dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (statsRef.current && !statsRef.current.contains(event.target) &&
+          statsButtonRef.current && !statsButtonRef.current.contains(event.target)) {
+        setShowStats(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const formatTime = (date) => {
@@ -104,6 +121,7 @@ const TerminalHeader = ({
           {/* Info & Stats Group */}
           <div className="control-group">
             <button
+              ref={statsButtonRef}
               className="header-btn"
               onClick={() => setShowStats(!showStats)}
               title="Toggle stats"
@@ -172,7 +190,7 @@ const TerminalHeader = ({
       </div>
 
       {showStats && stats && (
-        <div className="stats-dropdown">
+        <div className="stats-dropdown" ref={statsRef}>
           <div className="stats-header">Terminal Statistics</div>
           <div className="stats-grid">
             <div className="stat-row">
