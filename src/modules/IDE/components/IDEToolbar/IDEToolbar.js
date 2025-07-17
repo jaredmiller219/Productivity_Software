@@ -7,7 +7,8 @@ const IDEToolbar = ({
   onSearch,
   onToggleSearch,
   isSearchVisible,
-  activeFile
+  activeFile,
+  onShowSettings
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -160,6 +161,15 @@ const IDEToolbar = ({
       {/* Small buttons on the right */}
       <div className="toolbar-section toolbar-right">
         <div className="right-controls">
+          {onShowSettings && (
+            <button
+              className="toolbar-btn-small settings-btn"
+              onClick={onShowSettings}
+              title="IDE Settings"
+            >
+              ⚙️
+            </button>
+          )}
         </div>
       </div>
     </div>

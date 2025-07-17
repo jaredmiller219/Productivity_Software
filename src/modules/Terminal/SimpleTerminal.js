@@ -138,6 +138,29 @@ function SimpleTerminal() {
     }
   };
 
+  // Reset terminal (for recovery from vim, etc.)
+  const resetTerminal = async () => {
+    try {
+      if (window.electronAPI) {
+        const terminalIdStr = `simple-terminal-${activeTab}`;
+        await window.electronAPI.terminalReset(terminalIdStr);
+
+        // Also clear the local history
+        setTabStates(prev => ({
+          ...prev,
+          [activeTab]: {
+            ...prev[activeTab],
+            history: []
+          }
+        }));
+
+        console.log('Terminal reset successfully');
+      }
+    } catch (error) {
+      console.error('Failed to reset terminal:', error);
+    }
+  };
+
   // Execute real command
   const executeRealCommand = async (command, timestamp) => {
     const commandEntry = {
@@ -145,6 +168,8 @@ function SimpleTerminal() {
       content: command,
       timestamp
     };
+
+
 
     // Add command to history immediately
     setTabStates(prev => ({
@@ -172,8 +197,72 @@ function SimpleTerminal() {
       return;
     }
 
+    // Handle ls command with custom formatting
+    const fullCmd = command.toLowerCase().trim();
+    if (fullCmd === 'ls' || fullCmd.startsWith('ls ')) {
+      try {
+        // Get file details with type information
+        const result = await window.electronAPI.executeCommandWithDetails(command);
+
+        if (result.success && result.files) {
+          // Sort files: directories first, then files
+          const sortedFiles = result.files.sort((a, b) => {
+            if (a.isDirectory && !b.isDirectory) return -1;
+            if (!a.isDirectory && b.isDirectory) return 1;
+            return a.name.localeCompare(b.name);
+          });
+
+          if (sortedFiles.length > 0) {
+            const terminalWidth = 80;
+            const columnWidth = Math.floor(terminalWidth / 3);
+            let formattedLines = [];
+
+            for (let i = 0; i < sortedFiles.length; i += 3) {
+              const row = sortedFiles.slice(i, i + 3);
+              let line = '';
+
+              for (let j = 0; j < 3; j++) {
+                if (row[j]) {
+                  const fileName = row[j].name;
+                  const paddedName = fileName.padEnd(columnWidth);
+
+                  if (row[j].isDirectory) {
+                    // Add blue color for directories
+                    line += `\x1b[34m${paddedName}\x1b[0m`;
+                  } else {
+                    line += paddedName;
+                  }
+                } else {
+                  line += ''.padEnd(columnWidth);
+                }
+              }
+
+              formattedLines.push(line.trimEnd());
+            }
+
+            const outputEntry = {
+              type: "output",
+              content: formattedLines.join('\n'),
+              timestamp: Date.now()
+            };
+
+            setTabStates(prev => ({
+              ...prev,
+              [activeTab]: {
+                ...prev[activeTab],
+                history: [...prev[activeTab].history, outputEntry]
+              }
+            }));
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Failed to execute ls command:', error);
+      }
+    }
+
     try {
-      // Send command to real terminal
+      // Send command to real terminal for other commands
       await window.electronAPI.terminalInput(`simple-terminal-${activeTab}`, command + '\n');
 
     } catch (error) {
@@ -250,6 +339,191 @@ function SimpleTerminal() {
     }
 
     // Only fall back to simulated commands if no real terminal available
+    // Handle ls command with custom 3-column formatting (simulated only)
+    if (cmd === 'ls' || cmd.startsWith('ls ')) {
+      console.log('Processing simulated ls command with 3-column layout');
+      const args = command.trim().split(' ');
+      let outputContent = '';
+
+      if (args.includes('-l')) {
+        // Detailed listing
+        outputContent = `total 8
+drwxr-xr-x  5 user user 4096 Dec 13 10:30 documents
+drwxr-xr-x  3 user user 4096 Dec 13 09:15 downloads
+-rw-r--r--  1 user user 1024 Dec 13 11:45 readme.txt
+-rwxr-xr-x  1 user user 2048 Dec 13 08:30 script.sh
+drwxr-xr-x  2 user user 4096 Dec 13 12:00 projects
+-rw-r--r--  1 user user  512 Dec 13 14:20 config.json`;
+      } else {
+        // 3-column layout
+        const files = [
+          'documents', 'downloads', 'readme.txt',
+          'script.sh', 'projects', 'config.json',
+          'notes.md', 'backup.tar', 'images'
+        ];
+
+        // Calculate even column widths based on terminal width
+        const terminalWidth = 80; // Standard terminal width
+        const columnWidth = Math.floor(terminalWidth / 3); // Each column gets 1/3 of width
+        let lines = [];
+
+        for (let i = 0; i < files.length; i += 3) {
+          const row = files.slice(i, i + 3);
+          let line = '';
+
+          for (let j = 0; j < 3; j++) {
+            if (row[j]) {
+              // Pad each column to exactly columnWidth characters
+              line += row[j].padEnd(columnWidth);
+            } else {
+              // Empty column - still pad to maintain alignment
+              line += ''.padEnd(columnWidth);
+            }
+          }
+
+          lines.push(line.trimEnd()); // Remove trailing spaces from the line
+        }
+
+        outputContent = lines.join('\n');
+        console.log('3-column output:', outputContent);
+        console.log('Lines array:', lines);
+      }
+
+      const outputEntry = {
+        type: "output",
+        content: outputContent,
+        timestamp
+      };
+
+      const newTabState = {
+        ...tabStates[activeTab],
+        history: [...tabStates[activeTab].history, commandEntry, outputEntry],
+        commandCount: tabStates[activeTab].commandCount + 1,
+        historyIndex: -1
+      };
+
+      setTabStates(prev => ({
+        ...prev,
+        [activeTab]: newTabState
+      }));
+      return;
+    }
+
+    // Handle other basic commands (fallback when no electronAPI)
+    if (cmd === 'help') {
+      const helpContent = `Available commands:
+  help          - Show this help message
+  clear         - Clear the terminal
+  date          - Show current date and time
+  echo <text>   - Echo a message
+  ls [-l]       - List directory contents (3-column layout, -l for detailed)
+  pwd           - Print working directory
+  whoami        - Show current user`;
+
+      const outputEntry = {
+        type: "output",
+        content: helpContent,
+        timestamp
+      };
+
+      const newTabState = {
+        ...tabStates[activeTab],
+        history: [...tabStates[activeTab].history, commandEntry, outputEntry],
+        commandCount: tabStates[activeTab].commandCount + 1,
+        historyIndex: -1
+      };
+
+      setTabStates(prev => ({
+        ...prev,
+        [activeTab]: newTabState
+      }));
+      return;
+    }
+
+    if (cmd === 'date') {
+      const outputEntry = {
+        type: "output",
+        content: new Date().toString(),
+        timestamp
+      };
+
+      const newTabState = {
+        ...tabStates[activeTab],
+        history: [...tabStates[activeTab].history, commandEntry, outputEntry],
+        commandCount: tabStates[activeTab].commandCount + 1,
+        historyIndex: -1
+      };
+
+      setTabStates(prev => ({
+        ...prev,
+        [activeTab]: newTabState
+      }));
+      return;
+    }
+
+    if (cmd === 'pwd') {
+      const outputEntry = {
+        type: "output",
+        content: "/home/user",
+        timestamp
+      };
+
+      const newTabState = {
+        ...tabStates[activeTab],
+        history: [...tabStates[activeTab].history, commandEntry, outputEntry],
+        commandCount: tabStates[activeTab].commandCount + 1,
+        historyIndex: -1
+      };
+
+      setTabStates(prev => ({
+        ...prev,
+        [activeTab]: newTabState
+      }));
+      return;
+    }
+
+    if (cmd === 'whoami') {
+      const outputEntry = {
+        type: "output",
+        content: "user",
+        timestamp
+      };
+
+      const newTabState = {
+        ...tabStates[activeTab],
+        history: [...tabStates[activeTab].history, commandEntry, outputEntry],
+        commandCount: tabStates[activeTab].commandCount + 1,
+        historyIndex: -1
+      };
+
+      setTabStates(prev => ({
+        ...prev,
+        [activeTab]: newTabState
+      }));
+      return;
+    }
+
+    if (cmd.startsWith('echo ')) {
+      const outputEntry = {
+        type: "output",
+        content: command.substring(5),
+        timestamp
+      };
+
+      const newTabState = {
+        ...tabStates[activeTab],
+        history: [...tabStates[activeTab].history, commandEntry, outputEntry],
+        commandCount: tabStates[activeTab].commandCount + 1,
+        historyIndex: -1
+      };
+
+      setTabStates(prev => ({
+        ...prev,
+        [activeTab]: newTabState
+      }));
+      return;
+    }
+
     // Handle clear command specially - show it, then clear everything
     if (cmd === 'clear') {
       // First add the clear command to history so it shows
@@ -277,10 +551,10 @@ function SimpleTerminal() {
       return;
     }
 
-    // No real terminal available - show error
+    // Command not found - show error
     const errorEntry = {
       type: "output",
-      content: "Error: No terminal connection available. Please run in Electron environment for real terminal functionality.",
+      content: `Command not found: ${cmd}\nType 'help' for available commands.`,
       timestamp
     };
 
@@ -670,6 +944,7 @@ function SimpleTerminal() {
         onClose={() => setShowSettings(false)}
         settings={settings}
         onSettingsChange={setSettings}
+        onTerminalReset={resetTerminal}
       />
 
       {/* Help Modal */}
@@ -688,7 +963,7 @@ function SimpleTerminal() {
                   <li><code>clear</code> - Clear terminal screen</li>
                   <li><code>date</code> - Show current date and time</li>
                   <li><code>echo [text]</code> - Display text</li>
-                  <li><code>ls</code> - List directory contents</li>
+                  <li><code>ls [-l]</code> - List directory contents (3-column layout, -l for detailed)</li>
                   <li><code>pwd</code> - Show current directory</li>
                   <li><code>whoami</code> - Show current user</li>
                 </ul>

@@ -256,7 +256,14 @@
   border-top: 1px solid #444;
 }
 
+.footer-left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .reset-btn,
+.terminal-reset-btn,
 .save-btn,
 .cancel-btn {
   padding: 12px 20px;
@@ -278,6 +285,19 @@
   background: linear-gradient(135deg, #3a3a3a 0%, #4a4a4a 100%);
   border-color: #666;
   transform: translateY(-1px);
+}
+
+.terminal-reset-btn {
+  background: linear-gradient(135deg, #ff6b6b 0%, #e55353 100%);
+  border-color: #ff6b6b;
+  color: #fff;
+}
+
+.terminal-reset-btn:hover {
+  background: linear-gradient(135deg, #e55353 0%, #cc4545 100%);
+  border-color: #e55353;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
 }
 
 .save-btn {

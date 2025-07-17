@@ -298,6 +298,22 @@
   border-color: #155724;
 }
 
+.toolbar-btn-small.settings-btn {
+  background-color: #6c757d;
+  border-color: #5a6268;
+  color: #ffffff;
+  font-size: 14px;
+  min-width: 32px;
+  height: 28px;
+}
+
+.toolbar-btn-small.settings-btn:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+  transform: rotate(45deg);
+  transition: all 0.2s ease;
+}
+
 
 
 /* Right controls container */

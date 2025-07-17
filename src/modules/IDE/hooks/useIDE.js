@@ -160,29 +160,56 @@ document.addEventListener('DOMContentLoaded', function() {
   // Get file language for syntax highlighting
   const getFileLanguage = useCallback((type) => {
     const languages = {
+      // Web technologies
       html: 'html',
+      htm: 'html',
       css: 'css',
+      scss: 'scss',
+      sass: 'sass',
+      less: 'less',
       js: 'javascript',
+      jsx: 'jsx',
+      ts: 'typescript',
+      tsx: 'tsx',
+      vue: 'vue',
+
+      // Data formats
       json: 'json',
-      txt: 'text',
-      md: 'markdown',
+      xml: 'xml',
+      yml: 'yaml',
+      yaml: 'yaml',
+
+      // Programming languages
       py: 'python',
       java: 'java',
       cpp: 'cpp',
+      cxx: 'cpp',
+      cc: 'cpp',
       c: 'c',
+      cs: 'csharp',
       php: 'php',
       rb: 'ruby',
       go: 'go',
       rs: 'rust',
-      ts: 'typescript',
-      jsx: 'javascript',
-      tsx: 'typescript',
-      vue: 'vue',
-      xml: 'xml',
-      yml: 'yaml',
-      yaml: 'yaml'
+
+      // Shell and config
+      sh: 'bash',
+      bash: 'bash',
+      ps1: 'powershell',
+      dockerfile: 'docker',
+
+      // Documentation
+      md: 'markdown',
+      txt: 'text',
+
+      // Database
+      sql: 'sql',
+
+      // Version control
+      gitignore: 'git',
+      gitattributes: 'git'
     };
-    return languages[type] || 'text';
+    return languages[type.toLowerCase()] || 'text';
   }, []);
 
   // Handle file selection

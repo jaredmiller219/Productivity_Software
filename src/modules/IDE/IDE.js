@@ -3,14 +3,21 @@ import FileExplorer from "./components/FileExplorer/FileExplorer.js";
 import CodeEditor from "./components/CodeEditor/CodeEditor.js";
 import IDEToolbar from "./components/IDEToolbar/IDEToolbar.js";
 import SearchPanel from "./components/SearchPanel/SearchPanel.js";
+import IDESettings, { DEFAULT_IDE_SETTINGS } from "./components/IDESettings/IDESettings.js";
 import { useIDE } from "./hooks/useIDE.js";
+import { useGlobalState } from "../../shared/hooks/useGlobalState.js";
 import "./IDE.css";
 
 function IDE() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [explorerWidth, setExplorerWidth] = useState(280);
   const [isResizing, setIsResizing] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const explorerContainerRef = useRef(null);
+
+  // IDE Settings state
+  const { state: ideSettingsState, updateState: updateIdeSettings } = useGlobalState('ide-settings', DEFAULT_IDE_SETTINGS);
+  const ideSettings = ideSettingsState;
 
   // Undo/Redo state
   const [undoRedoCallbacks, setUndoRedoCallbacks] = useState({
@@ -20,10 +27,15 @@ function IDE() {
     canRedo: false
   });
 
-  // Initialize CSS variable
+  // Initialize CSS variables
   useEffect(() => {
     document.documentElement.style.setProperty('--explorer-width', `${explorerWidth}px`);
   }, [explorerWidth]);
+
+  // Apply IDE settings to CSS variables
+  useEffect(() => {
+    document.documentElement.style.setProperty('--ide-cursor-color', ideSettings.cursorColor);
+  }, [ideSettings.cursorColor]);
   
   const {
     files,
@@ -45,6 +57,18 @@ function IDE() {
 
   const handleToggleSearch = () => {
     setIsSearchVisible(!isSearchVisible);
+  };
+
+  const handleShowSettings = () => {
+    setShowSettings(true);
+  };
+
+  const handleCloseSettings = () => {
+    setShowSettings(false);
+  };
+
+  const handleSettingsChange = (newSettings) => {
+    updateIdeSettings(newSettings);
   };
 
   // Handle keyboard shortcuts
@@ -119,6 +143,7 @@ function IDE() {
         onToggleSearch={handleToggleSearch}
         isSearchVisible={isSearchVisible}
         activeFile={activeFile}
+        onShowSettings={handleShowSettings}
       />
       
       <div className="ide-main">
@@ -185,6 +210,14 @@ function IDE() {
           />
         </div>
       )}
+
+      {/* IDE Settings Modal */}
+      <IDESettings
+        isVisible={showSettings}
+        onClose={handleCloseSettings}
+        settings={ideSettings}
+        onSettingsChange={handleSettingsChange}
+      />
     </div>
   );
 }

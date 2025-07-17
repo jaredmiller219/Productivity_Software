@@ -1,0 +1,228 @@
+.syntax-highlighter {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+}
+
+.syntax-highlighter pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow: visible;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.5;
+  white-space: pre;
+  word-wrap: normal;
+  tab-size: 2;
+}
+
+.syntax-highlighter code {
+  font-family: inherit;
+  font-size: inherit;
+  background: transparent;
+  color: inherit;
+  padding: 12px 16px;
+  display: block;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+
+/* Override Prism's default styles to match our dark theme */
+.syntax-highlighter .token.comment,
+.syntax-highlighter .token.prolog,
+.syntax-highlighter .token.doctype,
+.syntax-highlighter .token.cdata {
+  color: #6a9955;
+  font-style: italic;
+}
+
+.syntax-highlighter .token.punctuation {
+  color: #d4d4d4;
+}
+
+.syntax-highlighter .token.property,
+.syntax-highlighter .token.tag,
+.syntax-highlighter .token.boolean,
+.syntax-highlighter .token.number,
+.syntax-highlighter .token.constant,
+.syntax-highlighter .token.symbol,
+.syntax-highlighter .token.deleted {
+  color: #b5cea8;
+}
+
+.syntax-highlighter .token.selector,
+.syntax-highlighter .token.attr-name,
+.syntax-highlighter .token.string,
+.syntax-highlighter .token.char,
+.syntax-highlighter .token.builtin,
+.syntax-highlighter .token.inserted {
+  color: #ce9178;
+}
+
+.syntax-highlighter .token.operator,
+.syntax-highlighter .token.entity,
+.syntax-highlighter .token.url,
+.syntax-highlighter .language-css .token.string,
+.syntax-highlighter .style .token.string {
+  color: #d4d4d4;
+}
+
+.syntax-highlighter .token.atrule,
+.syntax-highlighter .token.attr-value,
+.syntax-highlighter .token.keyword {
+  color: #569cd6;
+}
+
+.syntax-highlighter .token.function,
+.syntax-highlighter .token.class-name {
+  color: #dcdcaa;
+}
+
+.syntax-highlighter .token.regex,
+.syntax-highlighter .token.important,
+.syntax-highlighter .token.variable {
+  color: #9cdcfe;
+}
+
+.syntax-highlighter .token.important,
+.syntax-highlighter .token.bold {
+  font-weight: bold;
+}
+
+.syntax-highlighter .token.italic {
+  font-style: italic;
+}
+
+.syntax-highlighter .token.entity {
+  cursor: help;
+}
+
+/* JavaScript specific tokens */
+.syntax-highlighter .token.template-string {
+  color: #ce9178;
+}
+
+.syntax-highlighter .token.template-punctuation {
+  color: #569cd6;
+}
+
+/* CSS specific tokens */
+.syntax-highlighter .token.selector {
+  color: #d7ba7d;
+}
+
+.syntax-highlighter .token.property {
+  color: #9cdcfe;
+}
+
+/* HTML specific tokens */
+.syntax-highlighter .token.attr-name {
+  color: #9cdcfe;
+}
+
+.syntax-highlighter .token.attr-value {
+  color: #ce9178;
+}
+
+.syntax-highlighter .token.tag .token.punctuation {
+  color: #808080;
+}
+
+/* JSON specific tokens */
+.syntax-highlighter .language-json .token.property {
+  color: #9cdcfe;
+}
+
+.syntax-highlighter .language-json .token.string {
+  color: #ce9178;
+}
+
+.syntax-highlighter .language-json .token.number {
+  color: #b5cea8;
+}
+
+.syntax-highlighter .language-json .token.boolean {
+  color: #569cd6;
+}
+
+.syntax-highlighter .language-json .token.null {
+  color: #569cd6;
+}
+
+/* Python specific tokens */
+.syntax-highlighter .language-python .token.decorator {
+  color: #dcdcaa;
+}
+
+.syntax-highlighter .language-python .token.string {
+  color: #ce9178;
+}
+
+/* Line numbers styling */
+.syntax-highlighter .line-numbers {
+  position: relative;
+  padding-left: 3.8em;
+  counter-reset: linenumber;
+}
+
+.syntax-highlighter .line-numbers > code {
+  position: relative;
+  white-space: inherit;
+}
+
+.syntax-highlighter .line-numbers .line-numbers-rows {
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: -3.8em;
+  width: 3em;
+  letter-spacing: -1px;
+  border-right: 1px solid #3c3c3c;
+  user-select: none;
+  counter-reset: linenumber;
+}
+
+.syntax-highlighter .line-numbers-rows > span {
+  display: block;
+  counter-increment: linenumber;
+}
+
+.syntax-highlighter .line-numbers-rows > span:before {
+  content: counter(linenumber);
+  color: #858585;
+  display: block;
+  padding-right: 0.8em;
+  text-align: right;
+}
+
+/* Scrollbar styling */
+.syntax-highlighter::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.syntax-highlighter::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.syntax-highlighter::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 4px;
+}
+
+.syntax-highlighter::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
+}
+
+/* Selection styling */
+.syntax-highlighter ::selection {
+  background: rgba(173, 214, 255, 0.15);
+}
+
+.syntax-highlighter ::-moz-selection {
+  background: rgba(173, 214, 255, 0.15);
+}

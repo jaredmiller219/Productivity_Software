@@ -23,11 +23,46 @@ const TerminalDisplay = ({ history, onTerminalClick }) => {
     if (typeof output === 'string') {
       return output.split('\n').map((line, index) => (
         <div key={index} className="output-line">
-          {line || '\u00A0'}
+          {renderAnsiColors(line) || '\u00A0'}
         </div>
       ));
     }
     return output;
+  };
+
+  const renderAnsiColors = (text) => {
+    if (!text) return text;
+
+    // Handle ANSI color codes
+    const parts = text.split(/(\x1b\[[0-9;]*m)/);
+    let currentColor = null;
+    const elements = [];
+
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i];
+
+      if (part.match(/\x1b\[[0-9;]*m/)) {
+        // This is an ANSI code
+        if (part === '\x1b[34m') {
+          currentColor = 'blue';
+        } else if (part === '\x1b[0m') {
+          currentColor = null;
+        }
+      } else if (part) {
+        // This is text content
+        if (currentColor) {
+          elements.push(
+            <span key={i} style={{ color: currentColor }}>
+              {part}
+            </span>
+          );
+        } else {
+          elements.push(part);
+        }
+      }
+    }
+
+    return elements.length > 0 ? elements : text;
   };
 
   return (

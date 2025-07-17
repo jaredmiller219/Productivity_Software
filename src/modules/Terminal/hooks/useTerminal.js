@@ -84,7 +84,39 @@ export const useTerminal = () => {
         break;
 
       case "ls":
-        addToHistory({ type: "output", content: "src/  public/  package.json  README.md  node_modules/" });
+        if (args.includes('-l')) {
+          // Detailed listing
+          addToHistory({ type: "output", content: "total 8" });
+          addToHistory({ type: "output", content: "drwxr-xr-x  5 user user 4096 Dec 13 10:30 documents" });
+          addToHistory({ type: "output", content: "drwxr-xr-x  3 user user 4096 Dec 13 09:15 downloads" });
+          addToHistory({ type: "output", content: "-rw-r--r--  1 user user 1024 Dec 13 11:45 readme.txt" });
+          addToHistory({ type: "output", content: "-rwxr-xr-x  1 user user 2048 Dec 13 08:30 script.sh" });
+        } else {
+          // 3-column layout with even columns
+          const files = ['documents', 'downloads', 'readme.txt', 'script.sh', 'projects', 'config.json'];
+          const terminalWidth = 80; // Standard terminal width
+          const columnWidth = Math.floor(terminalWidth / 3); // Each column gets exactly 1/3 of width
+          let lines = [];
+
+          for (let i = 0; i < files.length; i += 3) {
+            const row = files.slice(i, i + 3);
+            let line = '';
+
+            for (let j = 0; j < 3; j++) {
+              if (row[j]) {
+                // Pad each column to exactly columnWidth characters
+                line += row[j].padEnd(columnWidth);
+              } else {
+                // Empty column - still pad to maintain alignment
+                line += ''.padEnd(columnWidth);
+              }
+            }
+
+            lines.push(line.trimEnd());
+          }
+
+          lines.forEach(line => addToHistory({ type: "output", content: line }));
+        }
         break;
 
       case "cat":

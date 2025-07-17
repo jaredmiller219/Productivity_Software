@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import SimpleSyntaxEditor from './SimpleSyntaxEditor.js';
 import './CodeEditor.css';
 
 const CodeEditor = ({
@@ -381,23 +382,15 @@ const CodeEditor = ({
           ))}
         </div>
         
-        <textarea
+        <SimpleSyntaxEditor
           ref={textareaRef}
-          value={content}
+          content={content}
           onChange={handleContentChange}
+          language={language}
+          fontSize={fontSize}
           onKeyDown={handleKeyDown}
           onSelect={handleSelectionChange}
           onClick={handleSelectionChange}
-          className={`code-textarea ${getSyntaxClass()}`}
-          style={{ fontSize: `${fontSize}px` }}
-          spellCheck="false"
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          placeholder={`Start typing your ${language} code...`}
-          readOnly={false}
-          disabled={false}
-          tabIndex={0}
         />
       </div>
 

@@ -35,6 +35,26 @@ class GlobalStateManager {
   saveToStorage() {
     try {
       const statesToSave = Object.fromEntries(this.states);
+
+      // Filter out terminal history from persistence (keep settings but not history)
+      if (statesToSave.terminal && statesToSave.terminal.tabStates) {
+        const filteredTerminal = {
+          ...statesToSave.terminal,
+          tabStates: Object.fromEntries(
+            Object.entries(statesToSave.terminal.tabStates).map(([tabId, tabState]) => [
+              tabId,
+              {
+                ...tabState,
+                history: [], // Don't persist terminal history
+                input: "",   // Don't persist current input
+                historyIndex: -1 // Reset history index
+              }
+            ])
+          )
+        };
+        statesToSave.terminal = filteredTerminal;
+      }
+
       localStorage.setItem(this.storageKey, JSON.stringify(statesToSave));
     } catch (error) {
       console.warn('Failed to save state to localStorage:', error);

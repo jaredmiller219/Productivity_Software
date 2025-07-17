@@ -22,7 +22,7 @@ const DEFAULT_SETTINGS = {
   showDebugPanel: false
 };
 
-const TerminalSettings = ({ isVisible, onClose, settings, onSettingsChange }) => {
+const TerminalSettings = ({ isVisible, onClose, settings, onSettingsChange, onTerminalReset }) => {
   const [localSettings, setLocalSettings] = useState({ ...DEFAULT_SETTINGS, ...settings });
   const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
 
@@ -212,9 +212,16 @@ const TerminalSettings = ({ isVisible, onClose, settings, onSettingsChange }) =>
         </div>
 
         <div className="settings-footer">
-          <button onClick={handleReset} className="reset-btn">
-            Reset to Defaults
-          </button>
+          <div className="footer-left">
+            <button onClick={handleReset} className="reset-btn">
+              Reset to Defaults
+            </button>
+            {onTerminalReset && (
+              <button onClick={onTerminalReset} className="terminal-reset-btn">
+                Reset Terminal
+              </button>
+            )}
+          </div>
           <div className="footer-right">
             <button onClick={handleCancel} className="cancel-btn">
               Cancel

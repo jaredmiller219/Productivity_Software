@@ -120,6 +120,12 @@
   color: #dc3545;
 }
 
+.header-btn.reset-btn:hover {
+  background-color: rgba(255, 165, 0, 0.2);
+  border-color: #ffa500;
+  color: #ffa500;
+}
+
 .terminal-header.light .header-btn {
   color: #666666;
 }

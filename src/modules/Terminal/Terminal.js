@@ -514,7 +514,7 @@ function Terminal() {
         term.writeln("  history       - Show command history");
         term.writeln("  theme         - Open theme selector");
         term.writeln("  settings      - Open terminal settings");
-        term.writeln("  ls            - List directory contents (simulated)");
+        term.writeln("  ls [-l]       - List directory contents (3-column layout, -l for detailed)");
         term.writeln("  pwd           - Print working directory");
         term.writeln("  cd <dir>      - Change directory (supports .., ./, ../, ~)");
         term.writeln("  whoami        - Show current user");
@@ -553,11 +553,45 @@ function Terminal() {
         term.writeln("Settings panel opened");
         break;
       case "ls":
-        term.writeln("total 8");
-        term.writeln("drwxr-xr-x  5 user user 4096 Dec 13 10:30 documents");
-        term.writeln("drwxr-xr-x  3 user user 4096 Dec 13 09:15 downloads");
-        term.writeln("-rw-r--r--  1 user user 1024 Dec 13 11:45 readme.txt");
-        term.writeln("-rwxr-xr-x  1 user user 2048 Dec 13 08:30 script.sh");
+        // Check for -l flag for detailed listing
+        if (args.includes('-l')) {
+          term.writeln("total 8");
+          term.writeln("drwxr-xr-x  5 user user 4096 Dec 13 10:30 documents");
+          term.writeln("drwxr-xr-x  3 user user 4096 Dec 13 09:15 downloads");
+          term.writeln("-rw-r--r--  1 user user 1024 Dec 13 11:45 readme.txt");
+          term.writeln("-rwxr-xr-x  1 user user 2048 Dec 13 08:30 script.sh");
+          term.writeln("drwxr-xr-x  2 user user 4096 Dec 13 12:00 projects");
+          term.writeln("-rw-r--r--  1 user user  512 Dec 13 14:20 config.json");
+        } else {
+          // Default 3-column layout
+          const files = [
+            'documents', 'downloads', 'readme.txt',
+            'script.sh', 'projects', 'config.json',
+            'notes.md', 'backup.tar', 'images'
+          ];
+
+          // Get actual terminal width or use default
+          const terminalWidth = term.cols || 80;
+          const columnWidth = Math.floor(terminalWidth / 3); // Each column gets exactly 1/3 of width
+
+          // Group files into rows of 3
+          for (let i = 0; i < files.length; i += 3) {
+            const row = files.slice(i, i + 3);
+            let line = '';
+
+            for (let j = 0; j < 3; j++) {
+              if (row[j]) {
+                // Pad each column to exactly columnWidth characters
+                line += row[j].padEnd(columnWidth);
+              } else {
+                // Empty column - still pad to maintain alignment
+                line += ''.padEnd(columnWidth);
+              }
+            }
+
+            term.writeln(line.trimEnd());
+          }
+        }
         break;
       case "pwd":
         const currentTab = tabs.find(tab => tab.id === activeTab);

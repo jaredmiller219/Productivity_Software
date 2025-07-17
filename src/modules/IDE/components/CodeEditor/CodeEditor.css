@@ -219,6 +219,12 @@
   border: none;
 }
 
+.code-editor-content {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
 .editor-content:focus,
 .editor-content:focus-within {
   outline: none !important;
@@ -268,6 +274,7 @@
   -ms-user-select: text;
   position: relative;
   z-index: 1;
+  caret-color: var(--ide-cursor-color, #ffffff);
 }
 
 .code-textarea::placeholder {

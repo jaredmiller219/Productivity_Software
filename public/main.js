@@ -4,7 +4,9 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import isDev from "electron-is-dev";
 import { readFile, writeFile } from "fs";
-import { spawn } from "child_process";
+import { readdir, stat } from "fs/promises";
+import path from "path";
+import { spawn, execSync } from "child_process";
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -128,10 +130,32 @@ app.on("activate", () => {
 // Terminal handling with multiple terminal support
 ipcMain.handle("terminal-init", async (event, terminalId = 'default') => {
   try {
-    const shell = process.platform === "win32" ? "powershell.exe" : "bash";
+    let shell;
+
+    if (process.platform === "win32") {
+      shell = "powershell.exe";
+    } else {
+      // Try zsh first, fall back to bash if not available
+      try {
+        // Check if zsh is available
+        execSync('which zsh', { stdio: 'ignore' });
+        shell = "zsh";
+        console.log("Using zsh shell");
+      } catch (error) {
+        // zsh not found, use bash
+        shell = "bash";
+        console.log("zsh not found, falling back to bash");
+      }
+    }
+
     const terminalProcess = spawn(shell, [], {
       cwd: process.env.HOME || process.env.USERPROFILE,
-      env: process.env,
+      env: {
+        ...process.env,
+        TERM: 'xterm-256color',
+        COLUMNS: '80',
+        LINES: '24'
+      },
     });
 
     // Store the process
@@ -190,6 +214,126 @@ ipcMain.handle("terminal-close", async (event, terminalId = 'default') => {
     return { success: false, error: 'Terminal not found' };
   } catch (error) {
     return { success: false, error: error.message };
+  }
+});
+
+// Execute command and capture output
+ipcMain.handle("execute-command", async (event, command) => {
+  return new Promise((resolve) => {
+    let shell;
+
+    if (process.platform === "win32") {
+      shell = "powershell.exe";
+    } else {
+      // Try zsh first, fall back to bash if not available
+      try {
+        execSync('which zsh', { stdio: 'ignore' });
+        shell = "zsh";
+      } catch (error) {
+        shell = "bash";
+      }
+    }
+
+    const childProcess = spawn(shell, ['-c', command], {
+      cwd: process.env.HOME || process.env.USERPROFILE,
+      env: process.env,
+    });
+
+    let output = '';
+    let error = '';
+
+    childProcess.stdout.on('data', (data) => {
+      output += data.toString();
+    });
+
+    childProcess.stderr.on('data', (data) => {
+      error += data.toString();
+    });
+
+    childProcess.on('close', (code) => {
+      resolve({
+        success: code === 0,
+        output: output,
+        error: error,
+        exitCode: code
+      });
+    });
+
+    childProcess.on('error', (err) => {
+      resolve({
+        success: false,
+        output: '',
+        error: err.message,
+        exitCode: -1
+      });
+    });
+  });
+});
+
+// Reset terminal (for recovery from problematic states)
+ipcMain.handle("terminal-reset", async (event, terminalId = 'default') => {
+  try {
+    const terminalProcess = terminalProcesses.get(terminalId);
+    if (terminalProcess && terminalProcess.stdin.writable) {
+      // Send reset sequence
+      terminalProcess.stdin.write('\x1b[2J\x1b[H'); // Clear screen and move cursor to home
+      terminalProcess.stdin.write('\x1bc'); // Reset terminal
+      terminalProcess.stdin.write('clear\n'); // Clear command
+      return { success: true };
+    }
+    return { success: false, error: 'Terminal not found or not writable' };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
+// Execute command with file details (for ls command)
+ipcMain.handle("execute-command-with-details", async (event, command) => {
+
+  try {
+    // For ls command, read the current directory
+    const currentDir = process.env.HOME || process.env.USERPROFILE;
+    const files = await readdir(currentDir);
+
+    // Get file details
+    const fileDetails = await Promise.all(
+      files.map(async (fileName) => {
+        try {
+          const filePath = path.join(currentDir, fileName);
+          const stats = await stat(filePath);
+
+          return {
+            name: fileName,
+            isDirectory: stats.isDirectory(),
+            isFile: stats.isFile(),
+            size: stats.size,
+            modified: stats.mtime
+          };
+        } catch (error) {
+          // If we can't stat the file, treat it as a regular file
+          return {
+            name: fileName,
+            isDirectory: false,
+            isFile: true,
+            size: 0,
+            modified: new Date()
+          };
+        }
+      })
+    );
+
+    return {
+      success: true,
+      files: fileDetails,
+      error: null
+    };
+
+  } catch (error) {
+    return {
+      success: false,
+      files: [],
+      error: error.message
+    };
   }
 });
 
