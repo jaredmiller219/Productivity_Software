@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { flushSync } from 'react-dom';
+import React, { useState, useEffect } from "react";
 import { useGlobalState } from '../../shared/hooks/useGlobalState.js';
 import TerminalHeader from "./components/TerminalHeader/TerminalHeader.js";
 import TerminalDisplay from "./components/TerminalDisplay/TerminalDisplay.js";
@@ -12,11 +11,13 @@ function SimpleTerminal() {
     return {
       history: [
         { type: "output", content: "Welcome to Dev Suite Terminal", timestamp: Date.now() },
+        { type: "output", content: "This is a simulated terminal environment.", timestamp: Date.now() },
         { type: "output", content: "Type 'help' for available commands", timestamp: Date.now() }
       ],
       input: "",
       historyIndex: -1,
-      commandCount: 0
+      commandCount: 0,
+      currentDirectory: "/home/user"
     };
   };
 
@@ -53,6 +54,26 @@ function SimpleTerminal() {
   const setDebugMinimized = (value) => updateState({ debugMinimized: value });
   const setTabStates = (value) => updateState({ tabStates: typeof value === 'function' ? value(tabStates) : value });
 
+  // Ensure existing tab states have currentDirectory
+  useEffect(() => {
+    const needsUpdate = Object.keys(tabStates).some(tabId =>
+      !tabStates[tabId].currentDirectory
+    );
+
+    if (needsUpdate) {
+      const updatedTabStates = { ...tabStates };
+      Object.keys(updatedTabStates).forEach(tabId => {
+        if (!updatedTabStates[tabId].currentDirectory) {
+          updatedTabStates[tabId] = {
+            ...updatedTabStates[tabId],
+            currentDirectory: "/home/user"
+          };
+        }
+      });
+      setTabStates(updatedTabStates);
+    }
+  }, [tabStates, setTabStates]);
+
   // Local state for drag/resize (don't persist these)
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
@@ -66,6 +87,9 @@ function SimpleTerminal() {
 
   // Local state for input (for immediate UI updates)
   const [localInput, setLocalInput] = useState(currentTabState.input || "");
+
+  // Real terminal connection state
+  const [isRealTerminalConnected, setIsRealTerminalConnected] = useState(false);
 
   // Ensure the current tab state exists in global state
   React.useEffect(() => {
@@ -93,11 +117,117 @@ function SimpleTerminal() {
     }));
   };
 
+  // Initialize real terminal connection
+  const initializeRealTerminal = async () => {
+    try {
+      const terminalIdStr = `simple-terminal-${activeTab}`;
+      const result = await window.electronAPI.terminalInit(terminalIdStr);
+      if (result.success) {
+        setIsRealTerminalConnected(true);
+        console.log(`Terminal initialized: ${terminalIdStr}`);
+      }
+    } catch (error) {
+      console.error('Failed to initialize real terminal:', error);
+    }
+  };
+
+  // Execute real command
+  const executeRealCommand = async (command, timestamp) => {
+    const commandEntry = {
+      type: "command",
+      content: command,
+      timestamp
+    };
+
+    // Add command to history immediately
+    setTabStates(prev => ({
+      ...prev,
+      [activeTab]: {
+        ...prev[activeTab],
+        history: [...prev[activeTab].history, commandEntry],
+        commandCount: prev[activeTab].commandCount + 1,
+        historyIndex: -1
+      }
+    }));
+
+    // Handle clear command specially
+    if (command.toLowerCase().trim() === 'clear') {
+      // Clear the terminal display after showing the command
+      setTimeout(() => {
+        setTabStates(prev => ({
+          ...prev,
+          [activeTab]: {
+            ...prev[activeTab],
+            history: []
+          }
+        }));
+      }, 100);
+      return;
+    }
+
+    try {
+      // Send command to real terminal
+      await window.electronAPI.terminalInput(`simple-terminal-${activeTab}`, command + '\n');
+
+    } catch (error) {
+      console.error('Failed to execute real command:', error);
+      // Add error message to history
+      const errorEntry = {
+        type: "output",
+        content: `Error: Failed to execute command - ${error.message}`,
+        timestamp: Date.now()
+      };
+
+      setTabStates(prev => ({
+        ...prev,
+        [activeTab]: {
+          ...prev[activeTab],
+          history: [...prev[activeTab].history, errorEntry]
+        }
+      }));
+    }
+  };
+
+  // Set up terminal output listener
+  useEffect(() => {
+    if (window.electronAPI) {
+      const handleTerminalOutput = (_, { terminalId, data }) => {
+        if (terminalId === `simple-terminal-${activeTab}`) {
+          // Add output directly to terminal history
+          const outputEntry = {
+            type: "output",
+            content: data.trim(),
+            timestamp: Date.now()
+          };
+
+          setTabStates(prev => ({
+            ...prev,
+            [activeTab]: {
+              ...prev[activeTab],
+              history: [...prev[activeTab].history, outputEntry]
+            }
+          }));
+        }
+      };
+
+      window.electronAPI.onTerminalOutput(handleTerminalOutput);
+
+      return () => {
+        window.electronAPI.removeAllListeners('terminal-output');
+      };
+    }
+  }, [activeTab, setTabStates]);
+
+  // Initialize real terminal when component mounts or tab changes
+  useEffect(() => {
+    if (window.electronAPI && !isRealTerminalConnected) {
+      initializeRealTerminal();
+    }
+  }, [activeTab, isRealTerminalConnected]);
+
   const processCommand = (command) => {
     const timestamp = Date.now();
     const cmd = command.toLowerCase().trim();
-
-
 
     // Add the command to history first
     const commandEntry = {
@@ -106,6 +236,13 @@ function SimpleTerminal() {
       timestamp
     };
 
+    // Execute real command if electronAPI is available
+    if (window.electronAPI) {
+      executeRealCommand(command, timestamp);
+      return;
+    }
+
+    // Only fall back to simulated commands if no real terminal available
     // Handle clear command specially - show it, then clear everything
     if (cmd === 'clear') {
       // First add the clear command to history so it shows
@@ -133,26 +270,19 @@ function SimpleTerminal() {
       return;
     }
 
-    // Get the output for other commands
-    const output = getCommandOutput(command);
-
-    // Add output to history (if there is output)
-    const outputEntry = output ? {
+    // No real terminal available - show error
+    const errorEntry = {
       type: "output",
-      content: output,
+      content: "Error: No terminal connection available. Please run in Electron environment for real terminal functionality.",
       timestamp
-    } : null;
+    };
 
     const newTabState = {
       ...tabStates[activeTab],
-      history: outputEntry
-        ? [...tabStates[activeTab].history, commandEntry, outputEntry]
-        : [...tabStates[activeTab].history, commandEntry],
+      history: [...tabStates[activeTab].history, commandEntry, errorEntry],
       commandCount: tabStates[activeTab].commandCount + 1,
       historyIndex: -1
     };
-
-
 
     setTabStates(prev => ({
       ...prev,
@@ -203,26 +333,7 @@ function SimpleTerminal() {
     historyLength: currentTabState.history.length
   });
 
-  // Simple command processor
-  const getCommandOutput = (command) => {
-    const cmd = command.toLowerCase().trim();
 
-    if (cmd === 'help') {
-      return 'Available commands: help, clear, date, echo [text], ls, pwd, whoami';
-    } else if (cmd === 'date') {
-      return new Date().toString();
-    } else if (cmd.startsWith('echo ')) {
-      return command.substring(5);
-    } else if (cmd === 'ls') {
-      return 'Documents  Downloads  Desktop  Pictures  Music  Videos';
-    } else if (cmd === 'pwd') {
-      return '/home/user';
-    } else if (cmd === 'whoami') {
-      return 'user';
-    } else {
-      return `Command not found: ${command}`;
-    }
-  };
 
   const handleSubmit = () => {
     const command = localInput;
@@ -237,6 +348,17 @@ function SimpleTerminal() {
   const handleToggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
+
+  // Cleanup real terminal connections
+  useEffect(() => {
+    return () => {
+      if (window.electronAPI && isRealTerminalConnected) {
+        // Close terminal for current tab
+        window.electronAPI.terminalClose(`simple-terminal-${activeTab}`);
+        window.electronAPI.removeAllListeners('terminal-output');
+      }
+    };
+  }, [activeTab, isRealTerminalConnected]);
 
   // Calculate max height up to end of Tab States section
   const getContentMaxHeight = () => {
@@ -427,6 +549,7 @@ function SimpleTerminal() {
         onShowSettings={() => setShowSettings(true)}
         onShowHelp={() => setShowHelp(true)}
         onShowDebug={() => setShowDebug(true)}
+        isRealTerminal={isRealTerminalConnected}
       />
 
       {/* Simple Tab Bar */}

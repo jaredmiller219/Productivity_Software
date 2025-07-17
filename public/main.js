@@ -13,7 +13,7 @@ const __dirname = dirname(__filename);
 const openDevTools = !process.argv.includes("--no-devtools");
 
 let mainWindow;
-let terminalProcess;
+let terminalProcesses = new Map(); // Store multiple terminal processes by ID
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -56,11 +56,14 @@ function createWindow() {
   });
 
   mainWindow.on("closed", () => {
+    // Clean up all terminal processes
+    terminalProcesses.forEach((process) => {
+      if (process && !process.killed) {
+        process.kill();
+      }
+    });
+    terminalProcesses.clear();
     mainWindow = null;
-    if (terminalProcess) {
-      terminalProcess.kill();
-      terminalProcess = null;
-    }
   });
 }
 
@@ -122,41 +125,71 @@ app.on("activate", () => {
   }
 });
 
-// Terminal handling
-ipcMain.on("terminal-init", (event) => {
-  const shell = process.platform === "win32" ? "powershell.exe" : "bash";
-  terminalProcess = spawn(shell, [], {
-    cwd: process.env.HOME || process.env.USERPROFILE,
-    env: process.env,
-  });
+// Terminal handling with multiple terminal support
+ipcMain.handle("terminal-init", async (event, terminalId = 'default') => {
+  try {
+    const shell = process.platform === "win32" ? "powershell.exe" : "bash";
+    const terminalProcess = spawn(shell, [], {
+      cwd: process.env.HOME || process.env.USERPROFILE,
+      env: process.env,
+    });
 
-  terminalProcess.stdout.on("data", (data) => {
-    event.sender.send("terminal-output", data.toString());
-  });
+    // Store the process
+    terminalProcesses.set(terminalId, terminalProcess);
 
-  terminalProcess.stderr.on("data", (data) => {
-    event.sender.send("terminal-output", data.toString());
-  });
+    terminalProcess.stdout.on("data", (data) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send("terminal-output", { terminalId, data: data.toString() });
+      }
+    });
 
-  terminalProcess.on("exit", (code) => {
-    event.sender.send(
-      "terminal-output",
-      `\r\nProcess exited with code ${code}\r\n`
-    );
-    terminalProcess = null;
-  });
-});
+    terminalProcess.stderr.on("data", (data) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send("terminal-output", { terminalId, data: data.toString() });
+      }
+    });
 
-ipcMain.on("terminal-input", (event, data) => {
-  if (terminalProcess && terminalProcess.stdin.writable) {
-    terminalProcess.stdin.write(data);
+    terminalProcess.on("exit", (code) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send("terminal-output", {
+          terminalId,
+          data: `\r\nProcess exited with code ${code}\r\n`
+        });
+      }
+      terminalProcesses.delete(terminalId);
+    });
+
+    return { success: true, terminalId };
+  } catch (error) {
+    console.error('Failed to initialize terminal:', error);
+    return { success: false, error: error.message };
   }
 });
 
-ipcMain.on("terminal-close", () => {
-  if (terminalProcess) {
-    terminalProcess.kill();
-    terminalProcess = null;
+ipcMain.handle("terminal-input", async (event, terminalId = 'default', data) => {
+  try {
+    const terminalProcess = terminalProcesses.get(terminalId);
+    if (terminalProcess && terminalProcess.stdin.writable) {
+      terminalProcess.stdin.write(data);
+      return { success: true };
+    }
+    return { success: false, error: 'Terminal not found or not writable' };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
+ipcMain.handle("terminal-close", async (event, terminalId = 'default') => {
+  try {
+    const terminalProcess = terminalProcesses.get(terminalId);
+    if (terminalProcess) {
+      terminalProcess.kill();
+      terminalProcesses.delete(terminalId);
+      return { success: true };
+    }
+    return { success: false, error: 'Terminal not found' };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
 });
 

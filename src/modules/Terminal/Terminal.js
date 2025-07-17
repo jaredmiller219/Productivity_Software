@@ -441,6 +441,60 @@ function Terminal() {
     setShowAutocomplete(false);
   };
 
+  // Helper function to resolve paths
+  const resolvePath = (currentDir, targetPath) => {
+    // Handle absolute paths
+    if (targetPath.startsWith('/')) {
+      return normalizePath(targetPath);
+    }
+
+    // Handle home directory shortcut
+    if (targetPath === '~' || targetPath.startsWith('~/')) {
+      const homePath = '/home/user';
+      if (targetPath === '~') {
+        return homePath;
+      }
+      return resolvePath(homePath, targetPath.substring(2));
+    }
+
+    // Handle relative paths
+    const parts = currentDir.split('/').filter(part => part !== '');
+    const targetParts = targetPath.split('/').filter(part => part !== '');
+
+    for (const part of targetParts) {
+      if (part === '..') {
+        if (parts.length > 0) {
+          parts.pop();
+        }
+      } else if (part === '.' || part === '') {
+        // Current directory or empty, do nothing
+        continue;
+      } else {
+        parts.push(part);
+      }
+    }
+
+    return '/' + parts.join('/');
+  };
+
+  // Helper function to normalize paths
+  const normalizePath = (path) => {
+    const parts = path.split('/').filter(part => part !== '');
+    const normalized = [];
+
+    for (const part of parts) {
+      if (part === '..') {
+        if (normalized.length > 0) {
+          normalized.pop();
+        }
+      } else if (part !== '.' && part !== '') {
+        normalized.push(part);
+      }
+    }
+
+    return '/' + normalized.join('/');
+  };
+
   // Enhanced command processing with more commands
   const processCommand = (command, term) => {
     const cmd = command.trim();
@@ -462,6 +516,7 @@ function Terminal() {
         term.writeln("  settings      - Open terminal settings");
         term.writeln("  ls            - List directory contents (simulated)");
         term.writeln("  pwd           - Print working directory");
+        term.writeln("  cd <dir>      - Change directory (supports .., ./, ../, ~)");
         term.writeln("  whoami        - Show current user");
         term.writeln("  uname         - System information");
         term.writeln("  ps            - Show running processes (simulated)");
@@ -505,7 +560,30 @@ function Terminal() {
         term.writeln("-rwxr-xr-x  1 user user 2048 Dec 13 08:30 script.sh");
         break;
       case "pwd":
-        term.writeln("/home/user/workspace");
+        const currentTab = tabs.find(tab => tab.id === activeTab);
+        const currentDir = currentTab?.cwd || "/home/user";
+        // Convert ~ to full path for display
+        const displayDir = currentDir === "~" ? "/home/user" : currentDir;
+        term.writeln(displayDir);
+        break;
+      case "cd":
+        const currentTabForCd = tabs.find(tab => tab.id === activeTab);
+        const currentCwd = currentTabForCd?.cwd || "/home/user";
+        const targetPath = args.slice(1).join(' ') || "~";
+
+        // Convert ~ to full path for processing
+        const currentDirFull = currentCwd === "~" ? "/home/user" : currentCwd;
+        const newPath = resolvePath(currentDirFull, targetPath);
+
+        // Convert back to ~ notation if it's the home directory
+        const newCwd = newPath === "/home/user" ? "~" : newPath;
+
+        // Update the current tab's cwd
+        setTabs(prev => prev.map(tab =>
+          tab.id === activeTab ? { ...tab, cwd: newCwd } : tab
+        ));
+
+        // No output for successful cd (like real terminals)
         break;
       case "whoami":
         term.writeln("user");

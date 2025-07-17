@@ -12,14 +12,13 @@ Browser:
 IDE:
 
 1. Add a revert file button on right in bottom bar
-2. change fullscreen icon
-3. make the sidebar explorer actually horinzontally resizable, (currently the resize cursor shows but you cant actually resize it)
-4. Double click the file name in the button to rename it (also clicking the file name in the header allows to rename the file) 5. also add a rename option in the context menu
-5. make actual file type syntax highlighting
-6. add more options to the topbar header
-7. dont highlight the searchbar when you click on it
-8. make the search bar the same color as the rest of the header and change to the current color it is now when you click on it to show its been clicked
-9. why does it show the file size in bytes and not like kb or mb?
+2. make the sidebar explorer actually horinzontally resizable, (currently the resize cursor shows but you cant actually resize it)
+3. Double click the file name in the button to rename it (also clicking the file name in the header allows to rename the file) 5. also add a rename option in the context menu
+4. make actual file type syntax highlighting
+5. add more options to the topbar header
+6. dont highlight the searchbar when you click on it
+7. make the search bar the same color as the rest of the header and change to the current color it is now when you click on it to show its been clicked
+8. why does it show the file size in bytes and not like kb or mb?
 
 Terminal:
 

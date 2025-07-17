@@ -4,9 +4,9 @@ import { contextBridge, ipcRenderer } from 'electron';
 // the ipcRenderer without exposing the entire object
 contextBridge.exposeInMainWorld('electronAPI', {
   // Terminal methods
-  terminalInit: () => ipcRenderer.send('terminal-init'),
-  terminalInput: (data) => ipcRenderer.send('terminal-input', data),
-  terminalClose: () => ipcRenderer.send('terminal-close'),
+  terminalInit: (terminalId) => ipcRenderer.invoke('terminal-init', terminalId),
+  terminalInput: (terminalId, data) => ipcRenderer.invoke('terminal-input', terminalId, data),
+  terminalClose: (terminalId) => ipcRenderer.invoke('terminal-close', terminalId),
   onTerminalOutput: (callback) => ipcRenderer.on('terminal-output', callback),
   
   // File methods
