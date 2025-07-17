@@ -108,7 +108,6 @@
 /* Make appearance section more compact */
 .appearance-section {
   max-height: 42vh;
-  overflow-y: auto;
 }
 
 .appearance-section .setting-group {
