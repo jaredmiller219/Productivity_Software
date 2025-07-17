@@ -532,6 +532,18 @@ const BlenderMenuBar = ({
     setActiveMenu(null);
   };
 
+  // Close menu when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = () => {
+      if (activeMenu) {
+        setActiveMenu(null);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [activeMenu]);
+
   const renderMenuItem = (item, index) => {
     if (item.type === 'separator') {
       return <div key={index} className="menu-separator" />;
@@ -562,17 +574,20 @@ const BlenderMenuBar = ({
   };
 
   return (
-    <div className="blender-menu-bar">
+    <div className="blender-menu-bar" onClick={(e) => e.stopPropagation()}>
       {Object.keys(menuItems).map((menuName) => (
         <div key={menuName} className="menu-container">
           <button
             className={`menu-button ${activeMenu === menuName ? 'active' : ''}`}
-            onClick={() => handleMenuClick(menuName)}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleMenuClick(menuName);
+            }}
           >
             {menuName}
           </button>
           {activeMenu === menuName && (
-            <div className="menu-dropdown">
+            <div className="menu-dropdown" onClick={(e) => e.stopPropagation()}>
               {menuItems[menuName].map((item, index) => renderMenuItem(item, index))}
             </div>
           )}

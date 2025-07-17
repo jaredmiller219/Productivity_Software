@@ -16,9 +16,40 @@ const NotesMenuBar = ({
   theme
 }) => {
   const [activeMenu, setActiveMenu] = useState(null);
+  const [dropdownPosition, setDropdownPosition] = useState({});
 
-  const handleMenuClick = (menuName) => {
-    setActiveMenu(activeMenu === menuName ? null : menuName);
+  const handleMenuClick = (menuName, event) => {
+    if (activeMenu === menuName) {
+      setActiveMenu(null);
+      setDropdownPosition({});
+    } else {
+      setActiveMenu(menuName);
+
+      // Calculate dropdown position to keep it in viewport
+      const buttonRect = event.currentTarget.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const dropdownWidth = 280; // max-width from CSS
+
+      let position = {};
+
+      // Check if dropdown would go off the right edge
+      if (buttonRect.left + dropdownWidth > viewportWidth - 20) {
+        position.right = 0;
+        position.left = 'auto';
+      } else {
+        position.left = 0;
+        position.right = 'auto';
+      }
+
+      // For mobile, center the dropdown
+      if (viewportWidth <= 480) {
+        position.left = '50%';
+        position.right = 'auto';
+        position.transform = 'translateX(-50%)';
+      }
+
+      setDropdownPosition({ [menuName]: position });
+    }
   };
 
   const handleMenuItemClick = (action) => {
@@ -85,14 +116,17 @@ const NotesMenuBar = ({
               className={`menu-button ${activeMenu === menuName ? 'active' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
-                handleMenuClick(menuName);
+                handleMenuClick(menuName, e);
               }}
             >
               {menuName.charAt(0).toUpperCase() + menuName.slice(1)}
             </button>
-            
+
             {activeMenu === menuName && (
-              <div className="dropdown-menu">
+              <div
+                className="dropdown-menu"
+                style={dropdownPosition[menuName] || {}}
+              >
                 {items.map((item, index) => {
                   if (item.type === 'separator') {
                     return <div key={index} className="menu-separator" />;

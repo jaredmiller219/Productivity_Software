@@ -74,6 +74,7 @@
   top: 100%;
   left: 0;
   min-width: 220px;
+  max-width: 280px;
   background: var(--notes-dropdown-bg, #ffffff);
   border: 1px solid var(--notes-dropdown-border, #e2e8f0);
   border-radius: 6px;
@@ -81,6 +82,59 @@
   padding: 4px 0;
   z-index: 1000;
   animation: dropdownFadeIn 0.15s ease-out;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Ensure dropdowns stay within viewport bounds */
+.menu-item {
+  position: relative;
+}
+
+/* For the last menu items (Help), align dropdown to the right edge of button */
+.menu-item:last-child .dropdown-menu {
+  left: auto;
+  right: 0;
+}
+
+/* For second-to-last menu item (View), check if it needs right alignment */
+.menu-item:nth-last-child(2) .dropdown-menu {
+  left: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dropdown-menu {
+    min-width: 200px;
+    max-width: calc(100vw - 40px);
+  }
+
+  /* On smaller screens, align all dropdowns to left but ensure they fit */
+  .menu-item:last-child .dropdown-menu,
+  .menu-item:nth-last-child(2) .dropdown-menu {
+    left: 0;
+    right: auto;
+  }
+
+  /* If dropdown would still go off-screen, align to right */
+  .menu-item:last-child .dropdown-menu {
+    left: auto;
+    right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .dropdown-menu {
+    min-width: 180px;
+    max-width: calc(100vw - 20px);
+  }
+
+  /* On very small screens, center dropdowns */
+  .dropdown-menu {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes dropdownFadeIn {
