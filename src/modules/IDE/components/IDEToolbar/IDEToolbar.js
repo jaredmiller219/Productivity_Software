@@ -105,7 +105,6 @@ const IDEToolbar = ({
       <div className="toolbar-section toolbar-center">
         <div className="search-container">
           <div className="search-input-wrapper">
-            <span className="search-icon">🔍</span>
             <input
               type="text"
               className="search-input"

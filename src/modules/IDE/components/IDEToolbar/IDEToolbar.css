@@ -93,15 +93,34 @@
   display: flex;
   align-items: center;
   background-color: #3c3c3c;
-  border: 1px solid #5a5a5c;
+  border: 1px solid #5a5a5c !important;
   border-radius: 6px;
   padding: 0;
-  transition: all 0.2s ease;
+  box-shadow: none !important;
+  transition: none;
+  outline: none !important;
 }
 
 .search-input-wrapper:focus-within {
-  border-color: #007acc;
-  box-shadow: 0 0 0 1px #007acc;
+  border: 1px solid #5a5a5c !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Aggressive focus ring removal */
+.search-input-wrapper *:focus,
+.search-input-wrapper:focus,
+.search-input-wrapper:focus-visible,
+.search-input-wrapper:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #5a5a5c !important;
+}
+
+.search-container *:focus,
+.search-container:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .search-icon {
@@ -112,13 +131,24 @@
 
 .search-input {
   flex: 1;
-  background: transparent;
-  border: none;
+  background: transparent !important;
+  border: none !important;
   color: #cccccc;
   font-size: 13px;
   padding: 6px 8px;
-  outline: none;
+  outline: none !important;
+  box-shadow: none !important;
   min-width: 0;
+  border-radius: 0;
+  transition: none !important;
+  transform: none !important;
+}
+
+.search-input:focus {
+  background: #1e1e1e !important;
+  box-shadow: none !important;
+  transition: none !important;
+  transform: none !important;
 }
 
 .search-input::placeholder {
@@ -126,24 +156,26 @@
 }
 
 .search-panel-toggle {
-  background: none;
-  border: none;
-  color: #888;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #cccccc;
   cursor: pointer;
-  padding: 0 6px;
+  padding: 4px 6px;
   font-size: 12px;
   transition: all 0.2s ease;
   border-radius: 3px;
 }
 
 .search-panel-toggle:hover {
-  color: #cccccc;
-  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .search-panel-toggle.active {
   color: #007acc;
   background-color: rgba(0, 122, 204, 0.2);
+  border-color: #007acc;
 }
 
 .search-clear {

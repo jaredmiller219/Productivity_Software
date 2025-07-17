@@ -18,7 +18,6 @@ IDE:
 3. add more options to the topbar header
 4. dont highlight the searchbar when you click on it
 5. make the search bar the same color as the rest of the header and change to the current color it is now when you click on it to show its been clicked
-6. why does it show the file size in bytes and not like kb or mb?
 
 settings button:
 1.put the settings button where the dev state thing is, and make it have the same styling as the dev state thing has. same colors and everything.
