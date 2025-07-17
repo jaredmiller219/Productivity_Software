@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './FileExplorer.css';
 
 const FileExplorer = ({
@@ -168,6 +168,8 @@ export default MyComponent;`
       return () => document.removeEventListener('click', handleClickOutside);
     }
   }, [contextMenu]);
+
+
 
   const handleDeleteFile = (file) => {
     if (window.confirm(`Are you sure you want to delete ${file.name}?`)) {

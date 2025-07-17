@@ -8,6 +8,7 @@ const CodeEditor = ({
   fileName,
   isModified,
   onSave,
+  onRevert,
   projectStats
 }) => {
   const textareaRef = useRef(null);
@@ -17,6 +18,13 @@ const CodeEditor = ({
   const [fontSize, setFontSize] = useState(14);
   const [showStats, setShowStats] = useState(false);
   const statsRef = useRef(null);
+
+  // Undo/Redo functionality
+  const [history, setHistory] = useState([content]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+
+  // Track original content (when file was first opened)
+  const [originalContent] = useState(content);
 
   // Helper functions for formatting
   const formatFileSize = (bytes) => {
@@ -169,6 +177,43 @@ const CodeEditor = ({
     }
   };
 
+  // Handle content changes with undo/redo support
+  const handleContentChange = (e) => {
+    const newContent = e.target.value;
+    onChange(newContent);
+
+    // Add to history for undo/redo (debounced to avoid too many entries)
+    const newHistory = history.slice(0, historyIndex + 1);
+    newHistory.push(newContent);
+
+    // Limit history to 50 entries
+    if (newHistory.length > 50) {
+      newHistory.shift();
+    } else {
+      setHistoryIndex(historyIndex + 1);
+    }
+
+    setHistory(newHistory);
+  };
+
+  const handleUndo = () => {
+    if (historyIndex > 0) {
+      const newIndex = historyIndex - 1;
+      const previousContent = history[newIndex];
+      setHistoryIndex(newIndex);
+      onChange(previousContent);
+    }
+  };
+
+  const handleRedo = () => {
+    if (historyIndex < history.length - 1) {
+      const newIndex = historyIndex + 1;
+      const nextContent = history[newIndex];
+      setHistoryIndex(newIndex);
+      onChange(nextContent);
+    }
+  };
+
   // Update cursor position
   const handleSelectionChange = () => {
     const textarea = textareaRef.current;
@@ -217,6 +262,26 @@ const CodeEditor = ({
         </div>
         
         <div className="editor-controls">
+          {/* Undo/Redo buttons */}
+          <div className="undo-redo-controls">
+            <button
+              className={`undo-btn ${historyIndex <= 0 ? 'disabled' : ''}`}
+              onClick={handleUndo}
+              disabled={historyIndex <= 0}
+              title="Undo (Ctrl+Z)"
+            >
+              ↶
+            </button>
+            <button
+              className={`redo-btn ${historyIndex >= history.length - 1 ? 'disabled' : ''}`}
+              onClick={handleRedo}
+              disabled={historyIndex >= history.length - 1}
+              title="Redo (Ctrl+Y)"
+            >
+              ↷
+            </button>
+          </div>
+
           <div className="font-controls">
             <button
               onClick={() => setFontSize(prev => Math.max(prev - 1, 10))}
@@ -270,7 +335,7 @@ const CodeEditor = ({
         <textarea
           ref={textareaRef}
           value={content}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={handleContentChange}
           onKeyDown={handleKeyDown}
           onSelect={handleSelectionChange}
           onClick={handleSelectionChange}
@@ -299,6 +364,17 @@ const CodeEditor = ({
         </div>
 
         <div className="footer-right">
+          {/* Revert button - always show in debug mode when file differs from original */}
+          {process.env.NODE_ENV === 'development' && content !== originalContent && (
+            <button
+              className="revert-btn"
+              onClick={() => onChange(originalContent)}
+              title="Revert file to original state"
+            >
+              ↶ Revert
+            </button>
+          )}
+
           {projectStats && (
             <div className="stats-container" ref={statsRef}>
               <button

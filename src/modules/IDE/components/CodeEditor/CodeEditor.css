@@ -5,6 +5,15 @@
   background-color: #1e1e1e;
   color: #d4d4d4;
   position: relative;
+  outline: none;
+  border: none;
+}
+
+.code-editor:focus,
+.code-editor:focus-within {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .code-editor.fullscreen {
@@ -56,6 +65,38 @@
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.undo-redo-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 8px;
+}
+
+.undo-btn, .redo-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #cccccc;
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  min-width: 28px;
+  transition: all 0.2s ease;
+}
+
+.undo-btn:hover:not(.disabled),
+.redo-btn:hover:not(.disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.undo-btn.disabled,
+.redo-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .font-controls {
@@ -135,6 +176,15 @@
   flex: 1;
   overflow: hidden;
   position: relative;
+  outline: none;
+  border: none;
+}
+
+.editor-content:focus,
+.editor-content:focus-within {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .line-numbers {
@@ -188,6 +238,18 @@
 
 .code-textarea:focus {
   background-color: #1e1e1e;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove all possible focus outlines from editor elements */
+.code-editor *:focus,
+.code-editor *:focus-visible,
+.code-editor *:focus-within {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* Syntax highlighting classes */
@@ -264,6 +326,24 @@
 
 .stats-btn:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.revert-btn {
+  background-color: rgba(255, 165, 0, 0.1);
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  color: #ffa500;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.revert-btn:hover {
+  background-color: rgba(255, 165, 0, 0.2);
+  border-color: rgba(255, 165, 0, 0.5);
+  transform: translateY(-1px);
 }
 
 .stats-popup {

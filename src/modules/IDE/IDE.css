@@ -20,6 +20,18 @@
   overflow: hidden;
 }
 
+.ide-resize-handle {
+  width: 4px;
+  background: rgba(88, 166, 255, 0.3);
+  cursor: col-resize;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.ide-resize-handle:hover {
+  background: rgba(88, 166, 255, 0.6);
+}
+
 /* Search overlay - completely separate layer */
 .search-overlay {
   position: fixed;

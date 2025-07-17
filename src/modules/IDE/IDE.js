@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import FileExplorer from "./components/FileExplorer/FileExplorer.js";
 import CodeEditor from "./components/CodeEditor/CodeEditor.js";
 import IDEToolbar from "./components/IDEToolbar/IDEToolbar.js";
@@ -8,6 +8,22 @@ import "./IDE.css";
 
 function IDE() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [explorerWidth, setExplorerWidth] = useState(280);
+  const [isResizing, setIsResizing] = useState(false);
+  const explorerContainerRef = useRef(null);
+
+  // Undo/Redo state
+  const [undoRedoCallbacks, setUndoRedoCallbacks] = useState({
+    onUndo: null,
+    onRedo: null,
+    canUndo: false,
+    canRedo: false
+  });
+
+  // Initialize CSS variable
+  useEffect(() => {
+    document.documentElement.style.setProperty('--explorer-width', `${explorerWidth}px`);
+  }, [explorerWidth]);
   
   const {
     files,
@@ -19,6 +35,7 @@ function IDE() {
     createNewFile,
     deleteFile,
     duplicateFile,
+    revertFile,
     getFileIcon,
     getFileLanguage,
     searchInFiles,
@@ -60,6 +77,38 @@ function IDE() {
     }
   };
 
+  // Handle resize functionality
+  const handleResizeStart = (e) => {
+    e.preventDefault();
+    setIsResizing(true);
+
+    const handleMouseMove = (e) => {
+      const newWidth = e.clientX;
+      const minWidth = 200;
+      const maxWidth = 600;
+      const clampedWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+
+      // Update CSS variable directly - much faster than React state
+      document.documentElement.style.setProperty('--explorer-width', `${clampedWidth}px`);
+    };
+
+    const handleMouseUp = () => {
+      const finalWidth = parseInt(document.documentElement.style.getPropertyValue('--explorer-width')) || 280;
+      setExplorerWidth(finalWidth);
+      setIsResizing(false);
+
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  };
+
   return (
     <div className="ide-container">
       <IDEToolbar
@@ -72,15 +121,29 @@ function IDE() {
       />
       
       <div className="ide-main">
-        <FileExplorer
-          files={files}
-          activeFile={activeFile}
-          onFileSelect={selectFile}
-          onFileCreate={createNewFile}
-          onFileDelete={deleteFile}
-          onFileDuplicate={duplicateFile}
-          getFileIcon={getFileIcon}
-          onSave={handleSave}
+        <div
+          ref={explorerContainerRef}
+          style={{
+            width: isResizing ? 'var(--explorer-width, 280px)' : `${explorerWidth}px`,
+            minWidth: '200px',
+            maxWidth: '600px'
+          }}
+        >
+          <FileExplorer
+            files={files}
+            activeFile={activeFile}
+            onFileSelect={selectFile}
+            onFileCreate={createNewFile}
+            onFileDelete={deleteFile}
+            onFileDuplicate={duplicateFile}
+            getFileIcon={getFileIcon}
+            onSave={handleSave}
+          />
+        </div>
+
+        <div
+          className="ide-resize-handle"
+          onMouseDown={handleResizeStart}
         />
 
         <div className="ide-editor-container">
@@ -92,6 +155,7 @@ function IDE() {
               fileName={activeFile.name}
               isModified={activeFile.isModified}
               onSave={handleSave}
+              onRevert={revertFile}
               projectStats={getProjectStats()}
             />
           ) : (

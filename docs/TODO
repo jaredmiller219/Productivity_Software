@@ -8,17 +8,17 @@ Browser:
 3D Modeling:
 
 1. Add different views (one of modeling, one of animation, one of rigging, one of materials, one of modifiers) instead of just buttons for it.
+2. clicking away from an option in the toolbar should close the dropdown
 
 IDE:
 
-1. Add a revert file button on right in bottom bar
-2. make the sidebar explorer actually horinzontally resizable, (currently the resize cursor shows but you cant actually resize it)
-3. Double click the file name in the button to rename it (also clicking the file name in the header allows to rename the file) 5. also add a rename option in the context menu
-4. make actual file type syntax highlighting
-5. add more options to the topbar header
-6. dont highlight the searchbar when you click on it
-7. make the search bar the same color as the rest of the header and change to the current color it is now when you click on it to show its been clicked
-8. why does it show the file size in bytes and not like kb or mb?
+1. Double click the file name in the button to rename it (also clicking the file name in the header allows to rename the file)
+   also add a rename option in the context menu
+2. make actual file type syntax highlighting
+3. add more options to the topbar header
+4. dont highlight the searchbar when you click on it
+5. make the search bar the same color as the rest of the header and change to the current color it is now when you click on it to show its been clicked
+6. why does it show the file size in bytes and not like kb or mb?
 
 settings button:
 1.put the settings button where the dev state thing is, and make it have the same styling as the dev state thing has. same colors and everything.

@@ -319,6 +319,40 @@ document.addEventListener('DOMContentLoaded', function() {
     return createNewFile(newName, fileToDuplicate.content);
   }, [files, createNewFile]);
 
+  // Revert file to last saved state
+  const revertFile = useCallback(() => {
+    if (!activeFile || !activeFile.isModified) {
+      return false; // No file selected or no changes to revert
+    }
+
+    // Get the original saved content from localStorage
+    try {
+      const savedFiles = localStorage.getItem('ide-files');
+      if (savedFiles) {
+        const parsedFiles = JSON.parse(savedFiles);
+        const originalFile = parsedFiles.find(f => f.id === activeFile.id);
+
+        if (originalFile) {
+          // Revert to the saved content
+          updateState(prev => ({
+            ...prev,
+            files: prev.files.map(file =>
+              file.id === activeFile.id
+                ? { ...file, content: originalFile.content, isModified: false }
+                : file
+            ),
+            editorContent: originalFile.content
+          }));
+          return true;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to revert file:', error);
+    }
+
+    return false;
+  }, [activeFile, updateState]);
+
   // Search in files
   const searchInFiles = useCallback((query) => {
     if (!query.trim()) return [];
@@ -396,6 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
     createNewFile,
     deleteFile,
     duplicateFile,
+    revertFile,
     
     // Utilities
     getFileIcon,
