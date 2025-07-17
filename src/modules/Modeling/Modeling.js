@@ -218,7 +218,7 @@ function Modeling() {
         {/* Collapsible Side Panel - overlay when collapsed */}
         {!sidebarCollapsed && (
           <div className="sidebar-container expanded">
-            <div className="sidebar-header">
+            <div className="sidebar-header-modeling">
               <span className="sidebar-title">Properties</span>
               <button
                 className="collapse-button"

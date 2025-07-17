@@ -58,12 +58,13 @@
   -moz-appearance: none;
   appearance: none;
   transition: none !important;
+  box-shadow: none !important;
 }
 
 .notes-list-container .search-container .search-input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+  border-color: #8a8a8a;
+  box-shadow: 0 0 0 2px rgba(128, 128, 128, 0.3);
 }
 
 .notes-list-container .search-icon {
@@ -319,7 +320,8 @@ div.notes-container.theme-light .notes-list-container .search-container input.se
 
 div.notes-container.theme-light .notes-list-container .search-container .search-input:focus {
   background-color: #ffffff !important;
-  border-color: #007bff !important;
+  border-color: #808080 !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 div.notes-container.theme-light .notes-list-container .search-container .search-input::placeholder {
@@ -405,7 +407,8 @@ div.notes-container.theme-light .notes-list-container .search-container .search-
 
 .notes-container.theme-dark .notes-list-container .search-container .search-input:focus {
   background-color: #161b22 !important;
-  border-color: #58a6ff !important;
+  border-color: #808080 !important;
+  box-shadow: 0 0 0 2px rgba(128, 128, 128, 0.3) !important;
 }
 
 .notes-container.theme-dark .notes-list-container .search-container .search-input::placeholder {
