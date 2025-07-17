@@ -369,55 +369,61 @@
 
 /* Debug Section Styles */
 .debug-section {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .debug-section h4 {
-  margin: 0 0 12px 0;
-  color: #34d399;
-  font-size: 14px;
+  margin: 0 0 16px 0;
+  color: #f0c674;
+  font-size: 16px;
   font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .terminal-container.light .debug-section h4 {
-  color: #059669;
+  color: #f0c674;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .debug-section p {
-  margin: 6px 0;
-  font-size: 13px;
-  color: #b0b0b0;
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  margin: 8px 0;
+  font-size: 14px;
+  color: #ccc;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  line-height: 1.5;
 }
 
 .terminal-container.light .debug-section p {
-  color: #666;
+  color: #555;
 }
 
 .debug-section strong {
-  color: #06b6d4;
+  color: #f0c674;
+  font-weight: 600;
 }
 
 .terminal-container.light .debug-section strong {
-  color: #0891b2;
+  color: #f0c674;
 }
 
 /* Draggable Debug Modal Styles */
 .debug-modal {
-  background-color: #2d2d2d;
-  border: 2px solid #4a9eff;
-  border-radius: 8px;
-  min-width: 300px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 1px solid #444;
+  border-radius: 16px;
+  min-width: 500px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  color: #fff;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
 }
 
 .terminal-container.light .debug-modal {
-  background-color: #f0f0f0;
-  border-color: #2563eb;
+  background: linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 100%);
+  border-color: #ccc;
   color: #333;
 }
 
@@ -428,33 +434,37 @@
   overflow: visible;
 }
 
+.debug-modal.minimized .debug-modal-header {
+  border-radius: 16px;
+}
+
 .debug-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid #4a9eff;
-  background-color: #3e3e3e;
-  border-radius: 6px 6px 0 0;
+  padding: 24px 32px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(240, 198, 116, 0.1) 0%, rgba(240, 198, 116, 0.05) 100%);
+  border-radius: 16px 16px 0 0;
   user-select: none;
 }
 
 .terminal-container.light .debug-modal-header {
-  background-color: #e0e0e0;
-  border-bottom-color: #2563eb;
+  background: linear-gradient(135deg, rgba(240, 198, 116, 0.15) 0%, rgba(240, 198, 116, 0.08) 100%);
+  border-bottom-color: rgba(0, 0, 0, 0.1);
 }
 
 .debug-modal-header h3 {
   margin: 0;
-  font-size: 14px;
-  color: #FFD700;
+  font-size: 20px;
+  color: #f0c674;
   font-weight: 600;
-  text-shadow: 0 0 4px rgba(255, 215, 0, 0.6);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .terminal-container.light .debug-modal-header h3 {
-  color: #FFD700;
-  text-shadow: 0 0 4px rgba(255, 215, 0, 0.4);
+  color: #f0c674;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .debug-header-controls {
@@ -463,60 +473,69 @@
 }
 
 .debug-header-controls button {
-  background: none;
-  border: none;
-  color: #d4d4d4;
-  font-size: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #ccc;
+  padding: 10px 14px;
   cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 3px;
-  transition: background-color 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  backdrop-filter: blur(10px);
 }
 
 .terminal-container.light .debug-header-controls button {
-  color: #333;
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.2);
+  color: #666;
 }
 
 .debug-header-controls button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .debug-modal-content {
-  padding: 16px;
+  padding: 32px;
   flex: 1;
   overflow-y: auto;
   min-height: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.01) 100%);
 }
 
 /* Custom scrollbar for debug modal */
 .debug-modal-content::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 .debug-modal-content::-webkit-scrollbar-track {
-  background: #1e1e1e;
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .debug-modal-content::-webkit-scrollbar-thumb {
-  background: #555;
-  border-radius: 3px;
+  background: rgba(240, 198, 116, 0.3);
+  border-radius: 4px;
 }
 
 .debug-modal-content::-webkit-scrollbar-thumb:hover {
-  background: #777;
+  background: rgba(240, 198, 116, 0.5);
 }
 
 .terminal-container.light .debug-modal-content::-webkit-scrollbar-track {
-  background: #f5f5f5;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .terminal-container.light .debug-modal-content::-webkit-scrollbar-thumb {
-  background: #ccc;
+  background: rgba(240, 198, 116, 0.4);
 }
 
 .terminal-container.light .debug-modal-content::-webkit-scrollbar-thumb:hover {
-  background: #aaa;
+  background: rgba(240, 198, 116, 0.6);
 }
 
 /* Resize Handle */

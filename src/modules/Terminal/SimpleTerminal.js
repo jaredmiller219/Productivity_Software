@@ -32,7 +32,7 @@ function SimpleTerminal() {
     showHelp: false,
     showDebug: false,
     debugPosition: { x: 50, y: 50 },
-    debugSize: { width: 400, height: 500 },
+    debugSize: { width: 500, height: 500 },
     debugMinimized: false,
     settings: DEFAULT_SETTINGS,
     tabStates: {
@@ -417,8 +417,8 @@ function SimpleTerminal() {
       } else if (isResizing) {
         const deltaX = e.clientX - resizeStart.x;
         const deltaY = e.clientY - resizeStart.y;
-        const minWidth = 300; // Wide enough for header content
-        const minHeight = 50; // Height of header
+        const minWidth = 500; // Minimum 500px width
+        const minHeight = 86; // Height of header
         const maxHeight = getContentMaxHeight(); // Content-based max height
         const newWidth = Math.max(minWidth, resizeStart.width + deltaX);
         const newHeight = Math.max(minHeight, Math.min(resizeStart.height + deltaY, maxHeight));
