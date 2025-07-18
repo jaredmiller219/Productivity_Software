@@ -4,7 +4,11 @@
   height: 100%;
   overflow: hidden;
   background-color: #1e1e1e;
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-family: var(--ide-font-family, 'SF Mono'), 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: var(--ide-font-size, 14px);
+  font-weight: var(--ide-font-weight, normal);
+  line-height: var(--ide-line-height, 1.5);
+  letter-spacing: var(--ide-letter-spacing, 0px);
 }
 
 .highlight-background {
@@ -17,9 +21,11 @@
   padding: 12px 16px;
   background: transparent;
   color: #d4d4d4;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: 1.5;
+  font-family: var(--ide-font-family, inherit);
+  font-size: var(--ide-font-size, inherit);
+  line-height: var(--ide-line-height, 1.5);
+  font-weight: var(--ide-font-weight, normal);
+  letter-spacing: var(--ide-letter-spacing, 0px);
   white-space: pre;
   word-wrap: normal;
   overflow: auto;
@@ -45,14 +51,16 @@
   border: none;
   outline: none;
   resize: none;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: 1.5;
+  font-family: var(--ide-font-family, inherit);
+  font-size: var(--ide-font-size, inherit);
+  line-height: var(--ide-line-height, 1.5);
+  font-weight: var(--ide-font-weight, normal);
+  letter-spacing: var(--ide-letter-spacing, 0px);
   white-space: pre;
   word-wrap: normal;
   overflow: auto;
   z-index: 2;
-  tab-size: 2;
+  tab-size: var(--ide-tab-size, 2);
   caret-color: var(--ide-cursor-color, #ffffff);
 }
 

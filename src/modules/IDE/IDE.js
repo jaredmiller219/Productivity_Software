@@ -32,10 +32,36 @@ function IDE() {
     document.documentElement.style.setProperty('--explorer-width', `${explorerWidth}px`);
   }, [explorerWidth]);
 
-  // Apply IDE settings to CSS variables
+  // Apply IDE settings to CSS variables and editor
   useEffect(() => {
-    document.documentElement.style.setProperty('--ide-cursor-color', ideSettings.cursorColor);
-  }, [ideSettings.cursorColor]);
+    const root = document.documentElement;
+
+    // Cursor settings
+    root.style.setProperty('--ide-cursor-color', ideSettings.cursorColor);
+    root.style.setProperty('--ide-cursor-style', ideSettings.cursorStyle);
+    root.style.setProperty('--ide-cursor-blinking', ideSettings.cursorBlinking);
+
+    // Font settings
+    root.style.setProperty('--ide-font-size', `${ideSettings.fontSize}px`);
+    root.style.setProperty('--ide-font-family', ideSettings.fontFamily);
+    root.style.setProperty('--ide-font-weight', ideSettings.fontWeight);
+    root.style.setProperty('--ide-line-height', ideSettings.lineHeight);
+    root.style.setProperty('--ide-letter-spacing', `${ideSettings.letterSpacing}px`);
+
+    // Editor behavior
+    root.style.setProperty('--ide-tab-size', ideSettings.tabSize);
+    root.style.setProperty('--ide-word-wrap', ideSettings.wordWrap);
+    root.style.setProperty('--ide-line-numbers', ideSettings.lineNumbers);
+
+    // Theme and colors
+    root.style.setProperty('--ide-theme', ideSettings.theme);
+    root.style.setProperty('--ide-color-scheme', ideSettings.colorScheme);
+
+    // Apply theme class to body
+    document.body.className = document.body.className.replace(/theme-\w+/g, '');
+    document.body.classList.add(`theme-${ideSettings.theme}`);
+
+  }, [ideSettings]);
   
   const {
     files,
@@ -185,6 +211,7 @@ function IDE() {
               onRevert={revertFile}
               onRename={(newName) => renameFile(activeFile.id, newName)}
               projectStats={getProjectStats()}
+              settings={ideSettings}
             />
           ) : (
             <div className="no-file-selected">

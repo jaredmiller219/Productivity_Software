@@ -11,7 +11,8 @@ const CodeEditor = ({
   onSave,
   onRevert,
   onRename,
-  projectStats
+  projectStats,
+  settings = {}
 }) => {
   const textareaRef = useRef(null);
   const [lineNumbers, setLineNumbers] = useState([]);
@@ -387,10 +388,11 @@ const CodeEditor = ({
           content={content}
           onChange={handleContentChange}
           language={language}
-          fontSize={fontSize}
+          fontSize={settings.fontSize || fontSize}
           onKeyDown={handleKeyDown}
           onSelect={handleSelectionChange}
           onClick={handleSelectionChange}
+          settings={settings}
         />
       </div>
 

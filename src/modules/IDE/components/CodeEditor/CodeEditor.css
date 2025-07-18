@@ -259,14 +259,16 @@
   border: none;
   outline: none;
   padding: 12px 16px;
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-  font-size: 14px;
-  line-height: 1.5;
+  font-family: var(--ide-font-family, 'SF Mono'), 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: var(--ide-font-size, 14px);
+  line-height: var(--ide-line-height, 1.5);
+  font-weight: var(--ide-font-weight, normal);
+  letter-spacing: var(--ide-letter-spacing, 0px);
   resize: none;
   white-space: pre;
   overflow-wrap: normal;
   overflow-x: auto;
-  tab-size: 2;
+  tab-size: var(--ide-tab-size, 2);
   pointer-events: auto;
   user-select: text;
   -webkit-user-select: text;
@@ -275,6 +277,7 @@
   position: relative;
   z-index: 1;
   caret-color: var(--ide-cursor-color, #ffffff);
+  white-space: pre;
 }
 
 .code-textarea::placeholder {

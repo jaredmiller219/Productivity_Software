@@ -169,9 +169,9 @@ function Notes({ isRightPanel = false, onNotesCountChange }) {
 
       <div className="notes-content">
         <div className="notes-sidebar">
-          <div className="notes-header">
+          {/* <div className="notes-header">
             <h3>Notes</h3>
-          </div>
+          </div> */}
           <NotesList
             notes={notes}
             currentNote={currentNote}

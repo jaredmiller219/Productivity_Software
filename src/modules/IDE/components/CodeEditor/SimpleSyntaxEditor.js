@@ -27,7 +27,8 @@ const SimpleSyntaxEditor = React.forwardRef(({
   fontSize = 14,
   onKeyDown,
   onSelect,
-  onClick
+  onClick,
+  settings = {}
 }, ref) => {
   const containerRef = useRef(null);
   const textareaRef = useRef(null);
@@ -110,16 +111,41 @@ const SimpleSyntaxEditor = React.forwardRef(({
     }
   }, [content, language]);
 
+  // Get editor styles from settings
+  const getEditorStyles = () => {
+    const baseStyles = {
+      fontSize: `${fontSize}px`,
+      fontFamily: settings.fontFamily || 'SF Mono',
+      fontWeight: settings.fontWeight || 'normal',
+      lineHeight: settings.lineHeight || 1.5,
+      letterSpacing: `${settings.letterSpacing || 0}px`,
+      tabSize: settings.tabSize || 2
+    };
+
+    // Handle word wrap
+    if (settings.wordWrap === 'on' || settings.wordWrap === 'wordWrapColumn' || settings.wordWrap === 'bounded') {
+      baseStyles.whiteSpace = 'pre-wrap';
+      baseStyles.wordWrap = 'break-word';
+    } else {
+      baseStyles.whiteSpace = 'pre';
+      baseStyles.wordWrap = 'normal';
+    }
+
+    return baseStyles;
+  };
+
+  const editorStyles = getEditorStyles();
+
   return (
     <div className="simple-syntax-editor" ref={containerRef}>
       {/* Highlighted background */}
-      <pre 
+      <pre
         ref={highlightRef}
         className="highlight-background"
-        style={{ fontSize: `${fontSize}px` }}
+        style={editorStyles}
         aria-hidden="true"
       />
-      
+
       {/* Transparent textarea overlay */}
       <textarea
         ref={textareaRef}
@@ -130,12 +156,12 @@ const SimpleSyntaxEditor = React.forwardRef(({
         onClick={onClick}
         onScroll={handleScroll}
         className="editor-input"
-        style={{ fontSize: `${fontSize}px` }}
-        spellCheck="false"
+        style={editorStyles}
+        spellCheck={settings.spellCheck || false}
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize="off"
-        wrap="off"
+        wrap={settings.wordWrap === 'off' ? 'off' : 'soft'}
       />
     </div>
   );
