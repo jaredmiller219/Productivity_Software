@@ -321,7 +321,7 @@ const CodeEditor = ({
               disabled={historyIndex <= 0}
               title="Undo (Ctrl+Z)"
             >
-              ↶
+              ↩
             </button>
             <button
               className={`redo-btn ${historyIndex >= history.length - 1 ? 'disabled' : ''}`}
@@ -329,7 +329,7 @@ const CodeEditor = ({
               disabled={historyIndex >= history.length - 1}
               title="Redo (Ctrl+Y)"
             >
-              ↷
+              ↪
             </button>
           </div>
 
@@ -408,17 +408,6 @@ const CodeEditor = ({
         </div>
 
         <div className="footer-right">
-          {/* Revert button - always show in debug mode when file differs from original */}
-          {process.env.NODE_ENV === 'development' && content !== originalContent && (
-            <button
-              className="revert-btn"
-              onClick={() => onChange(originalContent)}
-              title="Revert file to original state"
-            >
-              ↶ Revert
-            </button>
-          )}
-
           {projectStats && (
             <div className="stats-container" ref={statsRef}>
               <button

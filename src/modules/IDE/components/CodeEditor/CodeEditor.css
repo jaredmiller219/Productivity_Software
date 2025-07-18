@@ -114,21 +114,26 @@
 }
 
 .undo-btn, .redo-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: none;
   color: #cccccc;
-  padding: 4px 8px;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: bold;
-  min-width: 28px;
+  width: 42px;
+  height: 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 5px;
   transition: all 0.2s ease;
+
+
 }
 
 .undo-btn:hover:not(.disabled),
 .redo-btn:hover:not(.disabled) {
-  background: rgba(255, 255, 255, 0.2);
+  /* background: rgba(255, 255, 255, 0.2); */
   border-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -146,7 +151,7 @@
 
 .font-btn {
   background: none;
-  border: 1px solid #464647;
+  /* border: 1px solid #464647; */
   border-radius: 4px;
   color: #cccccc;
   padding: 4px 6px;

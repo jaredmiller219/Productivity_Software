@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import FileExplorer from "./components/FileExplorer/FileExplorer.js";
 import CodeEditor from "./components/CodeEditor/CodeEditor.js";
-import IDEToolbar from "./components/IDEToolbar/IDEToolbar.js";
+import IDEMenuBar from "./components/IDEMenuBar/IDEMenuBar.js";
 import SearchPanel from "./components/SearchPanel/SearchPanel.js";
 import IDESettings, { DEFAULT_IDE_SETTINGS } from "./components/IDESettings/IDESettings.js";
 import { useIDE } from "./hooks/useIDE.js";
@@ -19,13 +19,7 @@ function IDE() {
   const { state: ideSettingsState, updateState: updateIdeSettings } = useGlobalState('ide-settings', DEFAULT_IDE_SETTINGS);
   const ideSettings = ideSettingsState;
 
-  // Undo/Redo state
-  const [undoRedoCallbacks, setUndoRedoCallbacks] = useState({
-    onUndo: null,
-    onRedo: null,
-    canUndo: false,
-    canRedo: false
-  });
+
 
   // Initialize CSS variables
   useEffect(() => {
@@ -93,6 +87,85 @@ function IDE() {
     setShowSettings(false);
   };
 
+  // Menu bar handlers
+  const handleNewFile = () => {
+    createNewFile();
+  };
+
+  const handleOpenFile = () => {
+    // TODO: Implement file picker
+    console.log('Open file dialog');
+  };
+
+  const handleSaveAsFile = () => {
+    // TODO: Implement save as dialog
+    console.log('Save as dialog');
+  };
+
+  const handleCloseFile = () => {
+    if (activeFile) {
+      // TODO: Check for unsaved changes
+      selectFile(null);
+    }
+  };
+
+  const handleUndo = () => {
+    document.execCommand('undo');
+  };
+
+  const handleRedo = () => {
+    document.execCommand('redo');
+  };
+
+  const handleCut = () => {
+    document.execCommand('cut');
+  };
+
+  const handleCopy = () => {
+    document.execCommand('copy');
+  };
+
+  const handlePaste = () => {
+    document.execCommand('paste');
+  };
+
+  const handleFind = () => {
+    // TODO: Implement find in current file
+    console.log('Find in current file');
+  };
+
+  const handleReplace = () => {
+    // TODO: Implement replace in current file
+    console.log('Replace in current file');
+  };
+
+  const handleToggleFileExplorer = () => {
+    setIsFileExplorerVisible(!isFileExplorerVisible);
+  };
+
+  const handleToggleTerminal = () => {
+    // TODO: Implement terminal toggle
+    console.log('Toggle terminal');
+  };
+
+  const handleToggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
+  };
+
+  const handleRunCode = () => {
+    // TODO: Implement code execution
+    console.log('Run code');
+  };
+
+  const handleDebugCode = () => {
+    // TODO: Implement debugging
+    console.log('Debug code');
+  };
+
   const handleSettingsChange = (newSettings) => {
     updateIdeSettings(newSettings);
   };
@@ -117,11 +190,7 @@ function IDE() {
     };
   }, [activeFile, saveCurrentFile]);
 
-  const handleNewFile = (fileName, content = '') => {
-    createNewFile(fileName, content);
-  };
-
-  const handleSave = () => {
+  const handleSaveFile = () => {
     const success = saveCurrentFile();
     if (success) {
       console.log('File saved successfully');
@@ -162,16 +231,34 @@ function IDE() {
 
   return (
     <div className="ide-container">
-      <IDEToolbar
+      <IDEMenuBar
         onNewFile={handleNewFile}
-        onSave={handleSave}
+        onOpenFile={handleOpenFile}
+        onSaveFile={handleSaveFile}
+        onSaveAsFile={handleSaveAsFile}
+        onCloseFile={handleCloseFile}
+        onUndo={handleUndo}
+        onRedo={handleRedo}
+        onCut={handleCut}
+        onCopy={handleCopy}
+        onPaste={handlePaste}
+        onFind={handleFind}
+        onReplace={handleReplace}
+        onRevert={revertFile}
         onSearch={searchInFiles}
         onToggleSearch={handleToggleSearch}
-        isSearchVisible={isSearchVisible}
-        activeFile={activeFile}
+        onToggleFileExplorer={handleToggleFileExplorer}
+        onToggleTerminal={handleToggleTerminal}
+        onToggleFullscreen={handleToggleFullscreen}
         onShowSettings={handleShowSettings}
+        onRunCode={handleRunCode}
+        onDebugCode={handleDebugCode}
+        activeFile={activeFile}
+        projectStats={getProjectStats()}
+        theme={ideSettings.theme}
+        isSearchVisible={isSearchVisible}
       />
-      
+
       <div className="ide-main">
         <div
           ref={explorerContainerRef}
@@ -190,7 +277,7 @@ function IDE() {
             onFileDuplicate={duplicateFile}
             onFileRename={renameFile}
             getFileIcon={getFileIcon}
-            onSave={handleSave}
+            onSave={handleSaveFile}
           />
         </div>
 
@@ -207,7 +294,7 @@ function IDE() {
               language={getFileLanguage(activeFile.type)}
               fileName={activeFile.name}
               isModified={activeFile.isModified}
-              onSave={handleSave}
+              onSave={handleSaveFile}
               onRevert={revertFile}
               onRename={(newName) => renameFile(activeFile.id, newName)}
               projectStats={getProjectStats()}
