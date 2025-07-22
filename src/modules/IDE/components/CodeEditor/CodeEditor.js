@@ -184,7 +184,14 @@ const CodeEditor = ({
 
   // Handle content changes with undo/redo support
   const handleContentChange = (e) => {
-    const newContent = e.target.value;
+    let newContent;
+    if (e && e.target && typeof e.target.value !== 'undefined') {
+      newContent = e.target.value;
+    } else if (typeof e === 'string') {
+      newContent = e;
+    } else {
+      newContent = '';
+    }
     onChange(newContent);
 
     // Add to history for undo/redo (debounced to avoid too many entries)
